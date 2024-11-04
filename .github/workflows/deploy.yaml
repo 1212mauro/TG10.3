@@ -37,7 +37,7 @@ jobs:
             git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
             cd Project_Bajeet/
             git pull origin main
-            kill $(cat /root/progi.pid) ; ./mvnw clean install ; nohup java -jar target/project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
+            kill $(cat /root/progi.pid) ; ./mvnw clean install -Prelease ; nohup java -jar target/project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
