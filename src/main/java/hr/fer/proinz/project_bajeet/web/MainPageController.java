@@ -1,12 +1,16 @@
 package hr.fer.proinz.project_bajeet.web;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping
+import java.util.Date;
+
+@RestController
+@RequestMapping("/api")
 public class MainPageController {
-    @GetMapping("/")
-    public String home() { return "homepage";}
+    @GetMapping("/test")
+    public String home() {
+        return "Server time: " + new Date() + "\n";
+    }
 }
