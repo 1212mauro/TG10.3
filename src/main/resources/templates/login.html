@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In</title>
-  <!-- Include Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
@@ -18,12 +17,10 @@
       </h2>
     </div>
 
-    <!-- Error message display -->
     <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
       <span class="block sm:inline" th:text="${errorMessage != null ? errorMessage : 'An error occurred during login'}"></span>
     </div>
 
-    <!-- Login Form -->
     <form class="mt-8 space-y-6" th:action="@{/login}" method="POST">
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
@@ -46,7 +43,6 @@
       </div>
     </form>
 
-    <!-- OAuth2 Buttons -->
     <div class="mt-6">
       <div class="relative">
         <div class="absolute inset-0 flex items-center">

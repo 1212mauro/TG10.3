@@ -24,9 +24,3 @@ spring:
 gg:
   jte:
     developmentMode: true
-
-logging:
-  level:
-    org:
-      springframework:
-        security: ERROR #change to DEBUG or INFO for more information about spring security
