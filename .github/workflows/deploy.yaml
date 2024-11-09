@@ -42,6 +42,7 @@ jobs:
           port: 22
           script: |
             git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
+            source .bashrc
             cd Project_Bajeet/
             git pull origin main
             ./mvnw clean install -Prelease
