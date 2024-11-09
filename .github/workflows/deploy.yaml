@@ -41,8 +41,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            export GOOGLE_CLIENT_SECRET_ID=${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
+            export GITHUB_CLIENT_ID=${{ secrets.O2_GITHUB_CLIENT_ID }}
+            export GITHUB_CLIENT_SECRET_ID=${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
             git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
-            source .bashrc
             cd Project_Bajeet/
             git pull origin main
             ./mvnw clean install -Prelease
