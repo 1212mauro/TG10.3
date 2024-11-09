@@ -30,3 +30,4 @@ public class MainPageController {
 
         return "homepage";
     }
+}
