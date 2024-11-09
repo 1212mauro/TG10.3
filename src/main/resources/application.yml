@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: ProjectBajeet
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET_ID}
+            scope:
+              - email
+              - profile
+          github:
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET_ID}
+            scope:
+              - user:email
+              - read:user
+
+gg:
+  jte:
+    developmentMode: true
