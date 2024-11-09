@@ -5,8 +5,16 @@ on:
     branches:
       - main
 jobs:
-  deploy:
-    name: Deploy project
+  ci:
+    name: Continuous integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.16.0
+      - run: mvn clean install -Prelease
+  cd:
+    needs: ci
+    name: Continuous deployment
     permissions:
       deployments: write
     runs-on: ubuntu-latest
@@ -23,8 +31,7 @@ jobs:
           token: '${{ github.token }}'
           environment-url: ${{ vars.MY_APP }}
           environment: production
-      - name: Set up SSH Key and Deploy my App on Server
-        # run: |
+      - name: SSH to VPS and Deploy
         uses: appleboy/ssh-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
@@ -37,7 +44,8 @@ jobs:
             git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
             cd Project_Bajeet/
             git pull origin main
-            kill $(cat /root/progi.pid) ; ./mvnw clean install -Prelease && nohup java -jar target/project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
+            ./mvnw clean install -Prelease
+            kill $(cat /root/progi.pid) ; nohup java -jar target/project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
@@ -46,7 +54,6 @@ jobs:
           environment-url: ${{ vars.MY_APP }}
           state: 'success'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
-      
       - name: Update deployment status (failure)
         if: failure()
         uses: chrnorm/deployment-status@v2
