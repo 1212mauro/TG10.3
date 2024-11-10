@@ -7,5 +7,16 @@
 </head>
 <body>
 <h1>home</h1>
+
+<form method="POST" th:action="@{/home}" th:object="${text}">
+    <input type="text" th:field="*{text}" value="enter username"/><br>
+    <input type="submit" value="Submit Order">
+</form>
+<div th:each="text : ${textList}">
+    <span th:text="${text.text}"></span>
+</div>
+
+<!--<ul><li th:each="name : ${#vars.getVariableNames()}"><strong th:text="${name}"></strong>: <span th:text="${#vars.getVariable(name)}"></span></li></ul>-->
+
 </body>
 </html>
