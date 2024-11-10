@@ -1,7 +1,9 @@
 package hr.fer.proinz.project_bajeet.data;
 
 import hr.fer.proinz.project_bajeet.dataTypes.Text;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TextRepository extends CrudRepository<Text, Long> {
+@Repository
+public interface TextRepository extends JpaRepository<Text, Integer> {
 }

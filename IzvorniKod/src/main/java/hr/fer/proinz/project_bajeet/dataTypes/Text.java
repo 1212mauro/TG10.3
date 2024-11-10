@@ -10,7 +10,7 @@ import lombok.Data;
 public class Text {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Integer id;
 
 
     private String text;

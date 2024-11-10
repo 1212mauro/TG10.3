@@ -14,6 +14,21 @@ jobs:
       - run: |
           cd IzvorniKod/
           mvn clean install -Prelease -Dmaven.test.skip=true
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET_ID: ${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
+          GITHUB_CLIENT_ID: ${{ secrets.O2_GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET_ID: ${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
+      - name: Copy to Remote Server
+        uses: pierrickdelrieu/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.VPS_IP }}
+          ssh_port: 22
+          ssh_username: ${{ secrets.VPS_USERNAME }}
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source_dir: target
+          destination_dir: ~/Project_Bajeet_SCP_Dest
+          rm: true
   cd:
     needs: ci
     name: Continuous deployment
@@ -43,16 +58,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            export GOOGLE_CLIENT_SECRET_ID=${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
-            export GITHUB_CLIENT_ID=${{ secrets.O2_GITHUB_CLIENT_ID }}
-            export GITHUB_CLIENT_SECRET_ID=${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
-            git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
-            cd Project_Bajeet/
-            git pull origin main
-            cd IzvorniKod/
-            ./mvnw clean install -Prelease -Dmaven.test.skip=true
-            kill $(cat /root/progi.pid) ; nohup java -jar target/project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
+            kill $(cat /root/progi.pid)
+            rm -rf Project_Bajeet_Deploy
+            cp -r Project_Bajeet_SCP_Dest Project_Bajeet_Deploy
+            cd Project_Bajeet_Deploy
+            nohup java -jar project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
