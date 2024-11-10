@@ -1,20 +1,35 @@
 package hr.fer.proinz.project_bajeet.web;
 
 
+import hr.fer.proinz.project_bajeet.data.TextRepository;
+import hr.fer.proinz.project_bajeet.dataTypes.Text;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 
+@Slf4j
 @Controller
 @RequestMapping("/home")
 public class MainPageController {
+
+    private final TextRepository textRepo;
+
+    public MainPageController(TextRepository textRepo) {
+        this.textRepo = textRepo;
+    }
+
+    @ModelAttribute
+    public Text Text() { return new Text(); }
+
+    @ModelAttribute
+    public ArrayList<Text> textList() { return (ArrayList<Text>) textRepo.findAll(); }
 
     @GetMapping
     public String homepage(Authentication authentication, HttpServletRequest request, Model model) {
@@ -28,6 +43,14 @@ public class MainPageController {
             model.addAttribute("authorities", oauth2User.getAuthorities());
         }
 
+        return "homepage";
+    }
+
+    @PostMapping
+    public String post(Text text, Model model) {
+        log.info(text.getText(), text.getId());
+        textRepo.save(text);
+        model.addAttribute("textList", textRepo.findAll());
         return "homepage";
     }
 }

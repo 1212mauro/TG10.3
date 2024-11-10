@@ -2,6 +2,18 @@ server:
   port: 80
 
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: qovpoh-2naxze-Pivkuj
   application:
     name: ProjectBajeet
   security:
@@ -20,7 +32,3 @@ spring:
             scope:
               - user:email
               - read:user
-
-gg:
-  jte:
-    developmentMode: true
