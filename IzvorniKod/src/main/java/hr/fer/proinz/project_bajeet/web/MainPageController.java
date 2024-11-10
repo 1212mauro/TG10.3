@@ -19,7 +19,7 @@ import java.util.ArrayList;
 @RequestMapping("/home")
 public class MainPageController {
 
-    private final TextRepository textRepo;
+    private TextRepository textRepo;
 
     public MainPageController(TextRepository textRepo) {
         this.textRepo = textRepo;
