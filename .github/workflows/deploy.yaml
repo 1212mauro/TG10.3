@@ -8,27 +8,26 @@ jobs:
   ci:
     name: Continuous integration
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET_ID: ${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
+      GITHUB_CLIENT_ID: ${{ secrets.O2_GITHUB_CLIENT_ID }}
+      GITHUB_CLIENT_SECRET_ID: ${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
     steps:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.16.0
       - run: |
           cd IzvorniKod/
           mvn clean install -Prelease -Dmaven.test.skip=true
-        env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET_ID: ${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
-          GITHUB_CLIENT_ID: ${{ secrets.O2_GITHUB_CLIENT_ID }}
-          GITHUB_CLIENT_SECRET_ID: ${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
-      - name: Copy to Remote Server
-        uses: pierrickdelrieu/scp-action@v0.1.0
+      - name: Copy to remote Server
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_IP }}
-          ssh_port: 22
-          ssh_username: ${{ secrets.VPS_USERNAME }}
-          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source_dir: target
-          destination_dir: ~/Project_Bajeet_SCP_Dest
-          rm: true
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "IzvorniKod/target/project_bajeet*.jar"
+          target: ~/Project_Bajeet_Deploy/
   cd:
     needs: ci
     name: Continuous deployment
@@ -37,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: 'actions/checkout@v2'
+        uses: 'actions/checkout@v4'
         with:
           ref: main
           token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
@@ -58,11 +57,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            kill $(cat /root/progi.pid)
-            rm -rf Project_Bajeet_Deploy
-            cp -r Project_Bajeet_SCP_Dest Project_Bajeet_Deploy
-            cd Project_Bajeet_Deploy
-            nohup java -jar project_bajeet*.jar > /dev/null 2>&1 & echo $! > /root/progi.pid
+            cd Project_Bajeet_Deploy/
+            kill $(cat ./progi.pid) || true
+            rm current.jar || true
+            cp IzvorniKod/target/project_bajeet*.jar current.jar
+            nohup java -jar current.jar > /dev/null 2>&1 & echo $! > ./progi.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
