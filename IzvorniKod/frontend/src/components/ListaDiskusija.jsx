@@ -25,7 +25,7 @@ const ListaDiskusija = ({ diskusije, naGlasanje}) => {
     <section className="container-xl lg:container m-auto">
       <h1 className="text-xl font-bold text-center">Diskusije</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
-        {diskusije.map((diskusija) => (
+        {diskusijeState.map((diskusija) => (
           <div key={diskusija.id} className="flex flex-col">
             <Diskusija diskusija={diskusija} naGlasanje={naGlasanje} />
           </div>
