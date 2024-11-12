@@ -6,6 +6,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+    proxy: {
+      proxy: {
+        '/api': {
+          target:'https://projectbajeet.work.gd',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
+    }
 
   },
 })
