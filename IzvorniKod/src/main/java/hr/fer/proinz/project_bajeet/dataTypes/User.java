@@ -3,10 +3,16 @@ package hr.fer.proinz.project_bajeet.dataTypes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import java.util.Set;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -20,7 +26,7 @@ public class User {
     @Size(min=3, max=16)
     private String username;
 
-    @Column(columnDefinition = "bytea", nullable = false)
+    @Column(length=128, nullable = false)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -34,5 +40,11 @@ public class User {
 
     @OneToMany(mappedBy = "voter")
     Set<Vote> votes;
+
+    public User(String username, String passwordHash){
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = Role.TENANT;
+    }
 
 }
