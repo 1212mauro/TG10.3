@@ -1,8 +1,8 @@
 package hr.fer.proinz.project_bajeet.web;
 
 
-import hr.fer.proinz.project_bajeet.data.TextRepository;
-import hr.fer.proinz.project_bajeet.dataTypes.Text;
+import hr.fer.proinz.project_bajeet.data.MessageRepository;
+import hr.fer.proinz.project_bajeet.dataTypes.Message;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,17 +19,17 @@ import java.util.ArrayList;
 @RequestMapping("/home")
 public class MainPageController {
 
-    private TextRepository textRepo;
+    private MessageRepository messageRepo;
 
-    public MainPageController(TextRepository textRepo) {
-        this.textRepo = textRepo;
+    public MainPageController(MessageRepository messageRepo) {
+        this.messageRepo = messageRepo;
     }
 
     @ModelAttribute
-    public Text Text() { return new Text(); }
+    public Message Message() { return new Message(); }
 
     @ModelAttribute
-    public ArrayList<Text> textList() { return (ArrayList<Text>) textRepo.findAll(); }
+    public ArrayList<Message> textList() { return (ArrayList<Message>) messageRepo.findAll(); }
 
     @GetMapping
     public String homepage(Authentication authentication, HttpServletRequest request, Model model) {
@@ -47,10 +47,10 @@ public class MainPageController {
     }
 
     @PostMapping
-    public String post(Text text, Model model) {
-        log.info(text.getText(), text.getId());
-        textRepo.save(text);
-        model.addAttribute("textList", textRepo.findAll());
+    public String post(Message message, Model model) {
+        log.info(message.getContent(), message.getMessageId());
+        messageRepo.save(message);
+        model.addAttribute("textList", messageRepo.findAll());
         return "homepage";
     }
 }
