@@ -7,17 +7,5 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  build: {
-    outDir: "./build"
-    proxy: {
-      proxy: {
-        '/api': {
-          target:'https://projectbajeet.work.gd',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
-    }
-
-  },
+ 
 })

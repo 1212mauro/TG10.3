@@ -1,6 +1,7 @@
 // Login.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -10,10 +11,10 @@ const Login = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Resetuj prethodne greške
+    setError(""); // Reset previous errors
 
     try {
-      const response = await fetch(' http://projectbajeet.work.gd/api/auth/login', {
+      const response = await fetch('http://projectbajeet.work.gd/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,21 +22,22 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json(); // Pretpostavljamo da je odgovor JSON
+      const data = await response.json(); // Assuming the response is JSON
 
       if (response.ok) {
-        // Ako je odgovor uspešan, postavite korisničke podatke
+        // On successful login, set user data
         setUser(data);
-        console.log('Uspešna prijava:', data);
+        console.log('Successful login:', data);
       } else {
-        // Ako postoji greška u prijavi, prikaži poruku greške
-        setError(data.message || 'Neispravan username ili lozinka.');
+        // Display error message on login failure
+        setError(data.message || 'Invalid username or password.');
       }
     } catch (err) {
-      setError('Došlo je do greške prilikom prijave.');
-      console.error('Greška:', err);
+      setError('An error occurred during login.');
+      console.error('Error:', err);
     }
   };
+
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">
       <h2 className="text-2xl text-center mb-4">Prijava</h2>
@@ -74,9 +76,19 @@ const Login = () => {
 
       <div className="text-center mt-4">
         <p>Nemate račun?</p>
-        <Link to="/registracija" className="text-blue-500 hover:underline">
-          Registriraj se
-        </Link>
+        <div className="flex justify-center items-center space-x-4 mt-2">
+          <button className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+            <FaGoogle className="mr-2" />
+            Google
+          </button>
+          <Link to="/registracija" className="text-blue-500 hover:underline">
+            Registriraj se
+          </Link>
+          <button className="flex items-center bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900">
+            <FaGithub className="mr-2" />
+            GitHub
+          </button>
+        </div>
       </div>
     </div>
   );
