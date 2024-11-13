@@ -1,26 +1,29 @@
-// Login.js
+// Registracija.js
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Registracija = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Trenutno nema autentifikacije, ali ovdje možete dodati logiku za autentifikaciju kasnije
-    if (!username || !password) {
-      setError('Molimo unesite korisničko ime i lozinku');
+    if (!username || !password || !confirmPassword) {
+      setError('Molimo unesite sve podatke');
+    } else if (password !== confirmPassword) {
+      setError('Lozinke se ne podudaraju');
     } else {
       setError('');
-      console.log('Podaci:', { username, password });
-      // Ovdje bi bila logika za autentifikaciju
+      console.log('Registracija podaci:', { username, password });
+      // Ovdje bi bila logika za registraciju
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto p-8 border rounded-3xl shadow-lg">
-      <h2 className="text-2xl text-center mb-4">Prijava</h2>
+    <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">
+      <h2 className="text-2xl text-center mb-4">Registracija</h2>
       {error && <div className="text-red-500 text-center mb-4">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -49,12 +52,19 @@ const Login = () => {
             required
           />
         </div>
+    
         <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
-          Prijavi se
+          Registriraj se
         </button>
       </form>
+      <div className="text-center mt-4">
+        <p>Već imate račun?</p>
+        <Link to="/" className="text-blue-500 hover:underline">
+          Povratak na prijavu
+        </Link>
+      </div>
     </div>
   );
 };
 
-export default Login;
+export default Registracija;
