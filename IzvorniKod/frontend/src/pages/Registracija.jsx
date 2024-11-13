@@ -5,20 +5,37 @@ import { Link } from 'react-router-dom';
 const Registracija = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password || !confirmPassword) {
+    if (!username || !password) {
       setError('Molimo unesite sve podatke');
-    } else if (password !== confirmPassword) {
-      setError('Lozinke se ne podudaraju');
     } else {
       setError('');
       console.log('Registracija podaci:', { username, password });
-      // Ovdje bi bila logika za registraciju
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+  
+        const data = await response.json();
+  
+        if (response.ok) {
+          console.log("uspjesna prijava");
+        } else {
+          setError(data.message || 'Invalid username or password.');
+        }
+      } catch (err) {
+        setError('An error occurred during login.');
+        console.error('Error:', err);
+      }
     }
+
   };
 
   return (
