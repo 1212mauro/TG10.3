@@ -1,20 +1,19 @@
-// Login.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null);
-  
+  const navigate = useNavigate(); // Hook za navigaciju
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset previous errors
+    setError(""); // Resetuj prethodne greške
 
     try {
-      const response = await fetch('http://projectbajeet.work.gd/api/auth/login', {
+      const response = await fetch('api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,20 +21,26 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
 
-      const data = await response.json(); // Assuming the response is JSON
+      const data = await response.json();
 
       if (response.ok) {
-        // On successful login, set user data
-        setUser(data);
-        console.log('Successful login:', data);
+        // Pohrani token u lokalnu pohranu
+        localStorage.setItem('authToken', data.token);
+        console.log('Uspešna prijava:', data);
+        
+        // Preusmjeri na glavnu stranicu
+        navigate('/mainPage');
       } else {
-        // Display error message on login failure
         setError(data.message || 'Invalid username or password.');
       }
     } catch (err) {
       setError('An error occurred during login.');
       console.error('Error:', err);
     }
+  };
+
+  const redirectToOAuth = (url) => {
+    window.location.href = url;
   };
 
   return (
@@ -77,14 +82,20 @@ const Login = () => {
       <div className="text-center mt-4">
         <p>Nemate račun?</p>
         <div className="flex justify-center items-center space-x-4 mt-2">
-          <button className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+          <button
+            onClick={() => redirectToOAuth('http://projectbajeet.work.gd/api/oauth2/google')}
+            className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
             <FaGoogle className="mr-2" />
             Google
           </button>
           <Link to="/registracija" className="text-blue-500 hover:underline">
             Registriraj se
           </Link>
-          <button className="flex items-center bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900">
+          <button
+            onClick={() => redirectToOAuth('http://projectbajeet.work.gd/api/oauth2/github')}
+            className="flex items-center bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900"
+          >
             <FaGithub className="mr-2" />
             GitHub
           </button>
