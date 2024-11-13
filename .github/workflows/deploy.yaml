@@ -18,7 +18,7 @@ jobs:
         uses: s4u/setup-maven-action@v1.16.0
       - run: |
           cd IzvorniKod/
-          mvn clean install -Prelease -Dmaven.test.skip=true
+          mvn clean install -Dmaven.test.skip=true
       - name: Copy to remote Server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -58,10 +58,18 @@ jobs:
           port: 22
           script: |
             cd Project_Bajeet_Deploy/
-            kill $(cat ./progi.pid) || true
-            rm current.jar || true
+            kill $(cat ./progi.pid) || true
+            rm current.jar || true
             cp IzvorniKod/target/project_bajeet*.jar current.jar
             nohup java -jar current.jar > /dev/null 2>&1 & echo $! > ./progi.pid
+            cd ..
+            git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
+            cd Project_Bajeet/
+            kill $(cat /root/frontend.pid) || true 
+            git pull origin main
+            cd IzvorniKod/frontend/
+            npm install
+            nohup npx vite > /dev/null 2>&1 & echo $! > /root/frontend.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2

@@ -23,19 +23,19 @@ import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 //&prompt   = none
 
 @RestController
-@RequestMapping("/login/oauth2")
-public class OAuth2Controller {
+@RequestMapping("/oauth2")
+public class OAuthController {
 
-    @Value("${oauth2.client.registration.google.client-id}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
 
-    @Value("${oauth2.client.registration.google.client-secret}")
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String googleClientSecret;
 
-    @Value("${oauth2.client.registration.github.client-id}")
+    @Value("${spring.security.oauth2.client.registration.github.client-id}")
     private String githubClientId;
 
-    @Value("${oauth2.client.registration.github.client-secret}")
+    @Value("${spring.security.oauth2.client.registration.github.client-secret}")
     private String githubClientSecret;
     
     @Autowired
@@ -46,13 +46,13 @@ public class OAuth2Controller {
 
     @GetMapping("/google")
     public ModelAndView google() {
-        String googleUrl = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/google&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code";
+        String googleUrl = "http://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/google&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code";
         return new ModelAndView("redirect:" + googleUrl);
     }
     
     @GetMapping("/github")
     public ModelAndView github() {
-        String githubUrl = "https://github.com/login/oauth/authorize?client_id=" + githubClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/github&allow_signup=false&scope=read:user";
+        String githubUrl = "http://github.com/login/oauth/authorize?client_id=" + githubClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/github&allow_signup=false&scope=read:user";
         return new ModelAndView("redirect:" + githubUrl);
     }
     
@@ -61,7 +61,7 @@ public class OAuth2Controller {
 
         //todo google oauth2token novi user ili login
 
-        User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
+        //User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
 
         return new ModelAndView("redirect:/");
     }

@@ -15,7 +15,7 @@ import hr.fer.proinz.project_bajeet.service.JwtService;
 import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class LoginController {
     
     @Autowired

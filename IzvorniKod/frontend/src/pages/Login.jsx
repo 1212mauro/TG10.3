@@ -83,7 +83,7 @@ const Login = () => {
         <p>Nemate račun?</p>
         <div className="flex justify-center items-center space-x-4 mt-2">
           <button
-            onClick={() => redirectToOAuth('http://projectbajeet.work.gd/api/oauth2/google')}
+            onClick={() => redirectToOAuth('/api/oauth2/google')}
             className="flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
           >
             <FaGoogle className="mr-2" />
@@ -93,7 +93,7 @@ const Login = () => {
             Registriraj se
           </Link>
           <button
-            onClick={() => redirectToOAuth('http://projectbajeet.work.gd/api/oauth2/github')}
+            onClick={() => redirectToOAuth('/api/oauth2/github')}
             className="flex items-center bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900"
           >
             <FaGithub className="mr-2" />
