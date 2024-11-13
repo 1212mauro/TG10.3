@@ -56,6 +56,7 @@ jobs:
             export GOOGLE_CLIENT_SECRET_ID=${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
             export GITHUB_CLIENT_ID=${{ secrets.O2_GITHUB_CLIENT_ID }}
             export GITHUB_CLIENT_SECRET_ID=${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
+            export PATH=/root/.nvm/versions/node/v22.11.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
             cd Project_Bajeet_Deploy/
             kill $(cat ./progi.pid) || true
             rm current.jar || true
@@ -67,8 +68,8 @@ jobs:
             kill $(cat /root/frontend.pid) || true 
             git pull origin main
             cd IzvorniKod/frontend/
-            /root/.nvm/versions/node/v22.11.0/bin/npm install
-            nohup /root/.nvm/versions/node/v22.11.0/bin/npx vite > /dev/null 2>&1 & echo $! > /root/frontend.pid
+            npm install
+            nohup npx vite > /dev/null 2>&1 & echo $! > /root/frontend.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
