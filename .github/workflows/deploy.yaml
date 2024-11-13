@@ -67,8 +67,8 @@ jobs:
             kill $(cat /root/frontend.pid) || true 
             git pull origin main
             cd IzvorniKod/frontend/
-            npm install
-            nohup npx vite > /dev/null 2>&1 & echo $! > /root/frontend.pid
+            /root/.nvm/versions/node/v22.11.0/bin/npm install
+            nohup /root/.nvm/versions/node/v22.11.0/bin/npx vite > /dev/null 2>&1 & echo $! > /root/frontend.pid
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
