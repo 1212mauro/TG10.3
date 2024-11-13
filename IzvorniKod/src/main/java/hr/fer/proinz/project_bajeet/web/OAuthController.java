@@ -46,13 +46,13 @@ public class OAuthController {
 
     @GetMapping("/google")
     public ModelAndView google() {
-        String googleUrl = "http://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/google&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code";
+        String googleUrl = "http://accounts.google.com/o/oauth2/v2/auth?client_id=" + googleClientId + "&redirect_uri=http://projectbajeet.work.gd/login/oauth2/code/google&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&response_type=code";
         return new ModelAndView("redirect:" + googleUrl);
     }
     
     @GetMapping("/github")
     public ModelAndView github() {
-        String githubUrl = "http://github.com/login/oauth/authorize?client_id=" + githubClientId + "&redirect_uri=https://projectbajeet.work.gd/login/oauth2/code/github&allow_signup=false&scope=read:user";
+        String githubUrl = "http://github.com/login/oauth/authorize?client_id=" + githubClientId + "&redirect_uri=http://projectbajeet.work.gd/login/oauth2/code/github&allow_signup=false&scope=read:user";
         return new ModelAndView("redirect:" + githubUrl);
     }
     

@@ -22,39 +22,12 @@ const MainPage = () => {
 
   // Provjera tokena i autentifikacije prilikom učitavanja komponente
   useEffect(() => {
-    const token = sessionStorage.getItem("authToken"); // Dobijamo token iz sessionStorage
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
     if (!token) {
       // Ako nema tokena, preusmjeravamo na Login stranicu
       navigate("/");
       return;
     }
-
-    // Ako token postoji, šaljemo GET zahtjev s Authorization headerom
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/mainPage", {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`, // Dodajemo token u Authorization header
-          },
-        });
-
-        if (response.ok) {
-          // Ako je odgovor uspješan, nastavljamo sa učitavanjem stranice
-          console.log("Korisnik autoriziran!");
-        } else {
-          // Ako je odgovor 401 (Unauthorized), preusmjeravamo korisnika
-          setError("Neautoriziran pristup. Molimo prijavite se.");
-          navigate("/"); // Preusmjeravamo na Login
-        }
-      } catch (error) {
-        console.error("Greška u autentifikaciji:", error);
-        setError("Došlo je do pogreške prilikom autentifikacije.");
-        navigate("/"); // Preusmjeravamo na Login u slučaju greške
-      }
-    };
-
-    fetchData();
   }, [navigate]);
 
   return (
