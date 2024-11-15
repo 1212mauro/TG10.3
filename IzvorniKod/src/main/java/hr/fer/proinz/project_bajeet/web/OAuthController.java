@@ -63,7 +63,7 @@ public class OAuthController {
 
         //User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/mainPage");
     }
 
     @GetMapping("/code/github")
@@ -71,9 +71,9 @@ public class OAuthController {
 
         //todo google oauth2token novi user ili login
 
-        User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
+        //User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("redirect:/mainPage");
     }
 
 }
