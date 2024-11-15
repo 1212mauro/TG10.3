@@ -40,6 +40,7 @@ const Login = () => {
   };
 
   const redirectToOAuth = (url) => {
+    localStorage.setItem('authToken', url); 
     window.location.href = url;
   };
 
