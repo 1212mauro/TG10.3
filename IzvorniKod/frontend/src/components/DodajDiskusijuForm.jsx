@@ -4,18 +4,22 @@ import diskusije from '../../public/diskusije'
 const DodajDiskusijuForm = ({ onClose, onSave }) => {
   const [naziv, setNaziv] = useState('');
   const [opis, setOpis] = useState('');
+  const [hasVoting, setHasVoting] = useState(false); 
 
   const handleSave = (e) => {
     e.preventDefault();
     const novaDiskusija = {
-        id: Math.random(), 
-        naslov: naziv,
-        opis,
-        glasovi: 0,
-        korisnikGlasao: false,
-      };
-    onSave(novaDiskusija); // Šalje novu diskusiju roditeljskoj komponenti
-    onClose(); // Zatvara formu
+      id: Math.random(),
+      naslov: naziv,
+      opis,
+      upVotes: 0,
+      downVotes: 0,
+      glasovi: 0,
+      korisnikGlasao: false,
+      hasVoting,
+    };
+    onSave(novaDiskusija); 
+    onClose(); 
   };
 
   return (
@@ -41,6 +45,15 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
             value={opis}
             onChange={(e) => setOpis(e.target.value)}
           ></textarea>
+        </div>
+        <div className="mb-4 flex items-center">
+          <input
+            type="checkbox"
+            checked={hasVoting}
+            onChange={(e) => setHasVoting(e.target.checked)}
+            className="mr-2"
+          />
+          <label className="text-sm font-medium text-gray-700">Voting</label>
         </div>
         <div className="flex justify-end gap-4">
           <button
