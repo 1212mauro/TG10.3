@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.16.0
-      - run: |
-          cd IzvorniKod/
-          mvn clean install -Dmaven.test.skip=true
-      - name: Copy to remote Server
+      - name: Build Backend
+        working-directory: ./IzvorniKod/
+        run: mvn clean install -Dmaven.test.skip=true
+      - name: Copy Backend to remote Server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_IP }}
@@ -22,7 +22,25 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           source: "IzvorniKod/target/project_bajeet*.jar"
-          target: ~/Project_Bajeet_Deploy/
+          target: ~/Project_Bajeet_Deploy_Backend/
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+        with: 
+          node-version: '18.20.5'
+      - name: Build Frontend
+        working-directory: ./IzvorniKod/frontend/
+        run: |
+          npm install
+          npx vite build
+      - name: Copy Frontend to remote Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "IzvorniKod/frontend/build/"
+          target: ~/Project_Bajeet_Deploy_Frontend/
   cd:
     needs: ci
     name: Continuous deployment
@@ -56,16 +74,16 @@ jobs:
             export GOOGLE_CLIENT_SECRET_ID=${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
             export GITHUB_CLIENT_ID=${{ secrets.O2_GITHUB_CLIENT_ID }}
             export GITHUB_CLIENT_SECRET_ID=${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
-            cd Project_Bajeet_Deploy/
-            kill $(cat ./progi.pid) || true
+            cd ./Project_Bajeet_Deploy_Backend/
+            kill $(cat ./backend.pid) || true
             rm current.jar || true
             cp IzvorniKod/target/project_bajeet*.jar current.jar
-            sleep 5
-            nohup java -jar current.jar > /dev/null 2>&1 & echo $! > ./progi.pid
+            rm -rf IzvorniKod
+            nohup java -jar current.jar > ./log.txt 2>&1 & echo $! > ./backend.pid
             cd ..
-            git config --global url."https://${{ secrets.PERSONAL_GITHUB_TOKEN }}:@github.com".insteadOf "https://github.com"
-            cd Project_Bajeet/
-            git pull origin main
+            rm -rf /var/www/html/*
+            cp -r ./Project_Bajeet_Deploy_Frontend/IzvorniKod/frontend/build/* /var/www/html/
+            rm -rf ./Project_Bajeet_Deploy_Frontend/IzvorniKod
       - name: Update deployment Status (success)
         if: success()
         uses: chrnorm/deployment-status@v2
