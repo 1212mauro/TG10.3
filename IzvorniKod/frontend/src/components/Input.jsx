@@ -1,6 +1,6 @@
 import { startCase } from 'lodash'
 
-function LoginInput( {label, type, labelClassName, inputClassName, stateSetter} ){
+function Input( {label, type, labelClassName, inputClassName, stateSetter} ){
     return(
         <div className="mb-4">
           <label className={labelClassName}>{startCase(label)}</label>
@@ -8,11 +8,11 @@ function LoginInput( {label, type, labelClassName, inputClassName, stateSetter} 
             type={type}
             onChange={(e) => stateSetter(e.target.value)}
             className={inputClassName}
-            placeholder={`Input ${label}`}
+            placeholder={`input ${label}`}
             required
           />
         </div>
     )
 }
 
-export default LoginInput
+export default Input
