@@ -15,6 +15,6 @@ function CommentList({ comments }) {
             }
         </div>
     )
-    }
+}
 
 export default CommentList

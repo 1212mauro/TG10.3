@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
 
-function DiscussionDetails({ discussion, comments, onClose, onAddComment }){
+function DiscussionDetails({ discussion, comments, onClose, handleAddComment }){
   const [isAddingComment, setIsAddingComment] = useState(false);
-  const [newComment, setNewComment] = useState("");
 
-  const HandleSaveComment = () => {
-    onAddComment(newComment);
-    setNewComment("");
+  useEffect(() => {
+    console.log(discussion)
+  }, []);
+
+  function HandleSaveComment(comment){
+    handleAddComment(comment);
     setIsAddingComment(false);
   };
 
   return (
-    <Modal title={discussion.naslov} onClose={onClose}>
-      <p className="text-gray-700 mb-4">{discussion.opis}</p>
+    <Modal title={discussion.title} onClose={onClose}>
+      <p className="text-gray-700 mb-4">{discussion.description}</p>
       <CommentList comments={comments} />
       {isAddingComment ? (
-        <AddComment HandleSave={HandleSaveComment} setNewComment={setNewComment}></AddComment>
+        <AddComment HandleSaveComment={HandleSaveComment}></AddComment>
       ) : (
         <button
           onClick={() => setIsAddingComment(true)}

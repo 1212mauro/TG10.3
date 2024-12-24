@@ -6,26 +6,28 @@ function Discussion({ discussion, toVote }){
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [comments, setComments] = useState(discussion.comments);
 
-  const handleReadMore = () => {
-    setIsModalOpen(true);
+  function handleReadMore(){
+    console.log(1)
+    setIsModalOpen(i => true);
+    console.log(isModalOpen)
   };
 
-  const handleAddComment = (commentText) => {
+  function handleAddComment(commentText){
     const newComment = {
       id: comments.length + 1,
-      comment: commentText,
+      content: commentText,
       user: "current user",
       timestamp: Date.now(),
     };
     setComments(c => [...c, newComment]);
   };
 
-  const handleVote = () => {
+  function handleVote(){
     toVote(discussion.id);
   };
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg mb-4 border border-gray-200">
+    <div id='7' className="p-4 bg-white shadow-md rounded-lg mb-4 border border-gray-200">
       <h2 className="text-xl font-semibold text-gray-800">{discussion.naslov}</h2>
       <p className="text-gray-600 mt-2">
         {discussion.description.substring(0, 50)}...
@@ -42,7 +44,7 @@ function Discussion({ discussion, toVote }){
           discussion={discussion}
           comments={comments}
           onClose={() => setIsModalOpen(false)}
-          onAddComment={handleAddComment}
+          handleAddComment={handleAddComment}
         />
       )}
     </div>
