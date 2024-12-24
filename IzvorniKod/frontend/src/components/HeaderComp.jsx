@@ -8,10 +8,7 @@ function HeaderComp({ username, onLogout }) {
         {username ? (
           <>
             <span>Pozdrav, {username}!</span>
-            <button 
-              onClick={onLogout} 
-              className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded"
-            >
+            <button onClick={onLogout} className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded">
               Odjava
             </button>
           </>

@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import diskusije from '../../public/diskusije'
+import discussions from '../../public/discussions'
 
-const DodajDiskusijuForm = ({ onClose, onSave }) => {
-  const [naziv, setNaziv] = useState('');
-  const [opis, setOpis] = useState('');
-  const [hasVoting, setHasVoting] = useState(false); 
+function AddDiscussionForm({ onClose, onSave }){
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [hasVoting, setHasVoting] = useState(false);
 
-  const handleSave = (e) => {
+  function handleSave(e){
     e.preventDefault();
     const novaDiskusija = {
       id: Math.random(),
-      naslov: naziv,
-      opis,
+      naslov: title,
+      description,
       upVotes: 0,
       downVotes: 0,
-      glasovi: 0,
       korisnikGlasao: false,
       hasVoting,
     };
@@ -31,19 +30,19 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
           <input
             type="text"
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
-            placeholder="Unesite naziv diskusije"
-            value={naziv}
-            onChange={(e) => setNaziv(e.target.value)}
+            placeholder="Unesite title diskusije"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Opis diskusije</label>
+          <label className="block text-sm font-medium text-gray-700">description diskusije</label>
           <textarea
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
             rows="4"
             placeholder="Unesite detalje o diskusiji"
-            value={opis}
-            onChange={(e) => setOpis(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
         <div className="mb-4 flex items-center">
@@ -75,4 +74,4 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
   );
 };
 
-export default DodajDiskusijuForm;
+export default AddDiscussionForm;

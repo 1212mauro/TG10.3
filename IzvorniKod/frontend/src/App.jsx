@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
-import Registracija from './pages/Registracija';
 import MainPage from './pages/MainPage';
+import Registration from './pages/Registration';
 
 // Komponenta zaštićene rute
 const ProtectedRoute = ({ element }) => {
@@ -10,12 +10,12 @@ const ProtectedRoute = ({ element }) => {
   return authToken ? element : <Navigate to="/" />;
 };
 
-const App = () => {
+function App(){
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/registracija" element={<Registracija />} />
+        <Route path="/registracija" element={<Registration />} />
         <Route path="/mainPage" element={<MainPage/>} />
       </Routes>
     </Router>
