@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DiscussionList from "../components/DiscussionList";
-import diskusijeData from "../../public/discussions";
+import ThreadList from "../components/ThreadList";
+import diskusijeData from "../../public/threads";
 import HeaderComp from "../components/HeaderComp";
 import korisnik from "../../public/korisnikInfo"; 
 
 function MainPage(){
-  const [discussions, setDiscusion] = useState(diskusijeData);
+  const [threads, setThreads] = useState(diskusijeData);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   function toVote(id){
-    setDiscusion((prevDiscussion) =>
+    setThreads((prevDiscussion) =>
       prevDiscussion.map((discussion) =>
         discussion.id === id && !discussion.korisnikGlasao
           ? { ...discussion, glasovi: discussion.glasovi + 1, korisnikGlasao: true }
@@ -33,7 +33,7 @@ function MainPage(){
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <div className="flex-grow p-4">
-        <DiscussionList discussions={discussions} toVote={toVote} />
+        <ThreadList threads={threads} toVote={toVote} />
       </div>
 
       <aside className="w-1/4 bg-blue-600 text-white p-4 flex flex-col items-center">

@@ -28,7 +28,7 @@ const Login = () => {
       if (response.ok) {
         // Store token in localstorage
         localStorage.setItem('authToken', data.token);
-        console.log('Uspešna prijava:', data);
+        console.log('Uspješna prijava:', data);
         
         // Reroute to mainPage
         navigate('/mainPage');
