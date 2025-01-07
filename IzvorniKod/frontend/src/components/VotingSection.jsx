@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import UndoVoteButton from "./UndoVoteButton";
 import VoteButton from "./VoteButton";
 
-function VotingSection({ discussion, onVote }){
-  const [upVotes, setUpVotes] = useState(discussion.upVotes);
-  const [downVotes, setDownVotes] = useState(discussion.downVotes);
+function VotingSection({ thread, onVote }){
+  const [upVotes, setUpVotes] = useState(thread.upVotes);
+  const [downVotes, setDownVotes] = useState(thread.downVotes);
   const [isVoted, setIsVoted] = useState(false);
   const [lastVoteType, setLastVoteType] = useState(null); // Track last vote type
 

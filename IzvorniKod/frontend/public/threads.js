@@ -1,4 +1,4 @@
-const discussionData = [
+const threadData = [
   {
     id: 1,
     title: "Renovacija ulaznog hodnika",
@@ -91,4 +91,4 @@ const discussionData = [
   }
 ];
 
-export default discussionData;
+export default threadData;

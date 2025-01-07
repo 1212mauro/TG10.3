@@ -1,26 +1,49 @@
 import React, { useState } from 'react';
-import discussions from '../../public/discussions'
-import CommentList from './CommentList';
 import Input from './Input';
 
-function AddDiscussionForm({ onClose, onSave }){
+function AddThreadForm({ onClose, onSave }){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [hasVoting, setHasVoting] = useState(false);
 
   function handleSave(e){
-    e.preventDefault();
-    const novaDiskusija = {
-      id: Math.random(),
-      naslov: title,
+    // e.preventDefault();
+    // private Integer threadId;
+
+    // private Integer maxResponses;
+
+    // private Integer maxMessages;
+
+    // private Boolean isPrivate;
+
+    // @Temporal(TemporalType.TIMESTAMP)
+    // private Date timeCreated;
+
+    // @ManyToOne
+    // @JoinColumn(name ="board_id")
+    // private Board parentBoard;
+
+    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentThread")
+    // List<hr.fer.proinz.project_bajeet.dataTypes.Message> messages;
+
+    // @ManyToMany
+    // @JoinTable(
+    // name = "caninteractwith",
+    // joinColumns = @JoinColumn(name = "thread_id"),
+    // inverseJoinColumns = @JoinColumn(name = "user_id"))
+    // Set<User> participants
+    // Set<User> participants;
+    const newThread = {
+      threadId : null,
+      title: title,
       description,
       upVotes: 0,
       downVotes: 0,
-      korisnikGlasao: false,
+      userVoted: false,
       hasVoting,
       comments: [],
     };
-    onSave(novaDiskusija); 
+    onSave(newThread); 
     onClose(); 
   };
 
@@ -64,4 +87,4 @@ function AddDiscussionForm({ onClose, onSave }){
   );
 };
 
-export default AddDiscussionForm;
+export default AddThreadForm;

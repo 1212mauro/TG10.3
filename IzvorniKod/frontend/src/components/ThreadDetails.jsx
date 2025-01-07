@@ -3,11 +3,11 @@ import Modal from "./Modal";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
 
-function DiscussionDetails({ discussion, comments, onClose, handleAddComment }){
+function ThreadDetails({ thread, comments, onClose, handleAddComment }){
   const [isAddingComment, setIsAddingComment] = useState(false);
 
   useEffect(() => {
-    console.log(discussion)
+    console.log(thread)
   }, []);
 
   function HandleSaveComment(comment){
@@ -16,8 +16,8 @@ function DiscussionDetails({ discussion, comments, onClose, handleAddComment }){
   };
 
   return (
-    <Modal title={discussion.title} onClose={onClose}>
-      <p className="text-gray-700 mb-4">{discussion.description}</p>
+    <Modal title={thread.title} onClose={onClose}>
+      <p className="text-gray-700 mb-4">{thread.description}</p>
       <CommentList comments={comments} />
       {isAddingComment ? (
         <AddComment HandleSaveComment={HandleSaveComment}></AddComment>
@@ -33,4 +33,4 @@ function DiscussionDetails({ discussion, comments, onClose, handleAddComment }){
   );
 };
 
-export default DiscussionDetails;
+export default ThreadDetails;

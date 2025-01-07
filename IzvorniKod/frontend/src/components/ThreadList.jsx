@@ -1,10 +1,23 @@
-import React, { useState } from "react";
-import Discussion from "./Discussion";
-import AddDiscussionForm from "./AddDiscussionForm"; 
+import React, { useEffect, useState } from "react";
+import Thread from "./Thread";
+import AddThreadForm from "./AddThreadForm"; 
+import client from '../lib/AxiosConfig'
 
-function DiscussionList({ discussions, toVote }){
+
+function ThreadList({ threads, toVote }){
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [discussionsState, setDiscussionsState] = useState(discussions); 
+  const [threadList, setThreadList] = useState(threads); 
+
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    const response = await client.get("/main")
+    console.log(response)
+    return response
+  }
 
   const HandleOpenForm = () => {
     setIsFormOpen(true);
@@ -14,18 +27,19 @@ function DiscussionList({ discussions, toVote }){
     setIsFormOpen(false);
   };
 
-  const HandleSaveDiscussion = (newDiscussion) => {
-    console.log(newDiscussion);
-    setDiscussionsState((prevDiscussion) => [...prevDiscussion, newDiscussion]); //dodavanje u state
+  const HandleSaveDiscussion = (newThread) => {
+    console.log(newThread);
+    setThreadList((prevDiscussion) => [...prevDiscussion, newThread]); //dodavanje u state
+    client.post("/main/add", JSON.stringify(newThread))
   };
 
   return (
     <section className="container-xl lg:container m-auto">
       <h1 className="text-xl font-bold text-center">Diskusije</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
-        {discussionsState.map((discussion) => (
-          <div key={discussion.id} className="flex flex-col">
-            <Discussion discussion={discussion} toVote={toVote} />
+        {threadList.map((thread) => (
+          <div key={thread.id} className="flex flex-col">
+            <Thread thread={thread} toVote={toVote} />
           </div>
         ))}
 
@@ -41,11 +55,11 @@ function DiscussionList({ discussions, toVote }){
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <AddDiscussionForm onClose={HandleCloseForm} onSave={HandleSaveDiscussion} />
+          <AddThreadForm onClose={HandleCloseForm} onSave={HandleSaveDiscussion} />
         </div>
       )}
     </section>
   );
 };
 
-export default DiscussionList;
+export default ThreadList;
