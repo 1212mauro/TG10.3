@@ -18,11 +18,6 @@ public class Vote {
     @JoinColumn(name = "user_id")
     private User voter;
 
-    @ManyToOne
-    @MapsId("pollId")
-    @JoinColumn(name = "message_id")
-    private Poll targetPoll;
-
     @Enumerated(EnumType.STRING)
     private VoteEnum vote;
 

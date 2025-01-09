@@ -40,7 +40,7 @@ public class User implements UserDetails{
     Set<Board> boards;
 
     @ManyToMany(mappedBy = "participants")
-    Set<hr.fer.proinz.project_bajeet.dataTypes.Thread> threads;
+    Set<Thread> threads;
 
     @OneToMany(mappedBy = "voter")
     Set<Vote> votes;
