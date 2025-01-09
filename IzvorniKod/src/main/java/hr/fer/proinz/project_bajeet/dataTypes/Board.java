@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
 
 @Data
@@ -21,13 +23,14 @@ public class Board {
     private String address;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentBoard")
-    List<hr.fer.proinz.project_bajeet.dataTypes.Thread> threads;
+    @JsonManagedReference
+    List<Thread> threads;
 
     @ManyToMany
     @JoinTable(
     name = "isapartof", 
     joinColumns = @JoinColumn(name = "boardID"), 
     inverseJoinColumns = @JoinColumn(name = "userID"))
-    Set<User> users;
+    List<User> users;
 
 }

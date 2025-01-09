@@ -21,14 +21,14 @@ function MainPage(){
   };
 
   //Provjera tokena i autentifikacije prilikom učitavanja komponente
-  useEffect(() => {
-    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
-    if (!token) {
-      // Ako nema tokena, preusmjeravamo na Login stranicu
-      navigate("/");
-      return;
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+  //   if (!token) {
+  //     // Ako nema tokena, preusmjeravamo na Login stranicu
+  //     navigate("/");
+  //     return;
+  //   }
+  // }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100 flex">

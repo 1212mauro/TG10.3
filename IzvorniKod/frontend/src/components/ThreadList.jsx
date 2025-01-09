@@ -6,8 +6,8 @@ import client from '../lib/AxiosConfig'
 
 function ThreadList({ threads, toVote }){
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [threadList, setThreadList] = useState(threads); 
-
+  const [threadList, setThreadList] = useState([]); 
+  const [board, setBoard] = useState({ boardID: null, address: "tost"})
 
   useEffect(() => {
     fetchData()
@@ -15,8 +15,7 @@ function ThreadList({ threads, toVote }){
 
   const fetchData = async () => {
     const response = await client.get("/main")
-    console.log(response)
-    return response
+    setThreadList(response.data)
   }
 
   const HandleOpenForm = () => {
@@ -29,7 +28,7 @@ function ThreadList({ threads, toVote }){
 
   const HandleSaveDiscussion = (newThread) => {
     console.log(newThread);
-    setThreadList((prevDiscussion) => [...prevDiscussion, newThread]); //dodavanje u state
+    setThreadList((prevDiscussion) => [...prevDiscussion, newThread]);
     client.post("/main/add", JSON.stringify(newThread))
   };
 
@@ -55,7 +54,7 @@ function ThreadList({ threads, toVote }){
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <AddThreadForm onClose={HandleCloseForm} onSave={HandleSaveDiscussion} />
+          <AddThreadForm board={board} onClose={HandleCloseForm} onSave={HandleSaveDiscussion} />
         </div>
       )}
     </section>

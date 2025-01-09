@@ -1,13 +1,11 @@
 package hr.fer.proinz.project_bajeet.service;
 
 import hr.fer.proinz.project_bajeet.payload.LoginRequest;
-import lombok.NoArgsConstructor;
 import hr.fer.proinz.project_bajeet.dataTypes.User;
 import hr.fer.proinz.project_bajeet.dataTypes.User.Role;
 import hr.fer.proinz.project_bajeet.data.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

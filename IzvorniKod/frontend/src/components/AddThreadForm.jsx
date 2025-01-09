@@ -1,47 +1,20 @@
 import React, { useState } from 'react';
 import Input from './Input';
 
-function AddThreadForm({ onClose, onSave }){
+function AddThreadForm({ board, onClose, onSave }){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [hasVoting, setHasVoting] = useState(false);
 
   function handleSave(e){
-    // e.preventDefault();
-    // private Integer threadId;
-
-    // private Integer maxResponses;
-
-    // private Integer maxMessages;
-
-    // private Boolean isPrivate;
-
-    // @Temporal(TemporalType.TIMESTAMP)
-    // private Date timeCreated;
-
-    // @ManyToOne
-    // @JoinColumn(name ="board_id")
-    // private Board parentBoard;
-
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentThread")
-    // List<hr.fer.proinz.project_bajeet.dataTypes.Message> messages;
-
-    // @ManyToMany
-    // @JoinTable(
-    // name = "caninteractwith",
-    // joinColumns = @JoinColumn(name = "thread_id"),
-    // inverseJoinColumns = @JoinColumn(name = "user_id"))
-    // Set<User> participants
-    // Set<User> participants;
+    console.log(board)
     const newThread = {
-      threadId : null,
+      threadID : null,
       title: title,
-      description,
-      upVotes: 0,
-      downVotes: 0,
-      userVoted: false,
-      hasVoting,
-      comments: [],
+      description: description,
+      timeCreated: Date.now(),
+      hasVoting: hasVoting,
+      parentBoard: board,
     };
     onSave(newThread); 
     onClose(); 
