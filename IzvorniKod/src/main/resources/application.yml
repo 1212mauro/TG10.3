@@ -9,6 +9,7 @@ spring:
     username: postgres
     password: qovpoh-2naxze-Pivkuj
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true
