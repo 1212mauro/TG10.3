@@ -26,8 +26,8 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer userId;
     
-    @Column(length=16, unique=true)
-    @Size(min=3, max=16)
+    @Column(length=320, unique=true)
+    @Size(min=3, max=320)
     private String username;
 
     @Column(length=128, nullable = false)
