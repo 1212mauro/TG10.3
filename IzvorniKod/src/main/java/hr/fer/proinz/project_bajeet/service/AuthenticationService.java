@@ -33,6 +33,20 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
+    private User newOauthUser(String username) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPasswordHash(passwordEncoder.encode("oauth"));
+        user.setRole(Role.TENANT);
+
+        return userRepository.save(user);
+    }
+
+    public User getOauthUser(String username) {
+        return userRepository.findByUsername(username)
+                .orElseGet(() -> newOauthUser(username));
+    }
+
     public User authenticate(LoginRequest input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
