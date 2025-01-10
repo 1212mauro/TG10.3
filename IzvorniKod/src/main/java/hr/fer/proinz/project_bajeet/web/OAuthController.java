@@ -41,10 +41,6 @@ import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 @RequestMapping("/oauth2")
 public class OAuthController {
 
-    //private String googleRedirectUri = "https://projectbajeet.work.gd/api/oauth2/code/google";
-    //private String googleRedirectUri = "http://localhost:8080/oauth2/code/google";
-    //private String githubRedirectUri = "https://projectbajeet.work.gd/oauth2/code/github";
-
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
 
