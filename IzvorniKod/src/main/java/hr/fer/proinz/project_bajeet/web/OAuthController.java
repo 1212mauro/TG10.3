@@ -95,7 +95,6 @@ public class OAuthController {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httppost = new HttpPost("https://oauth2.googleapis.com/token");
 
-        // Request parameters and other properties.
         List<NameValuePair> params = new ArrayList<NameValuePair>(5);
         params.add(new BasicNameValuePair("code", code));
         params.add(new BasicNameValuePair("client_id", googleClientId));
@@ -144,8 +143,6 @@ public class OAuthController {
             }
         }
 
-        System.out.println(token);
-
         CloseableHttpResponse getResponse;
         URIBuilder builder = new URIBuilder();
         builder.setScheme("https").setHost("www.googleapis.com").setPath("/userinfo/v2/me")
@@ -171,7 +168,6 @@ public class OAuthController {
         try {
             try (InputStream instream = getrEntity.getContent()) {
                 String jsonResponse = new String(instream.readAllBytes(), StandardCharsets.UTF_8);
-                System.out.println("get response: " + jsonResponse);
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode nodeResponse;
                 try {
@@ -203,13 +199,117 @@ public class OAuthController {
     }
 
     @GetMapping("/code/github")
-    public ModelAndView githubCode(@RequestParam String code) {
+    public ModelAndView githubCode(@RequestParam String code, @RequestParam(required=false) String error) {
+        if (error != null) {
+            return new ModelAndView("redirect:/login?error=".concat(error));
+        }
 
-        //todo google oauth2token novi user ili login
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost("https://github.com/login/oauth/access_token");
 
-        //User authenticatedUser = authenticationService.authenticate(new LoginRequest("user", "pass"));
+        List<NameValuePair> params = new ArrayList<NameValuePair>(4);
+        params.add(new BasicNameValuePair("code", code));
+        params.add(new BasicNameValuePair("client_id", githubClientId));
+        params.add(new BasicNameValuePair("client_secret", githubClientSecret));
+        params.add(new BasicNameValuePair("redirect_uri", githubRedirectUri));
 
-        return new ModelAndView("redirect:/mainPage");
+        httppost.setHeader("Accept", "application/json");
+
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        CloseableHttpResponse response;
+        try {
+            response = httpclient.execute(httppost);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/login?error=".concat(e.getMessage()));
+        }
+        
+        HttpEntity entity = response.getEntity();
+
+        String token = null;
+        if (entity != null) {
+            try (InputStream instream = entity.getContent()) {
+                String jsonResponse = new String(instream.readAllBytes(), StandardCharsets.UTF_8);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode nodeResponse;
+                try {
+                    nodeResponse = mapper.readTree(jsonResponse);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                    return new ModelAndView("redirect:/login?error=".concat(e.getMessage()));
+                }
+                token = nodeResponse.get("access_token").asText();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return new ModelAndView("redirect:/login?error=".concat(e1.getMessage()));
+            } finally {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        CloseableHttpResponse getResponse;
+        URIBuilder builder = new URIBuilder();
+
+        builder.setScheme("https").setHost("api.github.com").setPath("/user");
+        URI uri;
+        try {
+            uri = builder.build();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/login?error=".concat(e.getMessage()));
+        }
+        HttpGet getConnecton = new HttpGet(uri);
+        getConnecton.setHeader("Authorization", "Bearer " + token);
+        try {
+            getResponse = httpclient.execute(getConnecton);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/login?error=".concat(e.getMessage()));
+        }
+
+        HttpEntity getrEntity = getResponse.getEntity();
+
+        String email = null;
+        try {
+            try (InputStream instream = getrEntity.getContent()) {
+                String jsonResponse = new String(instream.readAllBytes(), StandardCharsets.UTF_8);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode nodeResponse;
+                try {
+                    nodeResponse = mapper.readTree(jsonResponse);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                    return new ModelAndView("redirect:/login?error=".concat(e.getMessage()));
+                }
+                email = nodeResponse.get("login").asText();
+            } finally {
+                getResponse.close();
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            return new ModelAndView("redirect:/login?error=".concat(e1.getMessage()));
+        }
+
+        User authenticatedUser = authenticationService.getOauthUser(email);
+
+        String jwtToken = jwtService.generateToken(authenticatedUser);
+
+        try {
+            httpclient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ModelAndView("redirect:/mainPage?token=" + jwtToken);
     }
 
 }
