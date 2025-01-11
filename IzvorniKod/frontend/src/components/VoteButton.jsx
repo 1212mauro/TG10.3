@@ -3,9 +3,8 @@ import upvoteImage from "../assets/upvote.png";
 import downvoteImage from "../assets/downvote.png";
 import { startCase } from 'lodash'
 
-function VoteButton({ type, votesOfType, handleUpVote, handleDownVote, isVoted }){
+function VoteButton({ type, votesOfType, handleVote, isVoted }){
 
-    const handler = (type === 'upvote' ? handleUpVote : handleDownVote)
     const imgSrc = (type === 'upvote' ? upvoteImage : downvoteImage)
 
     const upVoteStyle = (isVoted
@@ -20,7 +19,7 @@ function VoteButton({ type, votesOfType, handleUpVote, handleDownVote, isVoted }
 
     return (
         <button
-            onClick={handler}
+            onClick={handleVote}
             disabled={isVoted}
             className={`px-4 py-2 text-sm font-medium flex items-center justify-center ${buttonStyle} rounded`}
         >

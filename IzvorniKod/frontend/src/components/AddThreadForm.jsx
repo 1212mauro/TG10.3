@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import Input from './Input';
 
-function AddThreadForm({ board, onClose, onSave }){
+function AddThreadForm({ onClose, onSave }){
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [hasVoting, setHasVoting] = useState(false);
 
   function handleSave(e){
-    console.log(board)
     const newThread = {
       threadID : null,
       title: title,
       description: description,
       timeCreated: Date.now(),
       hasVoting: hasVoting,
-      parentBoard: board,
     };
     onSave(newThread); 
     onClose(); 

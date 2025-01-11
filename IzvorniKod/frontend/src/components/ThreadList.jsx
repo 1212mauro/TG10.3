@@ -4,10 +4,9 @@ import AddThreadForm from "./AddThreadForm";
 import client from '../lib/AxiosConfig'
 
 
-function ThreadList({ threads, toVote }){
+function ThreadList(){
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [threadList, setThreadList] = useState([]); 
-  const [board, setBoard] = useState({ boardID: null, address: "tost"})
 
   useEffect(() => {
     fetchData()
@@ -15,6 +14,7 @@ function ThreadList({ threads, toVote }){
 
   const fetchData = async () => {
     const response = await client.get("/main")
+    console.log(response.data)
     setThreadList(response.data)
   }
 
@@ -26,10 +26,11 @@ function ThreadList({ threads, toVote }){
     setIsFormOpen(false);
   };
 
-  const HandleSaveDiscussion = (newThread) => {
-    console.log(newThread);
-    setThreadList((prevDiscussion) => [...prevDiscussion, newThread]);
-    client.post("/main/add", JSON.stringify(newThread))
+  const HandleSaveThread = async (newThread) => {
+    let response = await client.post("/main/add", JSON.stringify(newThread))
+    console.log(response.data)
+    setThreadList((prevThreads) => [...prevThreads, response.data]);
+    console.log(threadList)
   };
 
   return (
@@ -37,8 +38,9 @@ function ThreadList({ threads, toVote }){
       <h1 className="text-xl font-bold text-center">Diskusije</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
         {threadList.map((thread) => (
-          <div key={thread.id} className="flex flex-col">
-            <Thread thread={thread} toVote={toVote} />
+          <div key={thread.threadID} className="flex flex-col">
+            {/* {console.log(thread)} */}
+            <Thread thread={thread} />
           </div>
         ))}
 
@@ -54,7 +56,7 @@ function ThreadList({ threads, toVote }){
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <AddThreadForm board={board} onClose={HandleCloseForm} onSave={HandleSaveDiscussion} />
+          <AddThreadForm onClose={HandleCloseForm} onSave={HandleSaveThread} />
         </div>
       )}
     </section>

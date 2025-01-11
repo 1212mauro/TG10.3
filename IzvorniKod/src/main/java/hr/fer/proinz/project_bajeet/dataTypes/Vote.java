@@ -10,15 +10,14 @@ public class Vote {
 
     public static enum VoteEnum {UPVOTE, DOWNVOTE;}
 
-    @EmbeddedId
-    private PollVoteKey pollVoteId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer voteID;
 
-    @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User voter;
 
     @Enumerated(EnumType.STRING)
-    private VoteEnum vote;
+    private VoteEnum voteType;
 
 }

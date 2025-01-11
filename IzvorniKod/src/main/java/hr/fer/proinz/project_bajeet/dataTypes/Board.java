@@ -5,13 +5,13 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "board")
+@NoArgsConstructor
 public class Board {
 
     @Id
@@ -22,8 +22,7 @@ public class Board {
     @Size(max=50)
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentBoard")
-    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
     List<Thread> threads;
 
     @ManyToMany
