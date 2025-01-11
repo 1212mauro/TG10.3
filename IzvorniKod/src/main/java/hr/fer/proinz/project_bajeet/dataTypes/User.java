@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,14 +35,11 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany(mappedBy = "users")
-    Set<Board> boards;
+    // @ManyToMany(mappedBy = "users")
+    // List<Board> boards;
 
     @ManyToMany(mappedBy = "participants")
-    Set<Thread> threads;
-
-    @OneToMany(mappedBy = "voter")
-    Set<Vote> votes;
+    List<Thread> threads;
 
     public User(String username, String passwordHash){
         this.username = username;
