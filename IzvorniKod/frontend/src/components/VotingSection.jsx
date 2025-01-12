@@ -1,47 +1,55 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import UndoVoteButton from "./UndoVoteButton";
 import VoteButton from "./VoteButton";
 import client from "../lib/AxiosConfig";
+import { UserContext } from "./ThreadList";
 
 function VotingSection({ thread }){
-  const [votes, setVotes] = useState(thread.votes.map(vote => vote.voteType))
-  const [isVoted, setIsVoted] = useState(false);
-  const [lastVoteType, setLastVoteType] = useState(null); // Track last vote type
+  const [votes, setVotes] = useState(thread.votes)
+  const [isVoted, setIsVoted] = useState();
+  const [upVotes, setUpVotes] = useState(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
 
-  const id = thread.threadID
+  const user = useContext(UserContext)
 
-  const upVotes = votes.reduce((total,x) => total+(x==="UPVOTE"), 0)
-  const downVotes = votes.length - upVotes
+  useEffect(() => {
+    setIsVoted(thread.votes.filter(vote => vote.voter.userId == user.userId).length > 0)
+  }, [])
 
-  const handleVote = (vote) => {
-    console.log(id)
-    setVotes(v => [...v, vote])
+  useEffect(() => {
+    setUpVotes(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
+  }, [votes])
+
+  async function handleVote(vote){
+    setIsVoted(true)
     let UserVoted = {
-      voter : { userId : 1,
-                username : "tost",
-                passwordHash : "most"
-      },
+      voter : user,
       voteType : vote,
     }
-    client.put(`/main/vote/${id}`, JSON.stringify(UserVoted))
+    let res = await client.put(`/main/vote/${thread.threadID}`, JSON.stringify(UserVoted))
+    console.log(res.data.votes)
+    setVotes(v => res.data.votes)
   };
 
-  function handleUndoVote(){
+  async function handleUndoVote(){
 
-    if (lastVoteType === "upvote") {
-      setUpVotes(uv => uv - 1);
-    } else if (lastVoteType === "downvote") {
-      setDownVotes(dv => dv - 1);
-    }
+    // console.log(thread.votes.filter((vote) => vote.voter.userId == user.userId))
+    let voteToDelete = votes.filter((vote) => vote.voter.userId == user.userId)[0]
+    // console.log(voteToDelete.voteID + "VOTE ID")
+
+    let res = await client.delete(`/main/deleteVote/${thread.threadID}/${voteToDelete.voteID}`)
+    console.log(res)
+
+    console.log(votes)
+    console.log(votes.filter(vote => vote.voteID != voteToDelete.voteID))
+    setVotes(votes.filter(vote => vote.voteID != voteToDelete.voteID))
     setIsVoted(false);
-    setLastVoteType(null);
   };
 
   return (
     <div className="mt-4 flex items-center justify-between">
       <VoteButton type='upvote' votesOfType={upVotes} handleVote={() => handleVote("UPVOTE")} isVoted={isVoted}></VoteButton>
-      <UndoVoteButton handleUndoVote={handleUndoVote} votes={downVotes + upVotes} isVoted={isVoted}></UndoVoteButton>
-      <VoteButton type='downvote' votesOfType={downVotes} handleVote={() => handleVote("DOWNVOTE")} isVoted={isVoted}></VoteButton>
+      <UndoVoteButton handleUndoVote={handleUndoVote} votes={votes.length} isVoted={isVoted}></UndoVoteButton>
+      <VoteButton type='downvote' votesOfType={votes.length - upVotes} handleVote={() => handleVote("DOWNVOTE")} isVoted={isVoted}></VoteButton>
     </div>
   );
 };

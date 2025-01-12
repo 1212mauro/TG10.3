@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,11 +31,13 @@ public class MainController {
 
     private final ThreadRepository threadRepo;
     private final BoardRepository boardRepo;
+    private final VoteRepository voteRepo;
     private final UserRepository userRepo;
 
     public MainController( BoardRepository boardRepo, ThreadRepository threadRepo, VoteRepository voteRepo, UserRepository userRepo ){ 
         this.threadRepo = threadRepo; 
         this.boardRepo = boardRepo;
+        this.voteRepo = voteRepo;
         this.userRepo = userRepo;
     }
 
@@ -62,7 +65,7 @@ public class MainController {
     }
 
     @PutMapping("/vote/{id}")
-    public Vote addVote(@PathVariable int id ,@RequestBody Vote vote) {
+    public Thread addVote(@PathVariable int id ,@RequestBody Vote vote) {
 
         log.info(vote + "vote debug");
 
@@ -71,9 +74,26 @@ public class MainController {
 
         votes.add(vote);
         threadToVote.setVotes(votes);
-        threadRepo.save(threadToVote);
 
-        return vote;
+        return threadRepo.save(threadToVote);
+
+    }
+
+    @DeleteMapping("deleteVote/{threadID}/{voteID}")
+    public String deleteVote(@PathVariable int voteID, @PathVariable int threadID){
+
+        Thread t = threadRepo.findByThreadID(threadID);
+        List<Vote> votes = t.getVotes();
+        votes.removeIf(v -> v.getVoteID() == voteID);
+        t.setVotes(votes);
+        log.info(votes + "votes");
+        threadRepo.save(t);
+
+        log.info(threadRepo.findAll().toString());
+
+        voteRepo.deleteById(voteID);
+        log.info(voteRepo.findAll() + " all votes");
+        return "successfully deleted vote with id: " + voteID;
 
     }
 
