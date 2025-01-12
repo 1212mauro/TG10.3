@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,7 +67,6 @@ public class MainController {
 
     @PutMapping("/vote/{id}")
     public Thread addVote(@PathVariable int id ,@RequestBody Vote vote) {
-
         log.info(vote + "vote debug");
 
         Thread threadToVote = threadRepo.findByThreadID(id);
@@ -94,7 +94,6 @@ public class MainController {
         voteRepo.deleteById(voteID);
         log.info(voteRepo.findAll() + " all votes");
         return "successfully deleted vote with id: " + voteID;
-
     }
 
 }

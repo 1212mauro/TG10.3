@@ -3,7 +3,6 @@ import Thread from "./Thread";
 import AddThreadForm from "./AddThreadForm"; 
 import client from '../lib/AxiosConfig'
 
-
 export const UserContext = createContext()
 
 function ThreadList(){
@@ -13,10 +12,6 @@ function ThreadList(){
     username : "tost",
     passwordHash : "most"
   })
-
-  useEffect(() => {
-    console.log(threadList)
-  }, [threadList])
 
   useEffect(() => {
     fetchData()
@@ -39,7 +34,9 @@ function ThreadList(){
   const HandleSaveThread = async (newThread) => {
     let response = await client.post("/main/add", JSON.stringify(newThread))
     console.log(response.data)
+
     setThreadList(p => [...p, response.data])
+
     console.log(threadList)
   };
 

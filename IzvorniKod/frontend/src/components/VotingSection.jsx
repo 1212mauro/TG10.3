@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import UndoVoteButton from "./UndoVoteButton";
 import VoteButton from "./VoteButton";
 import client from "../lib/AxiosConfig";
+
 import { UserContext } from "./ThreadList";
 
 function VotingSection({ thread }){

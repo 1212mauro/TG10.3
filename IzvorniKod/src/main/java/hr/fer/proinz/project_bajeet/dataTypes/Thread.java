@@ -5,7 +5,6 @@ import java.util.Date;
 import lombok.Data;
 import java.util.List;
 
-
 @Data
 @Entity
 @Table(name = "thread")
