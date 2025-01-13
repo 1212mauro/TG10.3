@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   const redirectToOAuth = (url) => {
-    navigate(url);
+    window.location.href = url;
   };
 
   useEffect(() => {
