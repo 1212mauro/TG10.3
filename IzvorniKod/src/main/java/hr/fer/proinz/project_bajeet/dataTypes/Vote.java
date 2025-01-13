@@ -17,6 +17,9 @@ public class Vote {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User voter;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Thread thread;
+
     @Enumerated(EnumType.STRING)
     private VoteEnum voteType;
 

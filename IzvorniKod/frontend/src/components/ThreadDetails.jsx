@@ -12,7 +12,7 @@ function ThreadDetails({ thread, comments, onClose, handleAddComment }){
 
   function HandleSaveComment(comment){
     handleAddComment(comment);
-    setIsAddingComment(false);
+    setIsAddingComment(() => false);
   };
 
   return (
