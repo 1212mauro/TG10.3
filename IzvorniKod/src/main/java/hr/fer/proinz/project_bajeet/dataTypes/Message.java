@@ -19,10 +19,6 @@ public class Message {
     private Date timeSent;
 
     @ManyToOne
-    @JoinColumn(name ="thread_id")
-    private Thread parentThread;
-
-    @ManyToOne
     @JoinColumn(name ="user_id")
     private User messageAuthor;
 

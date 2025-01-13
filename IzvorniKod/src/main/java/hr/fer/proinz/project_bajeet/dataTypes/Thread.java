@@ -22,7 +22,7 @@ public class Thread {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeCreated;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentThread")
+    @OneToMany(cascade = CascadeType.ALL)
     List<Message> comments;
 
     @ManyToMany
