@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 
@@ -40,9 +40,16 @@ const Login = () => {
   };
 
   const redirectToOAuth = (url) => {
-    localStorage.setItem('authToken', url); 
-    window.location.href = url;
+    navigate(url);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    if (token) {
+      navigate("/mainPage");
+      return;
+    }
+  }, [navigate]);
 
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">

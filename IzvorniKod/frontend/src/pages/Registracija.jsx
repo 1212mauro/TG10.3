@@ -1,11 +1,12 @@
 // Registracija.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Registracija = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +38,14 @@ const Registracija = () => {
     }
 
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    if (token) {
+      navigate("/mainPage");
+      return;
+    }
+  }, [navigate]);
 
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">

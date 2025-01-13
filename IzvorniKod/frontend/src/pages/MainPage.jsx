@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import ListaDiskusija from "../components/ListaDiskusija";
 import diskusijeData from "../../public/diskusije";
 import HeaderComp from "../components/HeaderComp";
@@ -22,6 +22,13 @@ const MainPage = () => {
 
   // Provjera tokena i autentifikacije prilikom učitavanja komponente
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let uritoken = urlParams.get('token');
+    if (uritoken) {
+      localStorage.setItem('authToken', uritoken);
+      navigate('/mainPage');
+      return;
+    }
     const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
     if (!token) {
       // Ako nema tokena, preusmjeravamo na Login stranicu
@@ -38,7 +45,12 @@ const MainPage = () => {
 
       <aside className="w-1/4 bg-blue-600 text-white p-4 flex flex-col items-center">
         <h1 className="text-xl font-bold mb-4">StanBlog</h1>
-        <HeaderComp username={korisnik.korisnickoIme} />
+        <HeaderComp username={korisnik.korisnickoIme} onLogout={
+          () => {
+            localStorage.removeItem('authToken');
+            navigate("/");
+          }
+        } />
       </aside>
     </div>
   );
