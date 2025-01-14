@@ -15,7 +15,7 @@ function MainPage() {
     let uritoken = urlParams.get('token');
     if (uritoken) {
       localStorage.setItem('authToken', uritoken);
-      navigate('/mainPage');
+      navigate('/main');
       return;
     }
     const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
