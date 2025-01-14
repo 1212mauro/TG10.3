@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import LoginFooter from '../components/LoginFooter';
 
@@ -7,13 +7,12 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  const navigate = useNavigate(); // Navigation Hook
+  const navigate = useNavigate(); // Hook za navigaciju
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset prior errors
-  
+    setError(""); // Resetuj prethodne greške
+
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -26,11 +25,11 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token in localstorage
+        // Pohrani token u lokalnu pohranu
         localStorage.setItem('authToken', data.token);
-        console.log('Uspješna prijava:', data);
+        console.log('Uspešna prijava:', data);
         
-        // Reroute to mainPage
+        // Preusmjeri na glavnu stranicu
         navigate('/mainPage');
       } else {
         setError(data.message || 'Invalid username or password.');
@@ -52,7 +51,7 @@ const Login = () => {
       return;
     }
   }, [navigate]);
-  
+
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">
       <h2 className="text-2xl text-center mb-4">Login</h2>
