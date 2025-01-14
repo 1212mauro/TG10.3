@@ -5,7 +5,7 @@ import client from '../lib/AxiosConfig'
 
 export const UserContext = createContext()
 
-function ThreadList(){
+function ThreadList({ boardID }){
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [threadList, setThreadList] = useState([]); 
   const [user, setUser] = useState({ userId : 1,
@@ -18,42 +18,37 @@ function ThreadList(){
   }, [])
 
   const fetchData = async () => {
-    const response = await client.get("/main")
+    console.log(boardID)
+    const response = await client.get(`/main/${boardID}`)
     console.log(response.data)
     setThreadList(response.data)
   }
 
-  const HandleOpenForm = () => {
-    setIsFormOpen(true);
-  };
-
-  const HandleCloseForm = () => {
-    setIsFormOpen(false);
-  };
-
-  const HandleSaveThread = async (newThread) => {
-    let response = await client.post("/main/add", JSON.stringify(newThread))
+  async function HandleSaveThread(newThread){
+    newThread.boardID = boardID
+    let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread))
     console.log(response.data)
-
     setThreadList(p => [...p, response.data])
 
     console.log(threadList)
   };
 
   return (
-    <section className="container-xl lg:container m-auto">
-      <h1 className="text-xl font-bold text-center">Diskusije</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
-        {threadList.map(thread => (
-          <div key={thread.threadID} className="flex flex-col">
-            <UserContext.Provider value={user}>
-              <Thread thread={thread} />
-            </UserContext.Provider>
-          </div>
-        ))}
+    <div className="flex-grow p-4">
+      <section className="container-xl lg:container m-auto">
+        <h1 className="text-xl font-bold text-center">Diskusije</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
+          {threadList.map(thread => (
+            <div key={thread.threadID} className="flex flex-col">
+              <UserContext.Provider value={user}>
+                <Thread thread={thread} />
+              </UserContext.Provider>
+            </div>
+          ))}
 
         <div
-          onClick={HandleOpenForm}
+          onClick={() => setIsFormOpen(true)}
           className="flex flex-col justify-center items-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
         >
           <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
@@ -64,10 +59,11 @@ function ThreadList(){
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <AddThreadForm onClose={HandleCloseForm} onSave={HandleSaveThread} />
+          <AddThreadForm onClose={() => setIsFormOpen(false)} onSave={HandleSaveThread} />
         </div>
       )}
-    </section>
+      </section>
+    </div>
   );
 };
 

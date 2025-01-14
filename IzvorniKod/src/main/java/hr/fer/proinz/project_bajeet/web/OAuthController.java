@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import hr.fer.proinz.project_bajeet.dataTypes.User;
-import hr.fer.proinz.project_bajeet.payload.LoginRequest;
 import hr.fer.proinz.project_bajeet.service.JwtService;
 import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 

@@ -11,7 +11,7 @@ function AddComment({ HandleSaveComment }) {
             className="w-full p-2 border border-gray-300 rounded-lg"
             rows="3"
             placeholder="Input comment"
-            onChange={(e) => {console.log(newComment); setNewComment(e.target.value)}}
+            onChange={(e) => {setNewComment(e.target.value)}}
           ></textarea>
           <button
             onClick={() => HandleSaveComment(newComment)}

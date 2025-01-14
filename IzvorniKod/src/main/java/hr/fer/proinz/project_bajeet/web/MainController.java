@@ -46,29 +46,58 @@ public class MainController {
         this.messageRepo = messageRepo;
     }
 
-    @GetMapping
-    public List<Thread> getAllThreads() {
-        // Board b = new Board();
-        // b.setAddress("tost");
-        // boardRepo.save(b);
-        Board b = boardRepo.findAll().get(0);
-        log.info(b.toString());
-        log.info(threadRepo.findAll() + " This is a return debug");
-        log.info(userRepo.findAll().toString());
-        return threadRepo.findAll();
+    @GetMapping("/getBoards")
+    public List<Board> getBoards() {
+        return boardRepo.findAll();
     }
 
-    @PostMapping("/add")
-    public Thread addNewThread(@RequestBody Thread newThread) {
-        threadRepo.save(newThread);
-
-        newThread.setVotes(List.of());
-        newThread.setComments(List.of());
-
-        // log.info(threadRepo.findById(newThread.getThreadID()) + " neki debug message");
-
-        return newThread;
+    @GetMapping("/{boardID}")
+    public List<Thread> getThreads(@PathVariable int boardID) {
+        Board b = boardRepo.findByBoardID(boardID);
+        // log.info(b.toString());
+        return b.getThreads();
     }
+    
+    @PostMapping("/addBoard")
+    public Board addBoard(@RequestBody Board newBoard) { 
+        return boardRepo.save(newBoard);
+    }
+
+    @PostMapping("/addThread/{boardID}")
+    public Thread addNewThread(@PathVariable int boardID, @RequestBody Thread newThread) {
+        
+        Thread t = threadRepo.save(newThread);
+
+        log.info(t + " saved thread");
+        Board b = boardRepo.findByBoardID(boardID);
+        List<Thread> threads = b.getThreads();
+        threads.add(t);
+        b.setThreads(threads);
+        b = boardRepo.save(b);
+    
+        t.setVotes(List.of());
+        t.setComments(List.of());
+
+
+        return t;
+    }
+
+    @PostMapping("addComment/{threadID}")
+    public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {
+        
+        Message message = messageRepo.save(newMessage);
+        
+        Thread t = threadRepo.findByThreadID(threadID);
+        List<Message> comments = t.getComments();
+        comments.add(message);
+        t.setComments(comments);
+        t = threadRepo.save(t);
+
+        // log.info(messageRepo.findAll() + "messages from repo");
+        // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
+        return t;
+    }
+    
 
     @PostMapping("addComment/{threadID}")
     public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {

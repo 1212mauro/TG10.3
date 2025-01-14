@@ -1,19 +1,28 @@
 import React from 'react';
 
-function HeaderComp({ username, onLogout }) {
+function HeaderComp({ username, openBoardID, setOpenBoardID }) {
+
+  function HandleCloseBoard(){
+    setOpenBoardID(null)
+  }
+
   return (
-    <header className="flex flex-col justify-between items-center p-4 bg-gray-800 text-white rounded-xl" >
+    <header className="bg-green-500 text-white p-6 text-center">
       
       <div className="flex flex-col items-center gap-3">
+      <h1 className="text-xl font-bold mb-4">StanBlog</h1>
         {username ? (
           <>
-            <span>Pozdrav, {username}!</span>
-            <button onClick={onLogout} className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded">
-              Odjava
-            </button>
+            
+            <h1 className="text-xl font-bold">Welcome, {username}</h1>
+            {/* <p className="text-sm">{userInfo.email}</p> */}
+            {openBoardID &&
+            <button onClick={HandleCloseBoard} className="absolute top-4 right-4 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg">
+              Back to board select
+            </button>}
           </>
         ) : (
-          <span>Gost</span>
+          <h1>Logged in as guest</h1>
         )}
       </div>
     </header>
