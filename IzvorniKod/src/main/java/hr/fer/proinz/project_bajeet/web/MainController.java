@@ -74,14 +74,30 @@ public class MainController {
         threads.add(t);
         b.setThreads(threads);
         b = boardRepo.save(b);
-
-        log.info(b + " saved board");
-        
+    
         t.setVotes(List.of());
         t.setComments(List.of());
 
+
         return t;
     }
+
+    @PostMapping("addComment/{threadID}")
+    public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {
+        
+        Message message = messageRepo.save(newMessage);
+        
+        Thread t = threadRepo.findByThreadID(threadID);
+        List<Message> comments = t.getComments();
+        comments.add(message);
+        t.setComments(comments);
+        t = threadRepo.save(t);
+
+        // log.info(messageRepo.findAll() + "messages from repo");
+        // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
+        return t;
+    }
+    
 
     @PostMapping("addComment/{threadID}")
     public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {
