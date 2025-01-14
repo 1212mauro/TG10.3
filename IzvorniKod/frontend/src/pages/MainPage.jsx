@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 import BoardList from '../components/BoardList';
 import HeaderComp from '../components/HeaderComp';
 import korisnik from "../../public/korisnikInfo"; 
-import { useState } from 'react';
 import ThreadList from '../components/ThreadList';
 
 function MainPage() {
