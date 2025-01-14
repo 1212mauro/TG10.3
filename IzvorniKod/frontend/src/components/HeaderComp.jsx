@@ -1,6 +1,6 @@
 import React from 'react';
 
-function HeaderComp({ username, openBoardID, setOpenBoardID }) {
+function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
 
   function HandleCloseBoard(){
     setOpenBoardID(null)
