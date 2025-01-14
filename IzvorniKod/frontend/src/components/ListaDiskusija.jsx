@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Diskusija from "./Diskusija";
 import DodajDiskusijuForm from "./DodajDiskusijuForm"; 
-import diskusije from '../../public/diskusije'
 
-const ListaDiskusija = ({ diskusije, naGlasanje}) => {
+const ListaDiskusija = ({ diskusije, naGlasanje }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [diskusijeState, setDiskusijeState] = useState(diskusije); 
 
@@ -16,15 +15,13 @@ const ListaDiskusija = ({ diskusije, naGlasanje}) => {
   };
 
   const handleSaveDiskusija = (novaDiskusija) => {
-    console.log(novaDiskusija);
-    setDiskusijeState((prevDiskusije) => [...prevDiskusije, novaDiskusija]); //dodavanje u state
-    
+    setDiskusijeState((prevDiskusije) => [...prevDiskusije, novaDiskusija]);
   };
 
   return (
     <section className="container-xl lg:container m-auto">
       <h1 className="text-xl font-bold text-center">Diskusije</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
+      <div className="flex flex-col gap-4 border-gray-300 rounded-lg p-6">
         {diskusijeState.map((diskusija) => (
           <div key={diskusija.id} className="flex flex-col">
             <Diskusija diskusija={diskusija} naGlasanje={naGlasanje} />
@@ -33,7 +30,7 @@ const ListaDiskusija = ({ diskusije, naGlasanje}) => {
 
         <div
           onClick={handleAddClick}
-          className="flex flex-col justify-center items-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
+          className="flex flex-col justify-center items-center p-6 mt-4 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
         >
           <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
             Dodaj novu diskusiju

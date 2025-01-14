@@ -1,4 +1,3 @@
-// src/components/VotingSection.js
 import React, { useState } from "react";
 import upvoteImage from "../assets/upvote.png";
 import downvoteImage from "../assets/downvote.png";
@@ -6,49 +5,36 @@ import downvoteImage from "../assets/downvote.png";
 const VotingSection = ({ diskusija, onVote }) => {
   const [upVotes, setUpVotes] = useState(diskusija.upVotes);
   const [downVotes, setDownVotes] = useState(diskusija.downVotes);
-  const [votes, setVotes] = useState(diskusija.upVotes + diskusija.downVotes);
-  const [isVoted, setIsVoted] = useState(false);
-  const [lastVoteType, setLastVoteType] = useState(null); // Track last vote type
+  const [userVote, setUserVote] = useState(null); // "upvote", "downvote", or null
 
-  const handleUpVote = () => {
-    setUpVotes(upVotes + 1);
-    setVotes(votes + 1);
-    setIsVoted(true);
-    setLastVoteType("upvote");
-    onVote();
-  };
+  const handleVote = (voteType) => {
+    if (voteType === userVote) {
+      // Undo vote
+      if (voteType === "upvote") setUpVotes(upVotes - 1);
+      if (voteType === "downvote") setDownVotes(downVotes - 1);
+      setUserVote(null);
+      onVote(null); // Notify parent about the undone vote
+    } else {
+      // Change or cast vote
+      if (userVote === "upvote") setUpVotes(upVotes - 1);
+      if (userVote === "downvote") setDownVotes(downVotes - 1);
 
-  const handleDownVote = () => {
-    setDownVotes(downVotes + 1);
-    setVotes(votes + 1);
-    setIsVoted(true);
-    setLastVoteType("downvote");
-    onVote();
-  };
+      if (voteType === "upvote") setUpVotes(upVotes + 1);
+      if (voteType === "downvote") setDownVotes(downVotes + 1);
 
-  const handleUndoVote = () => {
-    if (!isVoted) return; // If no vote was made, do nothing
-
-    if (lastVoteType === "upvote") {
-      setUpVotes(upVotes - 1);
-    } else if (lastVoteType === "downvote") {
-      setDownVotes(downVotes - 1);
+      setUserVote(voteType);
+      onVote(voteType); // Notify parent about the new vote
     }
-
-    setVotes(votes - 1);
-    setIsVoted(false);
-    setLastVoteType(null);
   };
 
   return (
     <div className="mt-4 flex items-center justify-between">
       <button
-        onClick={handleUpVote}
-        disabled={isVoted}
+        onClick={() => handleVote("upvote")}
         className={`px-4 py-2 text-sm font-medium flex items-center justify-center ${
-          isVoted
-            ? "bg-green-900 text-white cursor-not-allowed"
-            : "bg-green-500 text-white hover:bg-blue-600"
+          userVote === "upvote"
+            ? "bg-green-900 text-white"
+            : "bg-green-500 text-white hover:bg-green-600"
         } rounded`}
       >
         <img src={upvoteImage} alt="Upvote" className="w-4 h-4 mr-1" />
@@ -56,25 +42,15 @@ const VotingSection = ({ diskusija, onVote }) => {
       </button>
 
       <span className="text-gray-700 font-medium flex flex-col items-center text-center">
-        Votes: {votes}
-        <br />
-        <button
-        onClick={handleUndoVote}
-        disabled={!isVoted}
-        className="mt-2 bg-gray-500 text-white py-1 px-2 rounded hover:bg-gray-600"
-        >
-        UNDO VOTE
-        </button>
+        Total Votes: {upVotes + downVotes}
       </span>
 
-
       <button
-        onClick={handleDownVote}
-        disabled={isVoted}
+        onClick={() => handleVote("downvote")}
         className={`px-4 py-2 text-sm font-medium flex items-center justify-center ${
-          isVoted
-            ? "bg-red-900 text-white cursor-not-allowed"
-            : "bg-red-500 text-white hover:bg-blue-600"
+          userVote === "downvote"
+            ? "bg-red-900 text-white"
+            : "bg-red-500 text-white hover:bg-red-600"
         } rounded`}
       >
         <img src={downvoteImage} alt="Downvote" className="w-4 h-4 mr-1" />

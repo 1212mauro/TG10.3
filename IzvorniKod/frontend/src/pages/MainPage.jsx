@@ -39,7 +39,7 @@ const MainPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      <div className="flex-grow p-4">
+      <div className="flex-grow p-4 overflow-y-auto max-h-screen">
         <ListaDiskusija diskusije={diskusije} naGlasanje={naGlasanje} />
       </div>
 

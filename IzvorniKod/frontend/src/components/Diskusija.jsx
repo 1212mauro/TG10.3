@@ -6,6 +6,7 @@ import VotingSection from "./VotingSection";
 const Diskusija = ({ diskusija, naGlasanje }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [komentari, setKomentari] = useState(diskusija.komentari);
+  const [glasanja, setGlasanja] = useState(diskusija.glasanja);
 
   const handleReadMore = () => {
     setIsModalOpen(true);
@@ -20,6 +21,15 @@ const Diskusija = ({ diskusija, naGlasanje }) => {
     };
     setKomentari([...komentari, noviKomentar]);
   };
+  const handleAddQuestion = (pitanjeTekst) => {
+    const novoPitanje = {
+      id: glasanja.length + 1,
+      pitanje: pitanjeTekst,
+      korisnik: "Trenutni korisnik",
+      timestamp: Date.now(),
+    };
+    setGlasanja([...glasanja, novoPitanje]);
+  }
 
   const handleVote = () => {
     naGlasanje(diskusija.id);
@@ -35,15 +45,14 @@ const Diskusija = ({ diskusija, naGlasanje }) => {
         Pročitaj više
       </button>
 
-      
-      {diskusija.hasVoting && <VotingSection diskusija={diskusija} onVote={handleVote} />}
-
       {isModalOpen && (
         <DiskusijaDetalji
           diskusija={diskusija}
           komentari={komentari}
+          glasanja={glasanja}
           onClose={() => setIsModalOpen(false)}
           onAddComment={handleAddComment}
+          onAddQuestion={handleAddQuestion}
         />
       )}
     </div>
