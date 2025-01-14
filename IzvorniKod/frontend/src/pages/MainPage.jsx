@@ -34,8 +34,8 @@ function MainPage() {
                     onLogout={() => {
                         localStorage.removeItem('authToken');
                         navigate("/");
-                    }}
-                    />
+                    }}/>
+
         {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
     </div>
   )
