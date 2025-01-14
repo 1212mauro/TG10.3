@@ -9,6 +9,22 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
 
+    useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let uritoken = urlParams.get('token');
+    if (uritoken) {
+      localStorage.setItem('authToken', uritoken);
+      navigate('/mainPage');
+      return;
+    }
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    if (!token) {
+      // Ako nema tokena, preusmjeravamo na Login stranicu
+      navigate("/");
+      return;
+    }
+    }, [navigate]);
+    
     return (
     <div>
         <HeaderComp username={korisnik.korisnickoIme} openBoardID={openBoardID} setOpenBoardID={setOpenBoardID}/>
