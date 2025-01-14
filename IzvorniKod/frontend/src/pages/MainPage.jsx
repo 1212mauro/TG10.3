@@ -8,6 +8,7 @@ import ThreadList from '../components/ThreadList';
 function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -34,6 +35,7 @@ function MainPage() {
                         localStorage.removeItem('authToken');
                         navigate("/");
                     }}/>
+
         {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
     </div>
   )
