@@ -44,7 +44,7 @@ const Registracija = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
     if (token) {
-      navigate("/mainPage");
+      navigate("/main");
       return;
     }
   }, [navigate]);
