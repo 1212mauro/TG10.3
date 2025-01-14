@@ -69,6 +69,31 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
           ) : (
             <p className="text-gray-500">Nema glasanja</p>
           )}
+
+          {isAddingQuestion ? (
+            <div className="mt-4">
+              <textarea
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                rows="3"
+                placeholder="Unesite svoje pitanje"
+                value={newQuestion}
+                onChange={(e) => setNewQuestion(e.target.value)}
+              ></textarea>
+              <button
+                onClick={handleSaveQuestion}
+                className="mt-2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
+              >
+                Spremi pitanje
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAddingQuestion(true)}
+              className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
+            >
+              Dodaj pitanje
+            </button>
+          )}
         </div>
       </div>
     </Modal>
