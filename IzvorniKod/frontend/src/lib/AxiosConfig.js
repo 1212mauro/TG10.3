@@ -2,7 +2,7 @@ import axios from "axios";
 
 const client = axios.create({
   withCredentials: true,
-  baseURL: 'https://projectbajeet.work.gd/api',
+  baseURL: '/api',
   headers: {
     "Content-type": "application/json"
   }

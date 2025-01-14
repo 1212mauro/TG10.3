@@ -6,7 +6,6 @@ import client from '../lib/AxiosConfig';
 function BoardList({ setOpenBoard }) {
 
     const [boardList, setBoardList] = useState([]);
-    
     const [isFormOpen, setIsFormOpen] = useState(false)
 
     useEffect(() => {

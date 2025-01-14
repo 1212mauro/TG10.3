@@ -8,6 +8,7 @@ import ThreadList from '../components/ThreadList';
 function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
+    const navigate = useNavigate()
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
