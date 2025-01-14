@@ -83,7 +83,7 @@ public class MainController {
     }
 
     @PostMapping("addComment/{threadID}")
-    public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {
+    public Thread addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
         
         Message message = messageRepo.save(newMessage);
         
@@ -97,24 +97,6 @@ public class MainController {
         // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
         return t;
     }
-    
-
-    @PostMapping("addComment/{threadID}")
-    public Thread postMethodName(@PathVariable int threadID, @RequestBody Message newMessage) {
-        
-        Message message = messageRepo.save(newMessage);
-        
-        Thread t = threadRepo.findByThreadID(threadID);
-        List<Message> comments = t.getComments();
-        comments.add(message);
-        t.setComments(comments);
-        t = threadRepo.save(t);
-
-        // log.info(messageRepo.findAll() + "messages from repo");
-        // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
-        return t;
-    }
-    
 
     @PutMapping("/vote/{id}")
     public Thread addVote(@PathVariable int id ,@RequestBody Vote vote) {
