@@ -41,6 +41,18 @@ const Login = () => {
     }
   };
 
+  const redirectToOAuth = (url) => {
+    window.location.href = url;
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    if (token) {
+      navigate("/mainPage");
+      return;
+    }
+  }, [navigate]);
+  
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">
       <h2 className="text-2xl text-center mb-4">Login</h2>
