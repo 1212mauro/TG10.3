@@ -10,20 +10,17 @@ public class Vote {
 
     public static enum VoteEnum {UPVOTE, DOWNVOTE;}
 
-    @EmbeddedId
-    private PollVoteKey pollVoteId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer voteID;
 
-    @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User voter;
 
-    @ManyToOne
-    @MapsId("pollId")
-    @JoinColumn(name = "message_id")
-    private Poll targetPoll;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Thread thread;
 
     @Enumerated(EnumType.STRING)
-    private VoteEnum vote;
+    private VoteEnum voteType;
 
 }

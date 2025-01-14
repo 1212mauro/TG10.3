@@ -1,85 +1,56 @@
-// src/components/VotingSection.js
-import React, { useState } from "react";
-import upvoteImage from "../assets/upvote.png";
-import downvoteImage from "../assets/downvote.png";
+import React, { useContext, useEffect, useState } from "react";
+import UndoVoteButton from "./UndoVoteButton";
+import VoteButton from "./VoteButton";
+import client from "../lib/AxiosConfig";
 
-const VotingSection = ({ diskusija, onVote }) => {
-  const [upVotes, setUpVotes] = useState(diskusija.upVotes);
-  const [downVotes, setDownVotes] = useState(diskusija.downVotes);
-  const [votes, setVotes] = useState(diskusija.upVotes + diskusija.downVotes);
-  const [isVoted, setIsVoted] = useState(false);
-  const [lastVoteType, setLastVoteType] = useState(null); // Track last vote type
+import { UserContext } from "./ThreadList";
 
-  const handleUpVote = () => {
-    setUpVotes(upVotes + 1);
-    setVotes(votes + 1);
-    setIsVoted(true);
-    setLastVoteType("upvote");
-    onVote();
-  };
+function VotingSection({ thread }){
+  const [votes, setVotes] = useState(thread.votes)
+  const [isVoted, setIsVoted] = useState();
+  const [upVotes, setUpVotes] = useState(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
 
-  const handleDownVote = () => {
-    setDownVotes(downVotes + 1);
-    setVotes(votes + 1);
-    setIsVoted(true);
-    setLastVoteType("downvote");
-    onVote();
-  };
+  const user = useContext(UserContext)
 
-  const handleUndoVote = () => {
-    if (!isVoted) return; // If no vote was made, do nothing
+  useEffect(() => {
+    setIsVoted(thread.votes.filter(vote => vote.voter.userId == user.userId).length > 0)
+  }, [])
 
-    if (lastVoteType === "upvote") {
-      setUpVotes(upVotes - 1);
-    } else if (lastVoteType === "downvote") {
-      setDownVotes(downVotes - 1);
+  useEffect(() => {
+    setUpVotes(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
+  }, [votes])
+
+  async function handleVote(vote){
+    setIsVoted(true)
+    let UserVoted = {
+      voter : user,
+      voteType : vote,
     }
+    let res = await client.put(`/main/vote/${thread.threadID}`, JSON.stringify(UserVoted))
+    console.log(res.data.votes)
+    setVotes(v => res.data.votes)
+  };
 
-    setVotes(votes - 1);
+  async function handleUndoVote(){
+
+    // console.log(thread.votes.filter((vote) => vote.voter.userId == user.userId))
+    let voteToDelete = votes.filter((vote) => vote.voter.userId == user.userId)[0]
+    // console.log(voteToDelete.voteID + "VOTE ID")
+
+    let res = await client.delete(`/main/deleteVote/${thread.threadID}/${voteToDelete.voteID}`)
+    console.log(res)
+
+    console.log(votes)
+    console.log(votes.filter(vote => vote.voteID != voteToDelete.voteID))
+    setVotes(votes.filter(vote => vote.voteID != voteToDelete.voteID))
     setIsVoted(false);
-    setLastVoteType(null);
   };
 
   return (
     <div className="mt-4 flex items-center justify-between">
-      <button
-        onClick={handleUpVote}
-        disabled={isVoted}
-        className={`px-4 py-2 text-sm font-medium flex items-center justify-center ${
-          isVoted
-            ? "bg-green-900 text-white cursor-not-allowed"
-            : "bg-green-500 text-white hover:bg-blue-600"
-        } rounded`}
-      >
-        <img src={upvoteImage} alt="Upvote" className="w-4 h-4 mr-1" />
-        <span>{upVotes}</span>
-      </button>
-
-      <span className="text-gray-700 font-medium flex flex-col items-center text-center">
-        Votes: {votes}
-        <br />
-        <button
-        onClick={handleUndoVote}
-        disabled={!isVoted}
-        className="mt-2 bg-gray-500 text-white py-1 px-2 rounded hover:bg-gray-600"
-        >
-        UNDO VOTE
-        </button>
-      </span>
-
-
-      <button
-        onClick={handleDownVote}
-        disabled={isVoted}
-        className={`px-4 py-2 text-sm font-medium flex items-center justify-center ${
-          isVoted
-            ? "bg-red-900 text-white cursor-not-allowed"
-            : "bg-red-500 text-white hover:bg-blue-600"
-        } rounded`}
-      >
-        <img src={downvoteImage} alt="Downvote" className="w-4 h-4 mr-1" />
-        <span>{downVotes}</span>
-      </button>
+      <VoteButton type='upvote' votesOfType={upVotes} handleVote={() => handleVote("UPVOTE")} isVoted={isVoted}></VoteButton>
+      <UndoVoteButton handleUndoVote={handleUndoVote} votes={votes.length} isVoted={isVoted}></UndoVoteButton>
+      <VoteButton type='downvote' votesOfType={votes.length - upVotes} handleVote={() => handleVote("DOWNVOTE")} isVoted={isVoted}></VoteButton>
     </div>
   );
 };

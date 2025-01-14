@@ -1,11 +1,9 @@
 package hr.fer.proinz.project_bajeet.dataTypes;
 
-
 import jakarta.persistence.*;
 import java.util.Date;
 import lombok.Data;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -13,29 +11,28 @@ import java.util.Set;
 public class Thread {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer threadId;
+    private Integer threadID;
 
-    private Integer maxResponses;
+    private String title;
 
-    private Integer maxMessages;
+    private String description;
 
-    private Boolean isPrivate;
+    private boolean hasVoting;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeCreated;
 
-    @ManyToOne
-    @JoinColumn(name ="board_id")
-    private Board parentBoard;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentThread")
-    List<hr.fer.proinz.project_bajeet.dataTypes.Message> messages;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Message> comments;
 
     @ManyToMany
     @JoinTable(
-    name = "caninteractwith", 
-    joinColumns = @JoinColumn(name = "thread_id"), 
+    name = "caninteractwith",
+    joinColumns = @JoinColumn(name = "thread_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
-    Set<User> participants;
+    List<User> participants;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Vote> votes;
 
 }

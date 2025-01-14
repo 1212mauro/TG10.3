@@ -8,7 +8,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/projectbajeet
     username: postgres
     password: qovpoh-2naxze-Pivkuj
+  sql:
+    init:
+      mode: always
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop
     show-sql: true

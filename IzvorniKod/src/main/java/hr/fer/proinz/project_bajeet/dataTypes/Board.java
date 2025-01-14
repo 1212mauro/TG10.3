@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Set;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "board")
+@NoArgsConstructor
 public class Board {
 
     @Id
@@ -20,14 +22,14 @@ public class Board {
     @Size(max=50)
     private String address;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parentBoard")
-    List<hr.fer.proinz.project_bajeet.dataTypes.Thread> threads;
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Thread> threads;
 
     @ManyToMany
     @JoinTable(
     name = "isapartof", 
     joinColumns = @JoinColumn(name = "boardID"), 
     inverseJoinColumns = @JoinColumn(name = "userID"))
-    Set<User> users;
+    List<User> users;
 
 }
