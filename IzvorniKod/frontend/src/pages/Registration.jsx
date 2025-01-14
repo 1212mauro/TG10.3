@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import RegisterFooter from '../components/RegisterFooter';
 
-function Registration(){
+const Registracija = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ function Registration(){
           setError(data.message || 'Invalid username or password.');
         }
       } catch (err) {
-        setError('An error occurred during .');
+        setError('An error occurred during login.');
         console.error('Error:', err);
       }
     }
@@ -45,7 +47,7 @@ function Registration(){
       return;
     }
   }, [navigate]);
-  
+
   return (
     <div className="max-w-sm mx-auto mt-16 p-8 border rounded-3xl shadow-lg">
       <h2 className="text-2xl text-center mb-4">Registracija</h2>
@@ -60,4 +62,4 @@ function Registration(){
   );
 };
 
-export default Registration;
+export default Registracija;
