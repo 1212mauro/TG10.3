@@ -7,6 +7,6 @@ import java.util.List;
 
 
 public interface BoardRepository extends JpaRepository<Board, Integer>{
-    List<Board> findByBoardID(Integer BoardId);
+    Board findByBoardID(Integer BoardId);
     List<Board> findByAddress(String address);
 }
