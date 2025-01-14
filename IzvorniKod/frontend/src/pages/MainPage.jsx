@@ -1,27 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
-import ListaDiskusija from "../components/ListaDiskusija";
-import diskusijeData from "../../public/diskusije";
-import HeaderComp from "../components/HeaderComp";
+import BoardList from '../components/BoardList';
+import HeaderComp from '../components/HeaderComp';
 import korisnik from "../../public/korisnikInfo"; 
+import ThreadList from '../components/ThreadList';
 
-const MainPage = () => {
-  const [diskusije, postaviDiskusije] = useState(diskusijeData);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+function MainPage() {
 
-  const naGlasanje = (id) => {
-    postaviDiskusije((prethodneDiskusije) =>
-      prethodneDiskusije.map((diskusija) =>
-        diskusija.id === id && !diskusija.korisnikGlasao
-          ? { ...diskusija, glasovi: diskusija.glasovi + 1, korisnikGlasao: true }
-          : diskusija
-      )
-    );
-  };
+    const [openBoardID, setOpenBoardID] = useState(null)
 
-  // Provjera tokena i autentifikacije prilikom učitavanja komponente
-  useEffect(() => {
+    useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
     if (uritoken) {
@@ -35,25 +23,23 @@ const MainPage = () => {
       navigate("/");
       return;
     }
-  }, [navigate]);
-
-  return (
-    <div className="min-h-screen bg-gray-100 flex">
-      <div className="flex-grow p-4">
-        <ListaDiskusija diskusije={diskusije} naGlasanje={naGlasanje} />
-      </div>
-
-      <aside className="w-1/4 bg-blue-600 text-white p-4 flex flex-col items-center">
-        <h1 className="text-xl font-bold mb-4">StanBlog</h1>
-        <HeaderComp username={korisnik.korisnickoIme} onLogout={
-          () => {
-            localStorage.removeItem('authToken');
-            navigate("/");
-          }
-        } />
-      </aside>
+    }, [navigate]);
+    
+    return (
+    <div>
+        <HeaderComp username={korisnik.korisnickoIme} 
+                    openBoardID={openBoardID} 
+                    setOpenBoardID={setOpenBoardID}
+                    onLogout={() => {
+                        localStorage.removeItem('authToken');
+                        navigate("/");
+                    }
+        />
+        {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
     </div>
-  );
+  )
 };
+
+export default MainPage
 
 export default MainPage;
