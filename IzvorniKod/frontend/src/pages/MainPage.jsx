@@ -27,7 +27,14 @@ function MainPage() {
     
     return (
     <div>
-        <HeaderComp username={korisnik.korisnickoIme} openBoardID={openBoardID} setOpenBoardID={setOpenBoardID}/>
+        <HeaderComp username={korisnik.korisnickoIme} 
+                    openBoardID={openBoardID} 
+                    setOpenBoardID={setOpenBoardID}
+                    onLogout={() => {
+                        localStorage.removeItem('authToken');
+                        navigate("/");
+                    }
+        />
         {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
     </div>
   )
