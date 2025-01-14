@@ -30,7 +30,7 @@ const Login = () => {
         console.log('Uspešna prijava:', data);
         
         // Preusmjeri na glavnu stranicu
-        navigate('/mainPage');
+        navigate('/main');
       } else {
         setError(data.message || 'Invalid username or password.');
       }
@@ -47,7 +47,7 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
     if (token) {
-      navigate("/mainPage");
+      navigate("/main");
       return;
     }
   }, [navigate]);
