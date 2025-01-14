@@ -3,8 +3,8 @@ import diskusije from '../../public/diskusije'
 
 const DodajDiskusijuForm = ({ onClose, onSave }) => {
   const [naziv, setNaziv] = useState('');
-  const [opis, setOpis] = useState('');
-  const [hasVoting, setHasVoting] = useState(false); 
+  const [opis, setOpis] = useState(''); 
+  const [tip, setTip] = useState('public'); // New state for discussion type
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -12,11 +12,7 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
       id: Math.random(),
       naslov: naziv,
       opis,
-      upVotes: 0,
-      downVotes: 0,
-      glasovi: 0,
-      korisnikGlasao: false,
-      hasVoting,
+      tip // Include the type in the new discussion object
     };
     onSave(novaDiskusija); 
     onClose(); 
@@ -46,14 +42,16 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
             onChange={(e) => setOpis(e.target.value)}
           ></textarea>
         </div>
-        <div className="mb-4 flex items-center">
-          <input
-            type="checkbox"
-            checked={hasVoting}
-            onChange={(e) => setHasVoting(e.target.checked)}
-            className="mr-2"
-          />
-          <label className="text-sm font-medium text-gray-700">Voting</label>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Tip diskusije</label>
+          <select
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
+            value={tip}
+            onChange={(e) => setTip(e.target.value)}
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
         </div>
         <div className="flex justify-end gap-4">
           <button

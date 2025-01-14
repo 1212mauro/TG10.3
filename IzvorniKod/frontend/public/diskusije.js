@@ -3,6 +3,7 @@ const diskusijeData = [
     id: 1,
     naslov: "Renovacija ulaznog hodnika",
     opis: "Predlaže se renovacija ulaznog hodnika kako bi se poboljšao izgled i sigurnost prostora. Moguće je postaviti nove pločice, zamijeniti svjetla i obojiti zidove.",
+    tip: "public", // New parameter
     komentari: [
       {
         id: 1,
@@ -42,6 +43,7 @@ const diskusijeData = [
     id: 2,
     naslov: "Uvođenje sustava video nadzora",
     opis: "Postavljanje kamera za nadzor zajedničkih prostora radi veće sigurnosti i smanjenja vandalizma u zgradi.",
+    tip: "private", // New parameter
     komentari: [
       {
         id: 1,
@@ -66,6 +68,7 @@ const diskusijeData = [
     id: 3,
     naslov: "Ugradnja punionice za električne automobile",
     opis: "Predlaže se postavljanje punionice za električna vozila u garaži kako bi se suvlasnicima omogućila jednostavnija upotreba električnih automobila.",
+    tip: "public", // New parameter
     komentari: [
       {
         id: 1,
@@ -96,6 +99,7 @@ const diskusijeData = [
     id: 4,
     naslov: "Postavljanje novih poštanskih sandučića",
     opis: "Obnova i zamjena poštanskih sandučića u zgradi, jer su postojeći u lošem stanju i ne pružaju odgovarajuću zaštitu pošte.",
+    tip: "private", // New parameter
     komentari: [],
     glasanja: [
       {
@@ -113,6 +117,7 @@ const diskusijeData = [
     id: 5,
     naslov: "Postavljanje dodatnog osvjetljenja u garaži",
     opis: "Ugradnja dodatnih svjetiljki radi bolje osvijetljenosti garažnih prostora, što može poboljšati sigurnost i vidljivost.",
+    tip: "public", // New parameter
     komentari: [
       {
         id: 1,
