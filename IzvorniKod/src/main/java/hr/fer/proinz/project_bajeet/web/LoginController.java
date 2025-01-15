@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @Slf4j
 public class LoginController {
     
