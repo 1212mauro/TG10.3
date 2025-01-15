@@ -1,5 +1,7 @@
 package hr.fer.proinz.project_bajeet.web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +40,11 @@ public class LoginController {
     
     @GetMapping("/getOauthUser/{username}")
     public User getOauthUser(@PathVariable String username) {
-        return userRepo.findByUsername(username).orElse(userRepo.save(new User(username, "jaBasJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoVolimPrsut")));
+        User userInCaseOfFail = new User(username, "jaBasJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoVolimPrsut");
+        Optional<User> user = userRepo.findByUsername(username);
+        return user.orElse(userRepo.save(userInCaseOfFail));
     }
+    
 
     @PostMapping("/login")
     public User login(@RequestBody LoginRequest loginUser) {

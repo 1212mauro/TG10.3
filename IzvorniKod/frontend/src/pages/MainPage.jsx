@@ -11,6 +11,7 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
+
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")))
 
     useEffect(() => {
