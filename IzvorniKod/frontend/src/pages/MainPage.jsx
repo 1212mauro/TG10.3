@@ -10,24 +10,24 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
-
+    
     const user = JSON.parse(sessionStorage.getItem("user"))
-    console.log(user)
-    // useEffect(() => {
-    // const urlParams = new URLSearchParams(window.location.search);
-    // let uritoken = urlParams.get('token');
-    // if (uritoken) {
-    //   localStorage.setItem('authToken', uritoken);
-    //   navigate('/main');
-    //   return;
-    // }
-    // const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
-    // if (!token) {
-    //   // Ako nema tokena, preusmjeravamo na Login stranicu
-    //   navigate("/");
-    //   return;
-    // }
-    // }, [navigate]);
+    
+    useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let uritoken = urlParams.get('token');
+    if (uritoken) {
+      localStorage.setItem('authToken', uritoken);
+      navigate('/main');
+      return;
+    }
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    if (!token) {
+      // Ako nema tokena, preusmjeravamo na Login stranicu
+      navigate("/");
+      return;
+    }
+    }, [navigate]);
     
     return (
     
