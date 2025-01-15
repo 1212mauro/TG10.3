@@ -21,6 +21,7 @@ function MainPage() {
         let expiration = urlParams.get('expiration');
         localStorage.setItem('authToken', uritoken);
         localStorage.setItem('expiration', expiration);
+        client.defaults.headers.common['Authorization'] = `Bearer ${uritoken}`;
         getUser();
         navigate('/main');
         return;

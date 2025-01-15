@@ -21,6 +21,7 @@ const Login = () => {
         console.log(data)
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('expiration', data.expiresIn);
+        client.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         navigate('/main');
       } else {
         setError(data.message || 'Invalid username or password.');
