@@ -10,31 +10,36 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
-    
+
     const user = JSON.parse(sessionStorage.getItem("user"))
     
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
-    if (uritoken) {
-      localStorage.setItem('authToken', uritoken);
-      navigate('/main');
-      return;
+    if (uritoken === "tost") {
+        localStorage.setItem('authToken', uritoken);
+        navigate('/main');
+        return;
+    } else if(uritoken){
+        let decodeToken = JSON.parse(atob(uritoken.split(".")[1]))
+        console.log(decodeToken)
+        localStorage.setItem('authToken', "tost");
+        navigate('/main');
+        return;
     }
     const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
     if (!token) {
-      // Ako nema tokena, preusmjeravamo na Login stranicu
-      navigate("/");
-      return;
+        // Ako nema tokena, preusmjeravamo na Login stranicu
+        navigate("/");
+        return;
     }
     }, [navigate]);
-    
+
     return (
-    
     <UserContext.Provider value={user}>
         <div>
-            <HeaderComp username={user.username} 
-                        openBoardID={openBoardID} 
+            <HeaderComp username={user.username}
+                        openBoardID={openBoardID}
                         setOpenBoardID={setOpenBoardID}
                         onLogout={() => {
                             localStorage.removeItem("authToken");
