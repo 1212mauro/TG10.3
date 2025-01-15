@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "./Modal";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
+import { UserContext } from "../pages/MainPage";
+import client from '../lib/AxiosConfig'
 
-function ThreadDetails({ thread, comments, onClose, handleAddComment }){
+function ThreadDetails({ thread, onClose, handleAddComment }){
   const [isAddingComment, setIsAddingComment] = useState(false);
+  const [comments, setComments] = useState(thread.comments);
+
+  const user = useContext(UserContext)
 
   useEffect(() => {
     console.log(thread)
@@ -15,10 +20,30 @@ function ThreadDetails({ thread, comments, onClose, handleAddComment }){
     setIsAddingComment(() => false);
   };
 
+  async function HandleDeleteComment(commentID) {
+    let res = await client.delete(`/main/deleteComment/${thread.threadID}/${commentID}`)
+    let newComments = comments.filter(comment => comment.messageId != commentID) 
+    console.log(newComments)
+    setComments(() => newComments)
+    console.log(res.data)
+  }
+
+  async function handleAddComment(commentText){
+    const newComment = {
+      id: null,
+      content: commentText,
+      timeSent: Date.now(),
+      messageAuthor : user,
+    };
+    let newComments = await client.post(`/main/addComment/${thread.threadID}`, JSON.stringify(newComment))
+    console.log(newComments)
+    setComments(newComments.data);
+  };
+
   return (
     <Modal title={thread.title} onClose={onClose}>
       <p className="text-gray-700 mb-4">{thread.description}</p>
-      <CommentList comments={comments} />
+      <CommentList comments={comments} deleteComment={HandleDeleteComment}/>
       {isAddingComment ? (
         <AddComment HandleSaveComment={HandleSaveComment}></AddComment>
       ) : (

@@ -1,7 +1,7 @@
 import React from 'react'
 import Comment from './Comment'
 
-function CommentList({ comments }) {
+function CommentList({ comments, deleteComment }) {
 
     console.log(comments)
     return (
@@ -9,7 +9,7 @@ function CommentList({ comments }) {
             <h3 className="text-lg font-semibold mb-2">comments</h3>
             {comments.length > 0 ?
                 comments.map((comment) => (
-                    <Comment key={comment.id} comment={comment} />
+                    <Comment key={comment.id} comment={comment} deleteComment={deleteComment}/>
                 )) :
                 <p className="text-gray-500">Nema komentara</p>
             }
