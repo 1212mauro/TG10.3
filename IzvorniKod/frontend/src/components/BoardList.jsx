@@ -21,7 +21,6 @@ function BoardList({ setOpenBoard }) {
     const HandleButtonClick = (boardID) => {
         console.log(boardID)
         setOpenBoard(boardID)
-        localStorage.setItem("openBoard", `${boardID}`);
     };
 
     async function HandleSaveBoard(newBoard){
