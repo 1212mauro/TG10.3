@@ -26,6 +26,7 @@ function MainPage() {
         let user = getOauthUser(username)
         console.log(user)
         setUser(user)
+
         localStorage.setItem('authToken', "tost");
         navigate('/main');
         return;
