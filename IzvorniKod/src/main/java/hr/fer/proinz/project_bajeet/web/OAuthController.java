@@ -191,7 +191,7 @@ public class OAuthController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("redirect:/main?token=" + jwtToken);
+        return new ModelAndView("redirect:/main?token=" + jwtToken + "&expiration=" + jwtService.getExpirationTime());
     }
 
     @GetMapping("/code/github")
@@ -305,7 +305,7 @@ public class OAuthController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("redirect:/main?token=" + jwtToken);
+        return new ModelAndView("redirect:/main?token=" + jwtToken + "&expiration=" + jwtService.getExpirationTime());
     }
 
 }
