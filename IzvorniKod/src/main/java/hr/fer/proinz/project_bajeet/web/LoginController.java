@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import hr.fer.proinz.project_bajeet.data.UserRepository;
 import hr.fer.proinz.project_bajeet.dataTypes.User;
+import hr.fer.proinz.project_bajeet.dataTypes.User.Role;
 import hr.fer.proinz.project_bajeet.payload.LoginRequest;
 import hr.fer.proinz.project_bajeet.payload.LoginResponse;
 import hr.fer.proinz.project_bajeet.service.JwtService;
@@ -41,6 +42,7 @@ public class LoginController {
     @GetMapping("/getOauthUser/{username}")
     public User getOauthUser(@PathVariable String username) {
         User userInCaseOfFail = new User(username, "jaBasJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoVolimPrsut");
+        userInCaseOfFail.setRole(Role.TENANT);
         Optional<User> user = userRepo.findByUsername(username);
         return user.orElse(userRepo.save(userInCaseOfFail));
     }
