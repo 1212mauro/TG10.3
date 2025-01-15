@@ -16,24 +16,12 @@ const Login = () => {
 
     try {
       const response = await client.post("/auth/login", JSON.stringify({ username, password }))
-      // const response = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ username, password }),
-      // });
       let data = response.data
       if (response.status == 200) {
         console.log(data)
-        // console.log(username)
-        // Pohrani token u lokalnu pohranu
-        sessionStorage.setItem("user" , JSON.stringify(data))
-        // localStorage.setItem('authToken', data.token);
-        console.log('Uspešna prijava:', data);
-        
-        // Preusmjeri na glavnu stranicu
-        navigate('/main?token=tost');
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('expiration', data.expiresIn);
+        navigate('/main');
       } else {
         setError(data.message || 'Invalid username or password.');
       }

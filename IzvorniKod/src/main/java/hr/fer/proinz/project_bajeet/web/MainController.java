@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -19,6 +20,7 @@ import hr.fer.proinz.project_bajeet.data.VoteRepository;
 import hr.fer.proinz.project_bajeet.dataTypes.Board;
 import hr.fer.proinz.project_bajeet.dataTypes.Message;
 import hr.fer.proinz.project_bajeet.dataTypes.Thread;
+import hr.fer.proinz.project_bajeet.dataTypes.User;
 import hr.fer.proinz.project_bajeet.dataTypes.Vote;
 import lombok.extern.slf4j.Slf4j;
 
@@ -140,5 +142,11 @@ public class MainController {
         messageRepo.deleteById(commentID);
         log.info(messageRepo.findAll() + " all comments");
         return "successfully deleted comment with id: " + commentID;
-    } 
+    }
+
+    @GetMapping("/userInfo")
+    public User userInfo(@AuthenticationPrincipal User user) {
+        return user;
+    }
+    
 }

@@ -8,15 +8,15 @@ const client = axios.create({
   }
 });
 
-// client.interceptors.request.use(async config => {
-//     const accessToken = localStorage.getItem("authToken")
-  
-//     if (config.headers) {
-//       config.headers.Authorization = `Bearer ${accessToken}` 
-//     }
-  
-//     return config
-// });
+client.interceptors.request.use(async config => {
+    const accessToken = localStorage.getItem("authToken")
+    if (config.headers) {
+      if (accessToken){
+        config.headers.Authorization = `Bearer ${accessToken}` 
+      }
+    }
+    return config
+});
 
 
 export default client

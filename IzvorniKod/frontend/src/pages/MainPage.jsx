@@ -17,18 +17,11 @@ function MainPage() {
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
-    if (uritoken === "tost") {
-        console.log(uritoken)
+    if (uritoken) {
+        let expiration = urlParams.get('expiration');
         localStorage.setItem('authToken', uritoken);
-        navigate('/main');
-        return;
-    } else if(uritoken){
-        console.log(uritoken)
-        let username = JSON.parse(atob(uritoken.split(".")[1])).sub
-        getOauthUser(username)
-        console.log(user)
-
-        localStorage.setItem('authToken', "tost");
+        localStorage.setItem('expiration', expiration);
+        getUser();
         navigate('/main');
         return;
     }
@@ -40,8 +33,8 @@ function MainPage() {
     }
     }, [navigate]);
 
-    const getOauthUser = async (username) => {
-        let user = await client.get(`/auth/getOauthUser/${username}`)
+    const getUser = async () => {
+        let user = await client.get(`/main/userInfo`)
         setUser(user)
     }
 
