@@ -3,6 +3,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import BoardList from '../components/BoardList';
 import HeaderComp from '../components/HeaderComp';
 import ThreadList from '../components/ThreadList';
+import client from "../lib/AxiosConfig";
 
 export const UserContext = createContext()
 
@@ -10,9 +11,8 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")))
 
-    const user = JSON.parse(sessionStorage.getItem("user"))
-    
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
@@ -21,8 +21,11 @@ function MainPage() {
         navigate('/main');
         return;
     } else if(uritoken){
-        let decodeToken = JSON.parse(atob(uritoken.split(".")[1]))
-        console.log(decodeToken)
+        let username = JSON.parse(atob(uritoken.split(".")[1])).sub
+        let user = getOauthUser(username)
+        console.log(user)
+        setUser(user)
+
         localStorage.setItem('authToken', "tost");
         navigate('/main');
         return;
@@ -34,6 +37,10 @@ function MainPage() {
         return;
     }
     }, [navigate]);
+
+    async function getOauthUser(username) {
+        return await client.get(`/auth/getOauthUser/${username}`)
+    }
 
     return (
     <UserContext.Provider value={user}>

@@ -36,6 +36,10 @@ public class LoginController {
     @Autowired
     private AuthenticationService authenticationService;
     
+    @GetMapping("/getOauthUser/{username}")
+    public User getOauthUser(@PathVariable String username) {
+        return userRepo.findByUsername(username).orElse(userRepo.save(new User(username, "jaBasJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoVolimPrsut")));
+    }
 
     @PostMapping("/login")
     public User login(@RequestBody LoginRequest loginUser) {
