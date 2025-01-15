@@ -1,17 +1,11 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Thread from "./Thread";
 import AddThreadForm from "./AddThreadForm"; 
 import client from '../lib/AxiosConfig'
 
-export const UserContext = createContext()
-
 function ThreadList({ boardID }){
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [threadList, setThreadList] = useState([]); 
-  const [user, setUser] = useState({ userId : 1,
-    username : "tost",
-    passwordHash : "most"
-  })
 
   useEffect(() => {
     fetchData()
@@ -41,9 +35,7 @@ function ThreadList({ boardID }){
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
           {threadList.map(thread => (
             <div key={thread.threadID} className="flex flex-col">
-              <UserContext.Provider value={user}>
                 <Thread thread={thread} />
-              </UserContext.Provider>
             </div>
           ))}
 

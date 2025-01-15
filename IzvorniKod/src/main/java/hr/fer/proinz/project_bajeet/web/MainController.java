@@ -54,7 +54,6 @@ public class MainController {
     @GetMapping("/{boardID}")
     public List<Thread> getThreads(@PathVariable int boardID) {
         Board b = boardRepo.findByBoardID(boardID);
-        // log.info(b.toString());
         return b.getThreads();
     }
     
@@ -83,7 +82,7 @@ public class MainController {
     }
 
     @PostMapping("addComment/{threadID}")
-    public Thread addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
+    public List<Message> addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
         
         Message message = messageRepo.save(newMessage);
         
@@ -95,7 +94,7 @@ public class MainController {
 
         // log.info(messageRepo.findAll() + "messages from repo");
         // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
-        return t;
+        return t.getComments();
     }
 
     @PutMapping("/vote/{id}")
@@ -124,7 +123,22 @@ public class MainController {
         // log.info(threadRepo.findAll().toString());
 
         voteRepo.deleteById(voteID);
-        log.info(voteRepo.findAll() + " all votes");
+        // log.info(voteRepo.findAll() + " all votes");
         return "successfully deleted vote with id: " + voteID;
     }
+
+    @DeleteMapping("deleteComment/{threadID}/{commentID}")
+    public String deleteComment(@PathVariable int commentID, @PathVariable int threadID){
+
+        Thread t = threadRepo.findByThreadID(threadID);
+        List<Message> messages = t.getComments();
+        messages.removeIf(m -> m.getMessageId() == commentID);
+        t.setComments(messages);
+        // log.info(votes + "votes");
+        threadRepo.save(t);
+
+        messageRepo.deleteById(commentID);
+        log.info(messageRepo.findAll() + " all comments");
+        return "successfully deleted comment with id: " + commentID;
+    } 
 }

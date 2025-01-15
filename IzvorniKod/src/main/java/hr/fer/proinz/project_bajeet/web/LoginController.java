@@ -11,10 +11,12 @@ import hr.fer.proinz.project_bajeet.dataTypes.User;
 import hr.fer.proinz.project_bajeet.payload.LoginRequest;
 import hr.fer.proinz.project_bajeet.payload.LoginResponse;
 import hr.fer.proinz.project_bajeet.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import hr.fer.proinz.project_bajeet.service.AuthenticationService;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class LoginController {
     
     @Autowired
@@ -37,10 +39,10 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody LoginRequest registerUser) {
+    public User register(@RequestBody LoginRequest registerUser) {
         User registeredUser = authenticationService.signup(registerUser);
-
-        return ResponseEntity.ok(registeredUser);
+        log.info(registeredUser + " user created");
+        return registeredUser;
     }
 
 }

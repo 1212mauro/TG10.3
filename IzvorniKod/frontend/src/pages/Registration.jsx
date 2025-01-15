@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import RegisterFooter from '../components/RegisterFooter';
+import client from '../lib/AxiosConfig';
 
 const Registracija = () => {
   const [username, setUsername] = useState('');
@@ -18,18 +19,22 @@ const Registracija = () => {
       setError('');
       console.log('Registracija podaci:', { username, password });
       try {
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, password }),
-        });
+        const response = await client.post('/auth/register', JSON.stringify({ username, password }))
+        // fetch('/api/auth/register', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({ username, password }),
+        // });
   
-        const data = await response.json();
-  
-        if (response.ok) {
+        const data = response.data;
+        console.log(response)
+        if (response.status == 200) {
           console.log("uspjesna prijava");
+          console.log(data)
+          sessionStorage.setItem("user" , JSON.stringify(data))
+          navigate("/main")
         } else {
           setError(data.message || 'Invalid username or password.');
         }

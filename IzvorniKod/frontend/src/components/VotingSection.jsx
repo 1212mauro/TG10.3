@@ -3,7 +3,7 @@ import UndoVoteButton from "./UndoVoteButton";
 import VoteButton from "./VoteButton";
 import client from "../lib/AxiosConfig";
 
-import { UserContext } from "./ThreadList";
+import { UserContext } from "../pages/MainPage";
 
 function VotingSection({ thread }){
   const [votes, setVotes] = useState(thread.votes)

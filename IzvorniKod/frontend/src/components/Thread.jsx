@@ -1,30 +1,14 @@
 import React, { useState, useContext } from "react";
 import ThreadDetails from "./ThreadDetails";
 import VotingSection from "./VotingSection";
-import { UserContext } from "./ThreadList";
-import client from '../lib/AxiosConfig'
+
 
 function Thread({ thread }){
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [comments, setComments] = useState(thread.comments);
-
-  const user = useContext(UserContext)
-  
+  const [isModalOpen, setIsModalOpen] = useState(false)
   
   function handleReadMore(){
     setIsModalOpen(i => true);
     console.log(isModalOpen)
-  };
-
-  function handleAddComment(commentText){
-    const newComment = {
-      id: null,
-      content: commentText,
-      timeSent: Date.now(),
-      messageAuthor : user,
-    };
-    client.post(`/main/addComment/${thread.threadID}`, JSON.stringify(newComment))
-    setComments(c => [...c, newComment]);
   };
 
   return (
@@ -43,9 +27,7 @@ function Thread({ thread }){
       {isModalOpen && (
         <ThreadDetails
           thread={thread}
-          comments={comments}
           onClose={() => setIsModalOpen(false)}
-          handleAddComment={handleAddComment}
         />
       )}
     </div>

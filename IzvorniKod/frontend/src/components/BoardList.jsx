@@ -14,6 +14,7 @@ function BoardList({ setOpenBoard }) {
 
     const fetchData = async () => {
         let boards = await client.get("/main/getBoards")
+        console.log(boards)
         setBoardList(boards.data)
     }
 

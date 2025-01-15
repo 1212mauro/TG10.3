@@ -3,9 +3,6 @@ import { useEffect } from 'react';
 
 function Modal({ title, children, onClose }){
 
-
-  useEffect(() => {console.log(title)}, [])
-
   return(
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96 relative">

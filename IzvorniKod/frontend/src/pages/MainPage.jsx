@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import BoardList from '../components/BoardList';
 import HeaderComp from '../components/HeaderComp';
-import korisnik from "../../public/korisnikInfo"; 
 import ThreadList from '../components/ThreadList';
+
+export const UserContext = createContext()
 
 function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
-
+    
+    const user = JSON.parse(sessionStorage.getItem("user"))
+    
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
@@ -27,16 +30,20 @@ function MainPage() {
     }, [navigate]);
     
     return (
-    <div>
-        <HeaderComp username={korisnik.korisnickoIme} 
-                    openBoardID={openBoardID} 
-                    setOpenBoardID={setOpenBoardID}
-                    onLogout={() => {
-                        localStorage.removeItem('authToken');
-                        navigate("/");
-                    }}/>
-        {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
-    </div>
+    
+    <UserContext.Provider value={user}>
+        <div>
+            <HeaderComp username={user.username} 
+                        openBoardID={openBoardID} 
+                        setOpenBoardID={setOpenBoardID}
+                        onLogout={() => {
+                            localStorage.removeItem("authToken");
+                            sessionStorage.removeItem("user");
+                            navigate("/");
+                        }}/>
+            {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+        </div>
+    </UserContext.Provider>
   )
 };
 
