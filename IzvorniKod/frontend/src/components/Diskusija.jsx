@@ -54,10 +54,11 @@ const Diskusija = ({ diskusija, naGlasanje }) => {
       >
         {diskusija.tip === "public" ? "Public" : "Private"}
       </span>
-      <h2 className="text-xl font-semibold text-gray-800">{diskusija.naslov}</h2>
-      <p className="text-gray-600 mt-2">{diskusija.opis.substring(0, 50)}...</p>
-      <button onClick={handleReadMore} className="text-blue-500 text-sm mt-2">
-        Pročitaj više
+      <h2 className="text-xl font-semibold text-gray-800 bg-gray-200 p-2 rounded-lg inline-block mb-4">
+        {diskusija.naslov}
+      </h2>
+      <button onClick={handleReadMore} className="text-blue-500 text-sm absolute bottom-2 left-2">
+               Pročitaj više
       </button>
 
       {isModalOpen && (
