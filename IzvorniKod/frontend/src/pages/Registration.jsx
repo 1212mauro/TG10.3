@@ -5,7 +5,7 @@ import Input from '../components/Input';
 import RegisterFooter from '../components/RegisterFooter';
 import client from '../lib/AxiosConfig';
 
-const Registracija = () => {
+const Registration = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,12 +29,12 @@ const Registracija = () => {
         // });
   
         const data = response.data;
-        console.log(response)
+        // console.log(response)
         if (response.status == 200) {
           console.log("uspjesna prijava");
-          console.log(data)
+          // console.log(data)
           sessionStorage.setItem("user" , JSON.stringify(data))
-          navigate("/main")
+          navigate("/main?token=tost")
         } else {
           setError(data.message || 'Invalid username or password.');
         }
@@ -68,4 +68,4 @@ const Registracija = () => {
   );
 };
 
-export default Registracija;
+export default Registration;

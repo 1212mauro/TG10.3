@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import LoginFooter from '../components/LoginFooter';
+import client from '../lib/AxiosConfig';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -14,23 +15,25 @@ const Login = () => {
     setError(""); // Resetuj prethodne greške
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
+      const response = await client.post("/auth/login", JSON.stringify({ username, password }))
+      // const response = await fetch('/api/auth/login', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ username, password }),
+      // });
+      let data = response.data
+      if (response.status == 200) {
+        console.log(data)
+        // console.log(username)
         // Pohrani token u lokalnu pohranu
-        localStorage.setItem('authToken', data.token);
+        sessionStorage.setItem("user" , JSON.stringify(data))
+        // localStorage.setItem('authToken', data.token);
         console.log('Uspešna prijava:', data);
         
         // Preusmjeri na glavnu stranicu
-        navigate('/main');
+        navigate('/main?token=tost');
       } else {
         setError(data.message || 'Invalid username or password.');
       }
