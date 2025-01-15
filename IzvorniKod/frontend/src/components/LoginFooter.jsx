@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 
 const redirectToOAuth = (url) => {
-    localStorage.setItem('authToken', url); 
     window.location.href = url;
 };
 
