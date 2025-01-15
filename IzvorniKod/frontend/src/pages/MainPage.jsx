@@ -12,7 +12,7 @@ function MainPage() {
     const navigate = useNavigate()
 
     const user = JSON.parse(sessionStorage.getItem("user"))
-
+    
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
@@ -36,7 +36,6 @@ function MainPage() {
     }, [navigate]);
 
     return (
-
     <UserContext.Provider value={user}>
         <div>
             <HeaderComp username={user.username}

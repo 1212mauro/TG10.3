@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @Slf4j
 public class LoginController {
     
