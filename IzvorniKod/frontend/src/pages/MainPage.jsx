@@ -18,14 +18,15 @@ function MainPage() {
     const urlParams = new URLSearchParams(window.location.search);
     let uritoken = urlParams.get('token');
     if (uritoken === "tost") {
+        console.log(uritoken)
         localStorage.setItem('authToken', uritoken);
         navigate('/main');
         return;
     } else if(uritoken){
+        console.log(uritoken)
         let username = JSON.parse(atob(uritoken.split(".")[1])).sub
-        let user = getOauthUser(username)
+        getOauthUser(username)
         console.log(user)
-        setUser(user)
 
         localStorage.setItem('authToken', "tost");
         navigate('/main');
@@ -39,8 +40,9 @@ function MainPage() {
     }
     }, [navigate]);
 
-    async function getOauthUser(username) {
-        return await client.get(`/auth/getOauthUser/${username}`)
+    const getOauthUser = async (username) => {
+        let user = await client.get(`/auth/getOauthUser/${username}`)
+        setUser(user)
     }
 
     return (
