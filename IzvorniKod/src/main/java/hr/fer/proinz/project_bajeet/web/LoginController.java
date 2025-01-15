@@ -44,7 +44,7 @@ public class LoginController {
         User userInCaseOfFail = new User(username, "jaBasJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoJakoVolimPrsut");
         userInCaseOfFail.setRole(Role.TENANT);
         Optional<User> user = userRepo.findByUsername(username);
-        return user.orElseGet(() -> userRepo.save(userInCaseOfFail));
+        return user.orElse(userRepo.save(userInCaseOfFail));
     }
     
 
