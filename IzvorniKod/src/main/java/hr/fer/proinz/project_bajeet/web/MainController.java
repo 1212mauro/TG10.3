@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/api/main")
+@RequestMapping("/main")
 @CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class MainController {
