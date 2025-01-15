@@ -11,7 +11,6 @@ function MainPage() {
 
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
-
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")))
 
     useEffect(() => {
@@ -26,6 +25,7 @@ function MainPage() {
         let user = getOauthUser(username)
         console.log(user)
         setUser(user)
+
         localStorage.setItem('authToken', "tost");
         navigate('/main');
         return;

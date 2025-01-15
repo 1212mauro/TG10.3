@@ -35,6 +35,7 @@ const Registration = () => {
           // console.log(data)
           sessionStorage.setItem("user" , JSON.stringify(data))
           navigate("/main?token=tost")
+
         } else {
           setError(data.message || 'Invalid username or password.');
         }
