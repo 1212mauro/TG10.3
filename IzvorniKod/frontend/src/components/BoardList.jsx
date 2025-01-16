@@ -13,7 +13,11 @@ function BoardList({ setOpenBoard }) {
     }, [])
 
     const fetchData = async () => {
-        let boards = await client.get("/main/getBoards")
+        const token = localStorage.getItem('authToken');
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        let boards = await client.get("/main/getBoards", config)
         console.log(boards)
         setBoardList(boards.data)
     }
@@ -24,7 +28,11 @@ function BoardList({ setOpenBoard }) {
     };
 
     async function HandleSaveBoard(newBoard){
-        let addedBoard = await client.post("/main/addBoard", newBoard);
+        const token = localStorage.getItem('authToken');
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        let addedBoard = await client.post("/main/addBoard", newBoard, config);
         console.log(addedBoard.data)
         setBoardList(boardList => [...boardList, addedBoard.data])
     }

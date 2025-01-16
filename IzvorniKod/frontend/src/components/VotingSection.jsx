@@ -26,7 +26,11 @@ function VotingSection({ thread }){
       voter : user,
       voteType : vote,
     }
-    let res = await client.put(`/main/vote/${thread.threadID}`, JSON.stringify(UserVoted))
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let res = await client.put(`/main/vote/${thread.threadID}`, JSON.stringify(UserVoted), config)
     console.log(res.data.votes)
     setVotes(v => res.data.votes)
   };
@@ -36,8 +40,11 @@ function VotingSection({ thread }){
     // console.log(thread.votes.filter((vote) => vote.voter.userId == user.userId))
     let voteToDelete = votes.filter((vote) => vote.voter.userId == user.userId)[0]
     // console.log(voteToDelete.voteID + "VOTE ID")
-
-    let res = await client.delete(`/main/deleteVote/${thread.threadID}/${voteToDelete.voteID}`)
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let res = await client.delete(`/main/deleteVote/${thread.threadID}/${voteToDelete.voteID}`, config)
     console.log(res)
 
     console.log(votes)
