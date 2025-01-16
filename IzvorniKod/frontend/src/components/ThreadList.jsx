@@ -13,14 +13,22 @@ function ThreadList({ boardID }){
 
   const fetchData = async () => {
     console.log(boardID)
-    const response = await client.get(`/main/${boardID}`)
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    const response = await client.get(`/main/${boardID}`, config)
     console.log(response.data)
     setThreadList(response.data)
   }
 
   async function HandleSaveThread(newThread){
     newThread.boardID = boardID
-    let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread))
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread), config)
     console.log(response.data)
     setThreadList(p => [...p, response.data])
 

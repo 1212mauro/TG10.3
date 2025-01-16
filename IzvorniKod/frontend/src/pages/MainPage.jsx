@@ -21,7 +21,6 @@ function MainPage() {
         let expiration = urlParams.get('expiration');
         localStorage.setItem('authToken', uritoken);
         localStorage.setItem('expiration', expiration);
-        client.defaults.headers.common['Authorization'] = `Bearer ${uritoken}`;
         getUser();
         navigate('/main');
         return;
@@ -35,7 +34,11 @@ function MainPage() {
     }, [navigate]);
 
     const getUser = async () => {
-        let user = await client.get(`/main/userInfo`)
+        const token = localStorage.getItem('authToken');
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        let user = await client.get(`/main/userInfo`, config)
         setUser(user)
     }
 

@@ -21,7 +21,11 @@ function ThreadDetails({ thread, onClose, handleAddComment }){
   };
 
   async function HandleDeleteComment(commentID) {
-    let res = await client.delete(`/main/deleteComment/${thread.threadID}/${commentID}`)
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let res = await client.delete(`/main/deleteComment/${thread.threadID}/${commentID}`, config)
     let newComments = comments.filter(comment => comment.messageId != commentID) 
     console.log(newComments)
     setComments(() => newComments)
@@ -35,7 +39,11 @@ function ThreadDetails({ thread, onClose, handleAddComment }){
       timeSent: Date.now(),
       messageAuthor : user,
     };
-    let newComments = await client.post(`/main/addComment/${thread.threadID}`, JSON.stringify(newComment))
+    const token = localStorage.getItem('authToken');
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let newComments = await client.post(`/main/addComment/${thread.threadID}`, JSON.stringify(newComment), config)
     console.log(newComments)
     setComments(newComments.data);
   };
