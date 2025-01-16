@@ -12,7 +12,11 @@ function MainPage() {
     const [openBoardID, setOpenBoardID] = useState(null)
     const navigate = useNavigate()
 
-    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem("user")))
+    const [user, setUser] = useState(() => {
+        const storedUser = sessionStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : null;
+      });
+      
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -39,7 +43,7 @@ function MainPage() {
             headers: { Authorization: `Bearer ${token}` }
         };
         let user = await client.get(`/main/userInfo`, config)
-        setUser(user)
+        setUser(user.data)
     }
 
     return (
