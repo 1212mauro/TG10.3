@@ -43,21 +43,22 @@ function MainPage() {
             headers: { Authorization: `Bearer ${token}` }
         };
         let user = await client.get(`/main/userInfo`, config)
+        console.log(user)
         setUser(user.data)
     }
 
     return (
     <UserContext.Provider value={user}>
         <div>
-            <HeaderComp username={user.username}
-                        openBoardID={openBoardID}
+            <HeaderComp username={user?.username}
+                        openBoardID={openBoardID ? openBoardID : undefined}
                         setOpenBoardID={setOpenBoardID}
                         onLogout={() => {
                             localStorage.removeItem("authToken");
                             sessionStorage.removeItem("user");
                             navigate("/");
                         }}/>
-            {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+            {openBoardID? <ThreadList boardID={openBoardID ? openBoardID : undefined}/> : <BoardList setOpenBoard={setOpenBoardID} />}
         </div>
     </UserContext.Provider>
   )

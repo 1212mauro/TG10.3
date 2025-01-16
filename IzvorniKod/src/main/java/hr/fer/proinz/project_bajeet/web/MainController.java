@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/main")
-@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class MainController {
 

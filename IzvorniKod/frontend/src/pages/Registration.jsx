@@ -31,10 +31,8 @@ const Registration = () => {
         const data = response.data;
         // console.log(response)
         if (response.status == 200) {
-          console.log("uspjesna prijava");
           // console.log(data)
-          sessionStorage.setItem("user" , JSON.stringify(data))
-          navigate("/main?token=tost")
+          navigate("/")
 
         } else {
           setError(data.message || 'Invalid username or password.');
