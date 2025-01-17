@@ -14,7 +14,7 @@ function MainPage() {
 
     const [user, setUser] = useState(() => {
         const storedUser = sessionStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
+        return storedUser ? JSON.parse(storedUser) : undefined;
       });
       
 
@@ -35,6 +35,9 @@ function MainPage() {
         navigate("/");
         return;
     }
+    if (!user) {
+        getUser();
+    }
     }, [navigate]);
 
     const getUser = async () => {
@@ -44,6 +47,7 @@ function MainPage() {
         };
         let user = await client.get(`/main/userInfo`, config)
         console.log(user)
+        sessionStorage.setItem("user" , JSON.stringify(user.data))
         setUser(user.data)
     }
 
