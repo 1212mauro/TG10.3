@@ -20,6 +20,7 @@ spring:
       hibernate:
         format_sql: true
         use_nationalized_character_data: true
+        enable_lazy_load_no_trans: true
   application:
     name: ProjectBajeet
   security:
