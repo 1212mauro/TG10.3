@@ -19,7 +19,7 @@ function LoginFooter (){
             <FaGoogle className="mr-2" />
             Google
           </button>
-          <Link to="/registracija" className="text-blue-500 hover:underline">
+          <Link to="/registration" className="text-blue-500 hover:underline">
             Registriraj se
           </Link>
           <button

@@ -59,7 +59,7 @@ function ThreadList({ boardID }){
 
       {isFormOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <AddThreadForm onClose={() => setIsFormOpen(false)} onSave={HandleSaveThread} />
+          <AddThreadForm onClose={() => setIsFormOpen(false)} onSave={HandleSaveThread} boardID={boardID} />
         </div>
       )}
       </section>

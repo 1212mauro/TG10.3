@@ -7,7 +7,7 @@ function Thread({ thread }){
   const [isModalOpen, setIsModalOpen] = useState(false)
   
   function handleReadMore(){
-    setIsModalOpen(i => true);
+    setIsModalOpen(true);
     console.log(isModalOpen)
   };
 

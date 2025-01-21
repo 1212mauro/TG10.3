@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import Input from './Input';
+import Modal from './Modal';
+import UserSelector from './UserSelector';
 
 function AddBoardForm({ onClose, onSave }) {
 
     const [address, setAddress] = useState()
+    const [UserSelectorIsOpen, setUserSelectorIsOpen] = useState(false)
+    const [users, setUsers] = useState([])
 
-    function handleSave(e){
+    function handleSave(){
     const newThread = {
         boardID : null,
-        address : address
+        address : address,
+        users : users
     };
     onSave(newThread);
     onClose(); 
@@ -26,11 +31,15 @@ function AddBoardForm({ onClose, onSave }) {
                 Zatvori
             </button>
             <button
-                onClick={handleSave}
+                onClick={() => setUserSelectorIsOpen(true)}
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
             >
                 Spremi
             </button>
+            {UserSelectorIsOpen && 
+            <Modal title={"select users for this board"} onClose={() => setUserSelectorIsOpen(false)}>
+                <UserSelector users={users} setUsers={setUsers} HandleSubmit={handleSave} boardID={0} />
+            </Modal>}
         </div>
     </div>
   );
