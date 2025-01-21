@@ -1,37 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
-import ListaDiskusija from "../components/ListaDiskusija";
-import diskusijeData from "../../public/diskusije";
+import DiscussionList from "../components/DiscussionList";
+import discussionsData from "../../public/discussions";
 import HeaderComp from "../components/HeaderComp";
-import korisnik from "../../public/korisnikInfo"; 
+import user from "../../public/userInfo"; 
 
 const MainPage = () => {
-  const [diskusije, postaviDiskusije] = useState(diskusijeData);
+  const [discussions, setDiscussions] = useState(discussionsData);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const naGlasanje = (id) => {
-    postaviDiskusije((prethodneDiskusije) =>
-      prethodneDiskusije.map((diskusija) =>
-        diskusija.id === id && !diskusija.korisnikGlasao
-          ? { ...diskusija, glasovi: diskusija.glasovi + 1, korisnikGlasao: true }
-          : diskusija
+  const onVote = (id) => {
+    setDiscussions((previousDiscussions) =>
+      previousDiscussions.map((discussion) =>
+        discussion.id === id && !discussion.userVoted
+          ? { ...discussion, votes: discussion.votes + 1, userVoted: true }
+          : discussion
       )
     );
   };
 
-  // Provjera tokena i autentifikacije prilikom učitavanja komponente
+  // Token and authentication check when the component loads
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    let uritoken = urlParams.get('token');
-    if (uritoken) {
-      localStorage.setItem('authToken', uritoken);
+    let urlToken = urlParams.get('token');
+    if (urlToken) {
+      localStorage.setItem('authToken', urlToken);
       navigate('/mainPage');
       return;
     }
-    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+    const token = localStorage.getItem('authToken'); // Get token from localStorage
     if (!token) {
-      // Ako nema tokena, preusmjeravamo na Login stranicu
+      // If there is no token, redirect to the Login page
       navigate("/");
       return;
     }
@@ -40,12 +40,12 @@ const MainPage = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <div className="flex-grow p-4 overflow-y-auto max-h-screen">
-        <ListaDiskusija diskusije={diskusije} naGlasanje={naGlasanje} />
+        <DiscussionList discussions={discussions} onVote={onVote} />
       </div>
 
       <aside className="w-1/4 bg-blue-600 text-white p-4 flex flex-col items-center">
         <h1 className="text-xl font-bold mb-4">StanBlog</h1>
-        <HeaderComp username={korisnik.korisnickoIme} onLogout={
+        <HeaderComp username={user.username} onLogout={
           () => {
             localStorage.removeItem('authToken');
             navigate("/");

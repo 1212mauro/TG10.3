@@ -7,16 +7,16 @@ function HeaderComp({ username, onLogout }) {
       <div className="flex flex-col items-center gap-3">
         {username ? (
           <>
-            <span>Pozdrav, {username}!</span>
+            <span>Hello, {username}!</span>
             <button 
               onClick={onLogout} 
               className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-semibold rounded"
             >
-              Odjava
+              Logout
             </button>
           </>
         ) : (
-          <span>Gost</span>
+          <span>Guest</span>
         )}
       </div>
     </header>

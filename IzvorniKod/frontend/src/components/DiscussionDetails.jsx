@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Komentar from "./Komentar";
-import Glasanje from "./Glasanje";
+import Comment from "./Comment";
+import Voting from "./Voting";
 import Modal from "./Modal";
 
-const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddComment, onAddQuestion, onVote }) => {
+const DiscussionDetails = ({ discussion, comments, votings, onClose, onAddComment, onAddQuestion, onVote }) => {
   const [isAddingComment, setIsAddingComment] = useState(false);
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -22,16 +22,16 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
   };
 
   return (
-    <Modal title={diskusija.naslov} onClose={onClose}>
-      <p className="text-gray-700 mb-4">{diskusija.opis}</p>
+    <Modal title={discussion.title} onClose={onClose}>
+      <p className="text-gray-700 mb-4">{discussion.description}</p>
 
       <div className="flex flex-col lg:flex-row gap-4 mt-4">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2">Komentari</h3>
-          {komentari.length > 0 ? (
-            komentari.map((komentar) => <Komentar key={komentar.id} komentar={komentar} />)
+          <h3 className="text-lg font-semibold mb-2">Comments</h3>
+          {comments.length > 0 ? (
+            comments.map((comment) => <Comment key={comment.id} comment={comment} />)
           ) : (
-            <p className="text-gray-500">Nema komentara</p>
+            <p className="text-gray-500">No comments</p>
           )}
 
           {isAddingComment ? (
@@ -39,7 +39,7 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
               <textarea
                 className="w-full p-2 border border-gray-300 rounded-lg"
                 rows="3"
-                placeholder="Unesite svoj komentar"
+                placeholder="Enter your comment"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
               ></textarea>
@@ -47,7 +47,7 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
                 onClick={handleSaveComment}
                 className="mt-2 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
               >
-                Spremi komentar
+                Save comment
               </button>
             </div>
           ) : (
@@ -55,19 +55,19 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
               onClick={() => setIsAddingComment(true)}
               className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
             >
-              Dodaj komentar
+              Add comment
             </button>
           )}
         </div>
 
         <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2">Glasanja</h3>
-          {glasanja.length > 0 ? (
-            glasanja.map((glasanje) => (
-              <Glasanje key={glasanje.id} glasanje={glasanje} onVote={onVote} />
+          <h3 className="text-lg font-semibold mb-2">Votings</h3>
+          {votings.length > 0 ? (
+            votings.map((voting) => (
+              <Voting key={voting.id} voting={voting} onVote={onVote} />
             ))
           ) : (
-            <p className="text-gray-500">Nema glasanja</p>
+            <p className="text-gray-500">No votings</p>
           )}
 
           {isAddingQuestion ? (
@@ -75,7 +75,7 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
               <textarea
                 className="w-full p-2 border border-gray-300 rounded-lg"
                 rows="3"
-                placeholder="Unesite svoje pitanje"
+                placeholder="Enter your question"
                 value={newQuestion}
                 onChange={(e) => setNewQuestion(e.target.value)}
               ></textarea>
@@ -83,7 +83,7 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
                 onClick={handleSaveQuestion}
                 className="mt-2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
               >
-                Spremi pitanje
+                Save question
               </button>
             </div>
           ) : (
@@ -91,7 +91,7 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
               onClick={() => setIsAddingQuestion(true)}
               className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600"
             >
-              Dodaj pitanje
+              Add question
             </button>
           )}
         </div>
@@ -100,4 +100,4 @@ const DiskusijaDetalji = ({ diskusija, komentari, glasanja, onClose, onAddCommen
   );
 };
 
-export default DiskusijaDetalji;
+export default DiscussionDetails;

@@ -1,53 +1,53 @@
 import React, { useState } from 'react';
-import diskusije from '../../public/diskusije'
+import discussions from '../../public/discussions'
 
-const DodajDiskusijuForm = ({ onClose, onSave }) => {
-  const [naziv, setNaziv] = useState('');
-  const [opis, setOpis] = useState(''); 
-  const [tip, setTip] = useState('public'); // New state for discussion type
+const AddDiscussionForm = ({ onClose, onSave }) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState(''); 
+  const [type, setType] = useState('public'); // New state for discussion type
 
   const handleSave = (e) => {
     e.preventDefault();
-    const novaDiskusija = {
+    const newDiscussion = {
       id: Math.random(),
-      naslov: naziv,
-      opis,
-      tip // Include the type in the new discussion object
+      title,
+      description,
+      type // Include the type in the new discussion object
     };
-    onSave(novaDiskusija); 
+    onSave(newDiscussion); 
     onClose(); 
   };
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-bold mb-4">Dodaj novu diskusiju</h2>
+      <h2 className="text-xl font-bold mb-4">Add new discussion</h2>
       <form onSubmit={handleSave}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Naziv diskusije</label>
+          <label className="block text-sm font-medium text-gray-700">Discussion title</label>
           <input
             type="text"
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
-            placeholder="Unesite naziv diskusije"
-            value={naziv}
-            onChange={(e) => setNaziv(e.target.value)}
+            placeholder="Enter discussion title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Opis diskusije</label>
+          <label className="block text-sm font-medium text-gray-700">Discussion description</label>
           <textarea
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
             rows="4"
-            placeholder="Unesite detalje o diskusiji"
-            value={opis}
-            onChange={(e) => setOpis(e.target.value)}
+            placeholder="Enter discussion details"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Tip diskusije</label>
+          <label className="block text-sm font-medium text-gray-700">Discussion type</label>
           <select
             className="w-full mt-2 p-2 border border-gray-300 rounded-lg"
-            value={tip}
-            onChange={(e) => setTip(e.target.value)}
+            value={type}
+            onChange={(e) => setType(e.target.value)}
           >
             <option value="public">Public</option>
             <option value="private">Private</option>
@@ -59,13 +59,13 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
             onClick={onClose}
             className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400"
           >
-            Zatvori
+            Close
           </button>
           <button
             type="submit"
             className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
           >
-            Spremi
+            Save
           </button>
         </div>
       </form>
@@ -73,4 +73,4 @@ const DodajDiskusijuForm = ({ onClose, onSave }) => {
   );
 };
 
-export default DodajDiskusijuForm;
+export default AddDiscussionForm;

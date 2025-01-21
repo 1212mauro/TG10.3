@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import upvoteImage from "../assets/upvote.png";
 import downvoteImage from "../assets/downvote.png";
 
-const VotingSection = ({ diskusija, onVote }) => {
-  const [upVotes, setUpVotes] = useState(diskusija.upVotes);
-  const [downVotes, setDownVotes] = useState(diskusija.downVotes);
+const VotingSection = ({ discussion, onVote }) => {
+  const [upVotes, setUpVotes] = useState(discussion.upVotes);
+  const [downVotes, setDownVotes] = useState(discussion.downVotes);
   const [userVote, setUserVote] = useState(null); // "upvote", "downvote", or null
 
   const handleVote = (voteType) => {
