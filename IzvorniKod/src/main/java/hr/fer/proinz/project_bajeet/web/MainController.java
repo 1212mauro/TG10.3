@@ -52,10 +52,21 @@ public class MainController {
         return boardRepo.findAll();
     }
 
-    @GetMapping("/{boardID}")
-    public List<Thread> getThreads(@PathVariable int boardID) {
+    @GetMapping("/allThreads")
+    public List<Thread> getAllThread() {
+        return threadRepo.findAll();
+    }
+    
+    @GetMapping("/{boardID}/{userID}")
+    public List<Thread> getThreads(@PathVariable int boardID, @PathVariable int userID) {
+        User u = userRepo.findByUserId(userID);
         Board b = boardRepo.findByBoardID(boardID);
-        return b.getThreads();
+        log.info(b.getThreads() + " threads");
+        List<Thread> threadsForUser = b.getThreads().stream().filter(thread -> thread.getParticipants().contains(u)).toList();
+        log.info(u + " my user");
+        log.info(b.getThreads().stream().filter(thread -> thread.getParticipants().contains(u)).toList() + " someshit");
+        
+        return threadsForUser;
     }
 
     @GetMapping("/getUsers")
@@ -88,7 +99,7 @@ public class MainController {
     
         t.setVotes(List.of());
         t.setComments(List.of());
-
+        
 
         return t;
     }
