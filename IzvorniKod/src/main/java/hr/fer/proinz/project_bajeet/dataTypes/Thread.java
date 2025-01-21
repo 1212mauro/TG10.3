@@ -35,5 +35,5 @@ public class Thread {
     @OneToMany(cascade = CascadeType.ALL)
     List<Vote> votes;
 
-    private boolean isPublic;
+    private boolean isPublic = true;
 }
