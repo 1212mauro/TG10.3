@@ -20,9 +20,12 @@ function ThreadList({ boardID }){
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    const response = await client.get(`/main/${boardID}/${user.userId}`, config)
-    console.log(response.data)
-    setThreadList(response.data)
+    const response1 = await client.get(`/main/${boardID}/${user.userId}`, config)
+
+    const response2 = await client.get(`/main/public/${boardID}`, config)
+    console.log(response1.data)
+    console.log(response2.data)
+    setThreadList([...response1.data, ...response2.data])
   }
 
   async function HandleSaveThread(newThread){
@@ -33,7 +36,9 @@ function ThreadList({ boardID }){
     };
     let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread), config)
     console.log(response.data)
-    response.data.participants.filter(p => p.userId == user.userId).length > 0 && setThreadList(p => [...p, response.data])
+    let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0
+    setThread && setThreadList(p => [...p, response.data])
+
 
     console.log(threadList)
   };

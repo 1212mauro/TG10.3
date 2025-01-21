@@ -69,6 +69,13 @@ public class MainController {
         return threadsForUser;
     }
 
+    @GetMapping("/public/{boardID}")
+    public List<Thread> getPublicThreads(@PathVariable int boardID) {
+
+        Board b = boardRepo.findByBoardID(boardID);
+        return b.getThreads().stream().filter(thread -> thread.isPublic()).toList();
+    }
+    
     @GetMapping("/getUsers")
     public List<User> getAllUsers() {
         return userRepo.findAll();

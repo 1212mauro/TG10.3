@@ -18,6 +18,7 @@ function AddThreadForm({ onClose, onSave, boardID }){
       timeCreated: Date.now(),
       hasVoting: hasVoting,
       participants : allowedUsers,
+      public : !isPrivate,
     };
     onSave(newThread); 
     onClose(); 
