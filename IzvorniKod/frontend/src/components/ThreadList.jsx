@@ -33,7 +33,7 @@ function ThreadList({ boardID }){
     };
     let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread), config)
     console.log(response.data)
-    setThreadList(p => [...p, response.data])
+    response.data.participants.filter(p => p.userId == user.userId).length > 0 && setThreadList(p => [...p, response.data])
 
     console.log(threadList)
   };

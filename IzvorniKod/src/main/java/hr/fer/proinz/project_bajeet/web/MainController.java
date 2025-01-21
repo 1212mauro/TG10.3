@@ -79,17 +79,6 @@ public class MainController {
         Board b = boardRepo.findByBoardID(boardID);
         return b.getUsers();
     }
-
-    @GetMapping("/getUsers")
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
-    }
-
-    @GetMapping("/getUsersOnBoard/{boardID}")
-    public List<User> getUsers(@PathVariable int boardID) {
-        Board b = boardRepo.findByBoardID(boardID);
-        return b.getUsers();
-    }
     
     @PostMapping("/addBoard")
     public Board addBoard(@RequestBody Board newBoard) { 
