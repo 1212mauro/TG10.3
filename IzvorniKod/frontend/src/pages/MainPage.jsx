@@ -10,6 +10,7 @@ const MainPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+<<<<<<< Updated upstream
   const naGlasanje = (id) => {
     postaviDiskusije((prethodneDiskusije) =>
       prethodneDiskusije.map((diskusija) =>
@@ -23,12 +24,39 @@ const MainPage = () => {
   // Provjera tokena i autentifikacije prilikom učitavanja komponente
   useEffect(() => {
     const token = sessionStorage.getItem("authToken"); // Dobijamo token iz sessionStorage
+=======
+function MainPage() {
+    localStorage.setItem('authToken', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3ZyZXJhbmNldjQwQGdtYWlsLmNvbSIsImlhdCI6MTczNzQ4MDQ0NCwiZXhwIjoxNzM3NDg0MDQ0fQ.Q90EtFfk63jiOBj9tuK8CD2pD2gIU6yIoJ1l44Sucx4');
+    localStorage.setItem('expiration', '360000');
+    const [openBoardID, setOpenBoardID] = useState()
+    const navigate = useNavigate()
+
+    const [user, setUser] = useState(() => {
+        const storedUser = sessionStorage.getItem("user");
+        return storedUser ? JSON.parse(storedUser) : undefined;
+      });
+      
+
+    useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let uritoken = urlParams.get('token');
+    if (uritoken) {
+        let expiration = urlParams.get('expiration');
+        localStorage.setItem('authToken', uritoken);
+        localStorage.setItem('expiration', expiration);
+        getUser();
+        navigate('/main');
+        return;
+    }
+    const token = localStorage.getItem('authToken'); // Dobijamo token iz sessionStorage
+>>>>>>> Stashed changes
     if (!token) {
       // Ako nema tokena, preusmjeravamo na Login stranicu
       navigate("/");
       return;
     }
 
+<<<<<<< Updated upstream
     // Ako token postoji, šaljemo GET zahtjev s Authorization headerom
     const fetchData = async () => {
       try {
@@ -69,6 +97,25 @@ const MainPage = () => {
       </aside>
     </div>
   );
+=======
+    console.log(user);
+
+    return (
+    <UserContext.Provider value={user}>
+        <div>
+            <HeaderComp username={user?.username}
+                        openBoardID={openBoardID}
+                        setOpenBoardID={setOpenBoardID}
+                        onLogout={() => {
+                            localStorage.removeItem("authToken");
+                            sessionStorage.removeItem("user");
+                            navigate("/");
+                        }}/>
+            {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+        </div>
+    </UserContext.Provider>
+  )
+>>>>>>> Stashed changes
 };
 
 export default MainPage;
