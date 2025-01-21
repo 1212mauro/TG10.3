@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Thread from "./Thread";
 import AddThreadForm from "./AddThreadForm"; 
 import client from '../lib/AxiosConfig'
+import { UserContext } from "../pages/MainPage";
 
 function ThreadList({ boardID }){
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [threadList, setThreadList] = useState([]); 
+
+  const user=useContext(UserContext)
 
   useEffect(() => {
     fetchData()
@@ -17,7 +20,7 @@ function ThreadList({ boardID }){
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    const response = await client.get(`/main/${boardID}`, config)
+    const response = await client.get(`/main/${boardID}/${user.userId}`, config)
     console.log(response.data)
     setThreadList(response.data)
   }
