@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import Input from './Input';
+import Modal from './Modal';
+import UserSelector from './UserSelector';
 
-function AddThreadForm({ onClose, onSave }){
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [hasVoting, setHasVoting] = useState(false);
+function AddThreadForm({ onClose, onSave, boardID }){
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [hasVoting, setHasVoting] = useState(false)
+  const [isPrivate, setIsPrivate] = useState(false)
+  const [allowedUsers, setAllowedUsers] = useState([])
 
   function handleSave(e){
     const newThread = {
@@ -13,12 +17,14 @@ function AddThreadForm({ onClose, onSave }){
       description: description,
       timeCreated: Date.now(),
       hasVoting: hasVoting,
+      participants : allowedUsers,
     };
     onSave(newThread); 
     onClose(); 
   };
 
   return (
+    <>
     <div className="bg-white p-8 rounded-lg shadow-lg w-96">
       <h2 className="text-xl font-bold mb-4">Dodaj novu diskusiju</h2>
       <Input label="discussion title" type="text" labelClassName="block text-sm font-medium text-gray-700" inputClassName="w-full p-2 mt-2 border rounded-lg" stateSetter={setTitle}/>
@@ -31,14 +37,25 @@ function AddThreadForm({ onClose, onSave }){
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
       </div>
-      <div className="mb-4 flex items-center">
-        <input
-          type="checkbox"
-          checked={hasVoting}
-          onChange={(e) => setHasVoting(e.target.checked)}
-          className="mr-2"
-        />
-        <label className="text-sm font-medium text-gray-700">Voting</label>
+      <div className='flex flex-row justify-center'>
+        <div className="mb-4 mx-4 flex items-center">
+          <input
+            type="checkbox"
+            checked={hasVoting}
+            onChange={(e) => setHasVoting(e.target.checked)}
+            className="mr-2"
+          />
+          <label className="text-sm font-medium text-gray-700">Voting</label>
+        </div>
+        <div className="mb-4 mx-4 flex items-center">
+          <input
+            type="checkbox"
+            checked={isPrivate}
+            onChange={(e) => setIsPrivate(e.target.checked)}
+            className="mr-2"
+          />
+          <label className="text-sm font-medium text-gray-700">Private</label>
+        </div>
       </div>
       <div className="flex justify-end gap-4">
         <button
@@ -55,6 +72,10 @@ function AddThreadForm({ onClose, onSave }){
         </button>
       </div>
     </div>
+    {isPrivate && <Modal title={"select participants"} onClose={() => setIsPrivate(false)}>
+      <UserSelector users={allowedUsers} setUsers={setAllowedUsers} boardID={boardID} HandleSubmit={handleSave}/>
+    </Modal>}
+    </>
   );
 };
 

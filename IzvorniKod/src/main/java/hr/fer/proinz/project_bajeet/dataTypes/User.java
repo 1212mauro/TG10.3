@@ -35,12 +35,6 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // @ManyToMany(mappedBy = "users")
-    // List<Board> boards;
-
-    @ManyToMany(mappedBy = "participants")
-    List<Thread> threads;
-
     public User(String username, String passwordHash){
         this.username = username;
         this.passwordHash = passwordHash;

@@ -20,13 +20,6 @@ const Registration = () => {
       console.log('Registracija podaci:', { username, password });
       try {
         const response = await client.post('/auth/register', JSON.stringify({ username, password }))
-        // fetch('/api/auth/register', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ username, password }),
-        // });
   
         const data = response.data;
         // console.log(response)

@@ -9,7 +9,7 @@ export const UserContext = createContext()
 
 function MainPage() {
 
-    const [openBoardID, setOpenBoardID] = useState(null)
+    const [openBoardID, setOpenBoardID] = useState()
     const navigate = useNavigate()
 
     const [user, setUser] = useState(() => {
@@ -45,24 +45,25 @@ function MainPage() {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        let user = await client.get(`/main/userInfo`, config)
+        let res = await client.get(`/main/userInfo`, config)
+        let user = res.data
         console.log(user)
-        sessionStorage.setItem("user" , JSON.stringify(user.data))
-        setUser(user.data)
+        sessionStorage.setItem("user" , JSON.stringify(user))
+        setUser(user)
     }
 
     return (
     <UserContext.Provider value={user}>
         <div>
             <HeaderComp username={user?.username}
-                        openBoardID={openBoardID ? openBoardID : undefined}
+                        openBoardID={openBoardID}
                         setOpenBoardID={setOpenBoardID}
                         onLogout={() => {
                             localStorage.removeItem("authToken");
                             sessionStorage.removeItem("user");
                             navigate("/");
                         }}/>
-            {openBoardID? <ThreadList boardID={openBoardID ? openBoardID : undefined}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+            {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
         </div>
     </UserContext.Provider>
   )
