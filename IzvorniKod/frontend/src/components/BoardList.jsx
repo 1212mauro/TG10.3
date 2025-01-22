@@ -8,11 +8,13 @@ function BoardList({ setOpenBoard }) {
 
     const [boardList, setBoardList] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false)
+    const [canAddBoards, setCanAddBoards] = useState(false)
 
     const user = useContext(UserContext)
 
     useEffect(() => {
         fetchData()
+        setCanAddBoards(user.role === 'ADMIN')
     }, [])
 
     const fetchData = async () => {
@@ -52,11 +54,13 @@ function BoardList({ setOpenBoard }) {
                     </button>
                 </div>
             ))}
-                <button
-                onClick={() => setIsFormOpen(true)}
-                className="bg-blue-500 hover:bg-blue-700 p-4 border border-gray-300 cursor-pointer w-full text-center rounded-lg h-[150px]">
-                    Add New Item
-                </button>
+                {canAddBoards &&(
+                    <button
+                    onClick={() => setIsFormOpen(true)}
+                    className="bg-blue-500 hover:bg-blue-700 p-4 border border-gray-300 cursor-pointer w-full text-center rounded-lg h-[150px]">
+                        Add New Item
+                    </button>
+                )}
             </div>
 
             {isFormOpen && (

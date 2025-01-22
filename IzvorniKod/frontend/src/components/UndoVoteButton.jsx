@@ -11,7 +11,7 @@ function UndoVoteButton({ handleUndoVote, votes, isVoted }) {
             disabled={!isVoted}
             className="mt-2 bg-gray-500 text-white py-1 px-2 rounded hover:bg-gray-600"
             >
-            UNDO VOTE
+                UNDO VOTE
             </button>
         </span>
     )
