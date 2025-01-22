@@ -1,7 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import ThreadDetails from "./ThreadDetails";
-import VotingSection from "./VotingSection";
-
 
 function Thread({ thread }){
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -13,10 +11,6 @@ function Thread({ thread }){
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg mb-4 border border-gray-200 relative">
-      {/* <h2 className="text-xl font-semibold text-gray-800">{thread.title}</h2> */}
-      {/* <p className="text-gray-600 mt-2">
-        {thread.description.substring(0, 40)}{thread.description.length > 40 && "..."}
-      </p> */}
       <span
         className={`absolute top-2 right-2 text-sm font-semibold px-2 py-1 rounded-full ${
           thread.public

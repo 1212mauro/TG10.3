@@ -50,13 +50,13 @@ function AddThreadForm({ onClose, onSave, boardID }){
           onClick={onClose}
           className="bg-gray-300 text-gray-800 py-2 px-4 rounded-lg hover:bg-gray-400"
         >
-          Zatvori
+          Close
         </button>
         <button
           onClick={handleSave}
           className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
         >
-          Spremi
+          Save
         </button>
       </div>
     </div>
