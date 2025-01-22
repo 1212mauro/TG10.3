@@ -25,7 +25,6 @@ function Comment({ comment, deleteComment }){
         </div>
         {comment.hasVoting && <VotingSection message={comment} />}
       </div>
-      
     </>
   );
 };
