@@ -60,7 +60,6 @@ function MainPage() {
             };
             let res = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
             let boards = res.data
-            console.log(boards[0].boardID)
             boards.length == 1 && user.role !== 'ADMIN' && setOpenBoardID(boards[0].boardID)
         }
         
