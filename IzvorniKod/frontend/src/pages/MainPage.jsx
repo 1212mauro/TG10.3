@@ -75,6 +75,7 @@ function MainPage() {
                         setOpenBoardID={setOpenBoardID}
                         onLogout={() => {
                             localStorage.removeItem("authToken");
+                            localStorage.removeItem("expiration");
                             sessionStorage.removeItem("user");
                             navigate("/");
                         }}/>
