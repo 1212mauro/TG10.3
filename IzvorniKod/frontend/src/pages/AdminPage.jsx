@@ -28,6 +28,7 @@ function AdminPage(){
         <UserContext.Provider value={user}>
             {user && (<HeaderComp
                         username={user.username}
+                        setOpenBoardID={(x) => null}
                         onLogout={() => {
                             localStorage.removeItem("authToken");
                             localStorage.removeItem("expiration");
