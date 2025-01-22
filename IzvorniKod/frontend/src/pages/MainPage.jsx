@@ -8,7 +8,8 @@ import client from "../lib/AxiosConfig";
 export const UserContext = createContext()
 
 function MainPage() {
-
+    localStorage.setItem('authToken', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3ZyZXJhbmNldjQwQGdtYWlsLmNvbSIsImlhdCI6MTczNzU1OTgwMCwiZXhwIjoxNzM3NTYzNDAwfQ.5rFEEZUzRESFoF6t98OOh74ZNOfobGnWH8rnxdH60eY')
+    localStorage.setItem('expiration', '360000')
     const [openBoardID, setOpenBoardID] = useState()
     const navigate = useNavigate()
 
