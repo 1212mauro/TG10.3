@@ -82,7 +82,7 @@ public class MainController {
     }
 
     @GetMapping("/getBoardsForUser/{userID}")
-    public List<Board> getBoardsForuser(@PathVariable int userID) {
+    public List<Board> getBoardsForUser(@PathVariable int userID) {
         User u = userRepo.findByUserId(userID);
         List<Board> boardsForUser = boardRepo.findAll().stream().filter(board -> board.getUsers().contains(u)).toList();
         log.info(boardsForUser + " boards for user");

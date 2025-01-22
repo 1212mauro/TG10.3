@@ -15,8 +15,8 @@ function MainPage() {
     const [user, setUser] = useState(() => {
         const storedUser = sessionStorage.getItem("user");
         return storedUser ? JSON.parse(storedUser) : undefined;
-      });
-      
+    });
+
 
     useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -52,6 +52,21 @@ function MainPage() {
         setUser(user)
     }
 
+    useEffect(() => {
+        const fetch = async () => {
+            const token = localStorage.getItem('authToken');
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+            let res = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
+            let boards = res.data
+            console.log(boards[0].boardID)
+            boards.length == 1 && user.role !== 'ADMIN' && setOpenBoardID(boards[0].boardID)
+        }
+        
+        fetch()
+    }, [user])
+
     return (
     <UserContext.Provider value={user}>
         <div>
@@ -63,7 +78,7 @@ function MainPage() {
                             sessionStorage.removeItem("user");
                             navigate("/");
                         }}/>
-            {openBoardID? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+            {user && (openBoardID ? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />)}
         </div>
     </UserContext.Provider>
   )
