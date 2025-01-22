@@ -58,7 +58,7 @@ public class MainController {
     }
     
     @GetMapping("/{boardID}/{userID}")
-    public List<Thread> getThreads(@PathVariable int boardID, @PathVariable int userID) {
+    public List<Thread> getThreadsForUser(@PathVariable int boardID, @PathVariable int userID) {
         User u = userRepo.findByUserId(userID);
         Board b = boardRepo.findByBoardID(boardID);
         log.info(b.getThreads() + " threads");
@@ -75,11 +75,20 @@ public class MainController {
         Board b = boardRepo.findByBoardID(boardID);
         return b.getThreads().stream().filter(thread -> thread.isPublic()).toList();
     }
-    
+
     @GetMapping("/getUsers")
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
+
+    @GetMapping("/getBoardsForUser/{userID}")
+    public List<Board> getBoardsForuser(@PathVariable int userID) {
+        User u = userRepo.findByUserId(userID);
+        List<Board> boardsForUser = boardRepo.findAll().stream().filter(board -> board.getUsers().contains(u)).toList();
+        log.info(boardsForUser + " boards for user");
+        return boardsForUser;
+    }
+    
 
     @GetMapping("/getUsersOnBoard/{boardID}")
     public List<User> getUsers(@PathVariable int boardID) {
