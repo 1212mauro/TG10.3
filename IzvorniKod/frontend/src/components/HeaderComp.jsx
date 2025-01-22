@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../pages/MainPage';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function HeaderComp({ username, openBoardID, onLogout }) {
+function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
 
   const user = useContext(UserContext)
   const navigate = useNavigate()
