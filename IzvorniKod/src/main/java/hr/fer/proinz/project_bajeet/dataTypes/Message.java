@@ -4,6 +4,7 @@ package hr.fer.proinz.project_bajeet.dataTypes;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,4 +23,8 @@ public class Message {
     @JoinColumn(name ="user_id")
     private User messageAuthor;
 
+    private boolean hasVoting;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    List<Vote> votes;
 }

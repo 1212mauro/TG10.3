@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Integer> {
+    Message findByMessageId(Integer messageId);
 }
