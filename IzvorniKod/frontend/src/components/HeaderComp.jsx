@@ -2,13 +2,18 @@ import React, { useContext, useEffect } from 'react';
 import { UserContext } from '../pages/MainPage';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function HeaderComp({ username, openBoardID, onLogout }) {
+function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
 
   const user = useContext(UserContext)
   const navigate = useNavigate()
   const location = useLocation()
 
   const loadBackToBoard = (openBoardID || location.pathname === '/admin')
+
+  function handleBackToMain(){
+    setOpenBoardID(null)
+    navigate("/main")
+  }
 
   return (
     <header className="bg-green-500 text-white p-6 text-center">
@@ -18,7 +23,7 @@ function HeaderComp({ username, openBoardID, onLogout }) {
           <>
             <h1 className="text-xl font-bold">Welcome, {username}</h1>
             {loadBackToBoard &&
-            <button onClick={() => navigate("/main")} className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg">
+            <button onClick={handleBackToMain} className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg">
               Back to board select
             </button>}
             <button onClick={onLogout} className="absolute top-0 left-0 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
