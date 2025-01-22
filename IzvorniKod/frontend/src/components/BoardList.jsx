@@ -12,6 +12,8 @@ function BoardList({ setOpenBoard }) {
 
     const user = useContext(UserContext)
 
+    const user = useContext(UserContext)
+
     useEffect(() => {
         fetchData()
         setCanAddBoards(user.role === 'ADMIN')
