@@ -76,7 +76,6 @@ public class MainController {
         return b.getThreads().stream().filter(thread -> thread.isPublic()).toList();
     }
     
-
     @GetMapping("/getUsers")
     public List<User> getAllUsers() {
         return userRepo.findAll();
