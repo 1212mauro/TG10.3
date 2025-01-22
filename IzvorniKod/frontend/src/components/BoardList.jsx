@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import AddBoardForm from './AddBoardForm';
@@ -9,8 +10,6 @@ function BoardList({ setOpenBoard }) {
     const [boardList, setBoardList] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false)
     const [canAddBoards, setCanAddBoards] = useState(false)
-
-    const user = useContext(UserContext)
 
     const user = useContext(UserContext)
 

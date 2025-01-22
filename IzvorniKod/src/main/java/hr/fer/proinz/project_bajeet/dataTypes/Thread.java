@@ -17,8 +17,6 @@ public class Thread {
 
     private String description;
 
-    private boolean hasVoting;
-
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeCreated;
 
