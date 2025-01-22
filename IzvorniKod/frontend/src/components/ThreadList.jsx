@@ -34,7 +34,9 @@ function ThreadList({ boardID }){
         headers: { Authorization: `Bearer ${token}` }
     };
     let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread), config)
-    console.log(response.data)
+    newThread = response.data
+    newThread.comments = []
+    console.log(newThread)
     let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0
     setThread && setThreadList(p => [...p, response.data])
 
@@ -46,7 +48,7 @@ function ThreadList({ boardID }){
       <section className="container-xl lg:container m-auto">
         <h1 className="text-xl font-bold text-center">Diskusije</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
+        <div className="flex flex-col gap-4 border-gray-300 rounded-lg p-6">
           {threadList.map(thread => (
             <div key={thread.threadID} className="flex flex-col">
                 <Thread thread={thread} />
@@ -55,7 +57,9 @@ function ThreadList({ boardID }){
 
         <div
           onClick={() => setIsFormOpen(true)}
-          className="flex flex-col justify-center items-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
+          // className="flex flex-col justify-center items-center p-6 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
+          className="flex flex-col justify-center items-center p-6 mt-4 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-100"
+
         >
           <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
             Dodaj novu diskusiju

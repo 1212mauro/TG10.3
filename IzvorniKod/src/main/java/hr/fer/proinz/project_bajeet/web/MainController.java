@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,10 +60,7 @@ public class MainController {
     public List<Thread> getThreadsForUser(@PathVariable int boardID, @PathVariable int userID) {
         User u = userRepo.findByUserId(userID);
         Board b = boardRepo.findByBoardID(boardID);
-        log.info(b.getThreads() + " threads");
         List<Thread> threadsForUser = b.getThreads().stream().filter(thread -> thread.getParticipants().contains(u)).toList();
-        log.info(u + " my user");
-        log.info(b.getThreads().stream().filter(thread -> thread.getParticipants().contains(u)).toList() + " someshit");
         
         return threadsForUser;
     }
@@ -85,7 +81,6 @@ public class MainController {
     public List<Board> getBoardsForUser(@PathVariable int userID) {
         User u = userRepo.findByUserId(userID);
         List<Board> boardsForUser = boardRepo.findAll().stream().filter(board -> board.getUsers().contains(u)).toList();
-        log.info(boardsForUser + " boards for user");
         return boardsForUser;
     }
     
@@ -106,63 +101,52 @@ public class MainController {
         
         Thread t = threadRepo.save(newThread);
 
-        log.info(t + " saved thread");
         Board b = boardRepo.findByBoardID(boardID);
         List<Thread> threads = b.getThreads();
         threads.add(t);
         b.setThreads(threads);
         b = boardRepo.save(b);
-    
-        t.setVotes(List.of());
-        t.setComments(List.of());
-        
 
         return t;
     }
 
     @PostMapping("addComment/{threadID}")
-    public List<Message> addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
+    public Message addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
         
         Message message = messageRepo.save(newMessage);
-        
+
         Thread t = threadRepo.findByThreadID(threadID);
         List<Message> comments = t.getComments();
         comments.add(message);
         t.setComments(comments);
         t = threadRepo.save(t);
 
-        // log.info(messageRepo.findAll() + "messages from repo");
-        // log.info(threadRepo.findByThreadID(threadID) + "thread for message");
-        return t.getComments();
+        return message;
     }
 
-    @PutMapping("/vote/{id}")
-    public Thread addVote(@PathVariable int id ,@RequestBody Vote vote) {
-        log.info(vote + "vote debug");
+    @PutMapping("/vote/{messageID}")
+    public Message addVote(@PathVariable int messageID ,@RequestBody Vote vote) {
 
-        Thread threadToVote = threadRepo.findByThreadID(id);
-        List<Vote> votes = threadToVote.getVotes();
-
+        Message messageToVote = messageRepo.findByMessageId(messageID);
+        List<Vote> votes = messageToVote.getVotes();
         votes.add(vote);
-        threadToVote.setVotes(votes);
+        messageToVote.setVotes(votes);
 
-        return threadRepo.save(threadToVote);
+        return messageRepo.save(messageToVote);
     }
 
-    @DeleteMapping("deleteVote/{threadID}/{voteID}")
-    public String deleteVote(@PathVariable int voteID, @PathVariable int threadID){
+    @DeleteMapping("deleteVote/{messageID}/{voteID}")
+    public String deleteVote(@PathVariable int voteID, @PathVariable int messageID){
 
-        Thread t = threadRepo.findByThreadID(threadID);
-        List<Vote> votes = t.getVotes();
+        Message message = messageRepo.findByMessageId(messageID);
+
+        List<Vote> votes = message.getVotes();
         votes.removeIf(v -> v.getVoteID() == voteID);
-        t.setVotes(votes);
-        // log.info(votes + "votes");
-        threadRepo.save(t);
-
-        // log.info(threadRepo.findAll().toString());
+        message.setVotes(votes);
+        messageRepo.save(message);
 
         voteRepo.deleteById(voteID);
-        // log.info(voteRepo.findAll() + " all votes");
+
         return "successfully deleted vote with id: " + voteID;
     }
 
@@ -173,7 +157,7 @@ public class MainController {
         List<Message> messages = t.getComments();
         messages.removeIf(m -> m.getMessageId() == commentID);
         t.setComments(messages);
-        // log.info(votes + "votes");
+
         threadRepo.save(t);
 
         messageRepo.deleteById(commentID);

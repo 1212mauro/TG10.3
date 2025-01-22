@@ -5,15 +5,15 @@ import client from "../lib/AxiosConfig";
 
 import { UserContext } from "../pages/MainPage";
 
-function VotingSection({ thread }){
-  const [votes, setVotes] = useState(thread.votes)
+function VotingSection({ message }){
+  const [votes, setVotes] = useState(message.votes)
   const [isVoted, setIsVoted] = useState();
-  const [upVotes, setUpVotes] = useState(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
+  const [upVotes, setUpVotes] = useState(message.votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
 
   const user = useContext(UserContext)
 
   useEffect(() => {
-    setIsVoted(thread.votes.filter(vote => vote.voter.userId == user.userId).length > 0)
+    setIsVoted(message.votes.filter(vote => vote.voter.userId == user.userId).length > 0)
   }, [])
 
   useEffect(() => {
@@ -30,9 +30,9 @@ function VotingSection({ thread }){
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    let res = await client.put(`/main/vote/${thread.threadID}`, JSON.stringify(UserVoted), config)
+    let res = await client.put(`/main/vote/${message.messageId}`, JSON.stringify(UserVoted), config)
     console.log(res.data.votes)
-    setVotes(v => res.data.votes)
+    setVotes(res.data.votes)
   };
 
   async function handleUndoVote(){
@@ -44,7 +44,7 @@ function VotingSection({ thread }){
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    let res = await client.delete(`/main/deleteVote/${thread.threadID}/${voteToDelete.voteID}`, config)
+    let res = await client.delete(`/main/deleteVote/${message.messageId}/${voteToDelete.voteID}`, config)
     console.log(res)
 
     console.log(votes)

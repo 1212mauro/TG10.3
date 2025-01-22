@@ -6,7 +6,6 @@ import UserSelector from './UserSelector';
 function AddThreadForm({ onClose, onSave, boardID }){
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [hasVoting, setHasVoting] = useState(false)
   const [isPrivate, setIsPrivate] = useState(false)
   const [allowedUsers, setAllowedUsers] = useState([])
 
@@ -16,7 +15,6 @@ function AddThreadForm({ onClose, onSave, boardID }){
       title: title,
       description: description,
       timeCreated: Date.now(),
-      hasVoting: hasVoting,
       participants : allowedUsers,
       public : !isPrivate,
     };
@@ -38,25 +36,14 @@ function AddThreadForm({ onClose, onSave, boardID }){
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
       </div>
-      <div className='flex flex-row justify-center'>
-        <div className="mb-4 mx-4 flex items-center">
-          <input
-            type="checkbox"
-            checked={hasVoting}
-            onChange={(e) => setHasVoting(e.target.checked)}
-            className="mr-2"
-          />
-          <label className="text-sm font-medium text-gray-700">Voting</label>
-        </div>
-        <div className="mb-4 mx-4 flex items-center">
-          <input
-            type="checkbox"
-            checked={isPrivate}
-            onChange={(e) => setIsPrivate(e.target.checked)}
-            className="mr-2"
-          />
-          <label className="text-sm font-medium text-gray-700">Private</label>
-        </div>
+      <div className="mb-4 mx-4 flex items-center">
+        <input
+          type="checkbox"
+          checked={isPrivate}
+          onChange={(e) => setIsPrivate(e.target.checked)}
+          className="mr-2"
+        />
+        <label className="text-sm font-medium text-gray-700">Private</label>
       </div>
       <div className="flex justify-end gap-4">
         <button

@@ -32,8 +32,5 @@ public class Thread {
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     List<User> participants;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    List<Vote> votes;
-
     private boolean isPublic = true;
 }
