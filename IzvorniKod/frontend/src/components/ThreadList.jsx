@@ -21,7 +21,6 @@ function ThreadList({ boardID }){
         headers: { Authorization: `Bearer ${token}` }
     };
     const response1 = await client.get(`/main/${boardID}/${user.userId}`, config)
-
     const response2 = await client.get(`/main/public/${boardID}`, config)
     console.log(response1.data)
     console.log(response2.data)

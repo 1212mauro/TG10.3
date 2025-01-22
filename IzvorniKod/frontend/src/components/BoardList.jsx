@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
 import AddBoardForm from './AddBoardForm';
 import client from '../lib/AxiosConfig';
+import { UserContext } from '../pages/MainPage';
 
 function BoardList({ setOpenBoard }) {
 
     const [boardList, setBoardList] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false)
+
+    const user = useContext(UserContext)
 
     useEffect(() => {
         fetchData()
@@ -17,8 +20,8 @@ function BoardList({ setOpenBoard }) {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        let boards = await client.get("/main/getBoards", config)
-        console.log(boards)
+        let boards = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
+        console.log(boards.data)
         setBoardList(boards.data)
     }
 
@@ -34,7 +37,7 @@ function BoardList({ setOpenBoard }) {
         };
         let addedBoard = await client.post("/main/addBoard", newBoard, config);
         console.log(addedBoard.data)
-        setBoardList(boardList => [...boardList, addedBoard.data])
+        addedBoard.data.users.filter(p => p.userId == user.userId).length > 0 && setBoardList(boardList => [...boardList, addedBoard.data])
     }
 
     return (
