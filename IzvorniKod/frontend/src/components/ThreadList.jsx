@@ -39,7 +39,6 @@ function ThreadList({ boardID }){
     let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0
     setThread && setThreadList(p => [...p, response.data])
 
-
     console.log(threadList)
   };
 
