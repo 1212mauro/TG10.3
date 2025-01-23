@@ -30,7 +30,7 @@ function AddUserToThreadForm({ onClose, thread }) {
         const config = {
             headers: { Authorization: `Bearer ${token}`}
         };
-        let res = await client.put(`/main/addUserToThread/${threadID}/${userID}`, config)
+        let res = await client.put(`/mail/addUserToThread/${threadID}/${userID}`, config)
         setUnconfirmedUser(null)
         fetchData()
         console.log(res.data)
