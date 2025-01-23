@@ -1,16 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Input from './Input';
 import Modal from './Modal';
 import UserSelector from './UserSelector';
-import { UserContext } from '../pages/AdminPage';
 
 function AddThreadForm({ onClose, onSave, boardID }){
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [isPrivate, setIsPrivate] = useState(false)
   const [allowedUsers, setAllowedUsers] = useState([])
-
-  const user = useContext(UserContext)
 
   function handleSave(e){
     const newThread = {
@@ -19,7 +16,6 @@ function AddThreadForm({ onClose, onSave, boardID }){
       description: description,
       timeCreated: Date.now(),
       participants : allowedUsers,
-      initiator : user,
       public : !isPrivate,
     };
     onSave(newThread); 

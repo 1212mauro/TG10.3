@@ -15,6 +15,7 @@ function ThreadList({ boardID }){
   }, [])
 
   const fetchData = async () => {
+    console.log(boardID)
     const token = localStorage.getItem('authToken');
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -24,16 +25,10 @@ function ThreadList({ boardID }){
     console.log(response1.data)
     console.log(response2.data)
     setThreadList([...response1.data, ...response2.data])
-    if (user.role === 'ADMIN'){
-      let res = await client.get(`/main/allThreadsForBoard/${boardID}`, config)
-      setThreadList(res.data)
-    }
   }
 
   async function HandleSaveThread(newThread){
     newThread.boardID = boardID
-    newThread.initiator = user
-    console.log(newThread)
     const token = localStorage.getItem('authToken');
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -42,7 +37,7 @@ function ThreadList({ boardID }){
     newThread = response.data
     newThread.comments = []
     console.log(newThread)
-    let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0 || user.role === 'ADMIN'
+    let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0
     setThread && setThreadList(p => [...p, response.data])
 
     console.log(threadList)

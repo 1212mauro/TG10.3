@@ -25,10 +25,6 @@ function BoardList({ setOpenBoard }) {
         let boards = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
         console.log(boards.data)
         setBoardList(boards.data)
-        if (user.role === 'ADMIN'){
-            boards = await client.get(`/main/getBoards`, config)
-            setBoardList(boards.data)
-        }
     }
 
     const HandleButtonClick = (boardID) => {
@@ -43,8 +39,7 @@ function BoardList({ setOpenBoard }) {
         };
         let addedBoard = await client.post("/main/addBoard", newBoard, config);
         console.log(addedBoard.data)
-        const setBoard = user.role === 'ADMIN' || addedBoard.data.users.filter(p => p.userId == user.userId).length > 0
-        setBoard && setBoardList(boardList => [...boardList, addedBoard.data])
+        addedBoard.data.users.filter(p => p.userId == user.userId).length > 0 && setBoardList(boardList => [...boardList, addedBoard.data])
     }
 
     return (

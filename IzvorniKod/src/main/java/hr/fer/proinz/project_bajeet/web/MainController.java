@@ -55,11 +55,6 @@ public class MainController {
     public List<Thread> getAllThread() {
         return threadRepo.findAll();
     }
-
-    @GetMapping("/allThreadsForBoard/{boardID}")
-    public List<Thread> getAllThreadsForBoard(@PathVariable int boardID) {
-        return boardRepo.findByBoardID(boardID).getThreads();
-    }
     
     @GetMapping("/{boardID}/{userID}")
     public List<Thread> getThreadsForUser(@PathVariable int boardID, @PathVariable int userID) {
