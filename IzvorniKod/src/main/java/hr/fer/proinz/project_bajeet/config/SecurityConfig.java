@@ -44,7 +44,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5066", "http://localhost:3000", "https://projectbajeet.work.gd"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5066", "http://localhost:3000", "https://projectbajeet.work.gd", "https://apartmeet-backend.onrender.com/"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         // configuration.setExposedHeaders(List.of("*"));

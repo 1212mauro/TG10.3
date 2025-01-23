@@ -152,22 +152,6 @@ public class MainController {
         return messageRepo.save(messageToVote);
     }
 
-    @PutMapping("addUserToThread/{threadID}/{userID}")
-    public String addUserToThread(@PathVariable int threadID, @PathVariable int userID) {
-        
-        Thread t = threadRepo.findByThreadID(threadID);
-        User u = userRepo.findByUserId(userID);
-
-        List<User> users = t.getParticipants();
-        users.add(u);
-        t.setParticipants(users);
-        t = threadRepo.save(t);
-
-        log.info(t + "modified thread");
-
-        return "Success";
-    }
-
     @DeleteMapping("deleteVote/{messageID}/{voteID}")
     public String deleteVote(@PathVariable int voteID, @PathVariable int messageID){
 
