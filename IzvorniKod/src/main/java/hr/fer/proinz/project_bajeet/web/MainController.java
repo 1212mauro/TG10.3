@@ -96,6 +96,18 @@ public class MainController {
         return b.getUsers();
     }
     
+    @GetMapping("/getUsersNotOnThread/{boardID}/{threadID}")
+    public List<User> getUsersOnThread(@PathVariable int boardID, @PathVariable int threadID) {
+
+        List<User> usersOnThread = threadRepo.findByThreadID(threadID).getParticipants();
+        List<User> allUsersOnBoard = boardRepo.findByBoardID(boardID).getUsers();
+
+        List<User> retValue = allUsersOnBoard.stream().filter(user -> !usersOnThread.contains(user)).toList();
+        log.info(retValue + " return value");
+        return retValue;
+    }
+    
+    
     @PostMapping("/addBoard")
     public Board addBoard(@RequestBody Board newBoard) { 
         return boardRepo.save(newBoard);
@@ -138,6 +150,22 @@ public class MainController {
         messageToVote.setVotes(votes);
 
         return messageRepo.save(messageToVote);
+    }
+
+    @PutMapping("addUserToThread/{threadID}/{userID}")
+    public String addUserToThread(@PathVariable int threadID, @PathVariable int userID) {
+        
+        Thread t = threadRepo.findByThreadID(threadID);
+        User u = userRepo.findByUserId(userID);
+
+        List<User> users = t.getParticipants();
+        users.add(u);
+        t.setParticipants(users);
+        t = threadRepo.save(t);
+
+        log.info(t + "modified thread");
+
+        return "Success";
     }
 
     @DeleteMapping("deleteVote/{messageID}/{voteID}")
