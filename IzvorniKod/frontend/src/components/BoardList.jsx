@@ -52,12 +52,12 @@ function BoardList({ setOpenBoard }) {
             <h1 className="text-xl font-bold text-center">Ploče po adresama</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
                 {boardList.map((board, index) => (
-                <div key={index} className="bg-gray-200 p-4 border border-gray-300 w-full text-center rounded-lg">
-                    <p>{board.address}</p>
-                    <button onClick={() => HandleButtonClick(board.boardID)} className="mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-lg cursor-pointer">
-                        Click Me
-                    </button>
-                </div>
+                    <div key={index} className="bg-gray-200 p-4 border border-gray-300 w-full text-center rounded-lg">
+                        <p>{board.address}</p>
+                        <button onClick={() => HandleButtonClick(board.boardID)} className="mt-4 py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white rounded-lg cursor-pointer">
+                            Click Me
+                        </button>
+                    </div>
             ))}
                 {canAddBoards &&(
                     <button

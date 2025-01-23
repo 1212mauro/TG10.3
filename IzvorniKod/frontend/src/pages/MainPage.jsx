@@ -4,6 +4,7 @@ import BoardList from '../components/BoardList';
 import HeaderComp from '../components/HeaderComp';
 import ThreadList from '../components/ThreadList';
 import client from "../lib/AxiosConfig";
+import axios from "axios";
 
 export const UserContext = createContext()
 
@@ -66,20 +67,34 @@ function MainPage() {
         fetch()
     }, [user])
 
+    async function test(){
+        let testData={
+            MeetingTitle : "test",
+            ScheduledDate : new Date("01-02-2025 12:13:14"),
+            MeetingSummary : "testiranje",
+            ThreadTitle : "threadTitle1",
+            ThreadDescription : "testiranje"
+        }
+        let res = await axios.post("https://apartmeet-backend.onrender.com/meetings/thread", testData)
+        console.log(res)
+    }
+
     return (
     <UserContext.Provider value={user}>
-        <div>
-            <HeaderComp username={user?.username}
-                        openBoardID={openBoardID}
-                        setOpenBoardID={setOpenBoardID}
-                        onLogout={() => {
-                            localStorage.removeItem("authToken");
-                            localStorage.removeItem("expiration");
-                            sessionStorage.removeItem("user");
-                            navigate("/");
-                        }}/>
-            {user && (openBoardID ? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />)}
-        </div>
+        {user && 
+            <div>    
+            <HeaderComp username={user.username}
+                openBoardID={openBoardID}
+                setOpenBoardID={setOpenBoardID}
+                onLogout={() => {
+                    localStorage.removeItem("authToken");
+                    localStorage.removeItem("expiration");
+                    sessionStorage.removeItem("user");
+                    navigate("/");
+                }}/>
+                {openBoardID ? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+            </div>}
+        <button onClick={test}>COOL BUTTON</button>
     </UserContext.Provider>
   )
 };
