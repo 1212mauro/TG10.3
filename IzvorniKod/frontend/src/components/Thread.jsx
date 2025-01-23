@@ -26,6 +26,9 @@ function Thread({ thread }){
       <button onClick={handleReadMore} className="text-blue-500 text-sm absolute bottom-2 left-2">
         Read More
       </button>
+      <p className="text-gray-500 text-sm absolute bottom-2 right-2">
+        {thread.initiator.username}
+      </p>
 
       {isModalOpen && (
         <ThreadDetails

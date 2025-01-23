@@ -25,6 +25,8 @@ public class Thread {
     @OneToMany(cascade = CascadeType.ALL)
     List<Message> comments;
 
+    private User initiator;
+
     @ManyToMany
     @JoinTable(
     name = "caninteractwith",
