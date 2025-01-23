@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(
-                    "/auth/**", "/oauth2/**").permitAll()
+                    "/auth/**", "/oauth2/**", "/main/allThreads").permitAll()
                     .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -44,7 +44,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:3000", "https://projectbajeet.work.gd"));
+        configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5066", "http://localhost:3000", "https://projectbajeet.work.gd"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         // configuration.setExposedHeaders(List.of("*"));

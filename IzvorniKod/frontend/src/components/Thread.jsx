@@ -26,6 +26,7 @@ function Thread({ thread }){
       <h2 className="text-xl font-semibold text-gray-800 bg-gray-200 p-2 rounded-lg inline-block mb-4">
         {thread.title}
       </h2>
+
       <div className="reltive flex flex-row w-full">
         <button onClick={() => setIsModalOpen(true)} className="text-blue-500 text-sm">
           Read More
@@ -37,10 +38,10 @@ function Thread({ thread }){
           {thread.initiator.username}
         </p>
       </div>
-
       {isAddingUser && (
         <AddUserToThreadForm thread={thread} onClose={() => setIsAddingUser(false)} />
       )}
+
 
       {isModalOpen && (
         <ThreadDetails thread={thread} onClose={() => setIsModalOpen(false)} />
