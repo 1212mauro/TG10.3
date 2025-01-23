@@ -2,6 +2,17 @@ server:
   port: 8080
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: project.bajeet@gmail.com
+    password: qzua qfud nfrk aajl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
