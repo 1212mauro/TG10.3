@@ -20,7 +20,7 @@ import hr.fer.proinz.project_bajeet.dataTypes.User;
 import hr.fer.proinz.project_bajeet.service.MailService;
 
 @RestController
-@RequestMapping("/api/mail")
+@RequestMapping("/mail")
 public class MailController {
 
     private final ThreadRepository threadRepo;

@@ -46,7 +46,7 @@ function BoardList({ setOpenBoard }) {
 
     return (
         <section className="container-xl lg:container m-auto">
-            <h1 className="text-xl font-bold text-center">Ploče po adresama</h1>
+            <h1 className="text-xl font-bold text-center">Boards by their addresses</h1>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-gray-300 rounded-lg p-6">
                 {boardList.map((board, index) => (
                     <div key={index} className="bg-gray-200 p-4 border border-gray-300 w-full text-center rounded-lg">
