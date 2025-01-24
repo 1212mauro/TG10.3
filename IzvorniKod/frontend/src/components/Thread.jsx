@@ -2,13 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import ThreadDetails from "./ThreadDetails";
 import AddUserToThreadForm from "./AddUserToThreadForm";
 
-function Thread({ thread, disabled }){
+function Thread({ thread, disabled, handleDelete }){
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAddingUser, setIsAddingUser] = useState(false)
   const [user, setUser] = useState(() => {
           const storedUser = sessionStorage.getItem("user");
           return storedUser ? JSON.parse(storedUser) : undefined;
-      });
+  });
+
+  useEffect(() => {
+    console.log(isModalOpen, isAddingUser, user)
+  }) 
 
   return (
     <div className="p-4 pb-2 bg-white shadow-md rounded-lg mb-4 border border-gray-200 relative">
@@ -32,10 +36,14 @@ function Thread({ thread, disabled }){
         {user && (thread.initiator.userId == user.userId || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')) && !thread.public && <button onClick={() => setIsAddingUser(true)} className="text-blue-500 text-sm ml-6">
           Add user to thread
         </button>}
-        <p className="text-gray-500 text-sm absolute bottom-2 right-4">
-          {thread.initiator.username}
+        {user && (thread.initiator.userId == user.userId || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')) && <button onClick={handleDelete} className="bg-red-500 text-white py-1 px-2 rounded-lg text-sm hover:bg-red-700 absolute bottom-2 right-4">
+          Delete thread
+        </button>}
+        <p className="text-gray-500 text-sm absolute bottom-10 right-4">
+          Initiator: {thread.initiator.username}
         </p>
       </div>
+
       {isAddingUser && (
         <AddUserToThreadForm thread={thread} onClose={() => setIsAddingUser(false)} />
       )}

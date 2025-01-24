@@ -24,13 +24,21 @@ function ThreadList({ boardID }){
     };
     const response1 = await client.get(`/main/${boardID}/${user.userId}`, config)
     const response2 = await client.get(`/main/allThreadsForBoard/${boardID}`, config)
-    console.log(response1.data)
-    console.log(response2.data)
     setThreadList(response2.data)
     setAllowed(response1.data)
   }
 
-  async function HandleSaveThread(newThread){
+  async function handleDelete(thread){
+    const token = localStorage.getItem('authToken');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    let res = await client.delete(`/main/deleteThreadFromBoard/${boardID}/${thread.threadID}`, config)
+    console.log(res)
+    setThreadList(pastThreads => pastThreads.filter(pastThread => pastThread.threadID != thread.threadID))
+  }
+
+  async function handleSaveThread(newThread){
     newThread.boardID = boardID
     newThread.initiator = user
     console.log(newThread)
@@ -62,7 +70,7 @@ function ThreadList({ boardID }){
           <div className="flex flex-col gap-4 border-gray-300 rounded-lg p-6">
             {threadList.map(thread => (
               <div key={thread.threadID} className="flex flex-col">
-                  <Thread disabled={isDisabled(thread)} thread={thread}/>
+                  <Thread disabled={isDisabled(thread)} thread={thread} handleDelete={() => handleDelete(thread)}/>
               </div>
             ))}
 
@@ -78,7 +86,7 @@ function ThreadList({ boardID }){
 
         {isFormOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-            <AddThreadForm onClose={() => setIsFormOpen(false)} onSave={HandleSaveThread} boardID={boardID} />
+            <AddThreadForm onClose={() => setIsFormOpen(false)} onSave={handleSaveThread} boardID={boardID} />
           </div>
         )}
         </section>
