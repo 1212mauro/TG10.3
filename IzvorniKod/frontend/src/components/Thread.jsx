@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import ThreadDetails from "./ThreadDetails";
 import AddUserToThreadForm from "./AddUserToThreadForm";
 
+
 function Thread({ thread, disabled, handleDelete }){
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAddingUser, setIsAddingUser] = useState(false)

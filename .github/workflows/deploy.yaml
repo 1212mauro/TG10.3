@@ -74,6 +74,8 @@ jobs:
             export GOOGLE_CLIENT_SECRET_ID=${{ secrets.GOOGLE_CLIENT_SECRET_ID }}
             export GITHUB_CLIENT_ID=${{ secrets.O2_GITHUB_CLIENT_ID }}
             export GITHUB_CLIENT_SECRET_ID=${{ secrets.O2_GITHUB_CLIENT_SECRET_ID }}
+            export EMAIL=${{ secrets.EMAIL }}
+            export EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             cd ./Project_Bajeet_Deploy_Backend/
             kill $(cat ./backend.pid) || true
             rm current.jar || true
