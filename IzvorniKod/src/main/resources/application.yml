@@ -5,8 +5,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL}
-    password: ${EMAIL_PASSWORD}
+    username: project.bajeet@gmail.com
+    password: qzua qfud nfrk aajl
     properties:
       mail:
         smtp:
@@ -14,7 +14,7 @@ spring:
           starttls:
             enable: true
   datasource:
-    platform: postgres
+    # platform: postgres
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/projectbajeet
     username: postgres
