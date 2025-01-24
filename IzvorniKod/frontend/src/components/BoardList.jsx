@@ -14,7 +14,7 @@ function BoardList({ setOpenBoard }) {
 
     useEffect(() => {
         fetchData()
-        setCanAddBoards(user.role === 'ADMIN')
+        setCanAddBoards(user.role === 'ADMIN' || user.role === 'SUPERADMIN')
     }, [])
 
     const fetchData = async () => {
@@ -25,7 +25,7 @@ function BoardList({ setOpenBoard }) {
         let boards = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
         console.log(boards.data)
         setBoardList(boards.data)
-        if (user.role === 'ADMIN'){
+        if (user.role === 'ADMIN' || user.role === 'SUPERADMIN'){
             boards = await client.get(`/main/getBoards`, config)
             setBoardList(boards.data)
         }
@@ -43,7 +43,7 @@ function BoardList({ setOpenBoard }) {
         };
         let addedBoard = await client.post("/main/addBoard", newBoard, config);
         console.log(addedBoard.data)
-        const setBoard = user.role === 'ADMIN' || addedBoard.data.users.filter(p => p.userId == user.userId).length > 0
+        const setBoard = user.role === 'SUPERADMIN' || user.role === 'ADMIN' || addedBoard.data.users.filter(p => p.userId == user.userId).length > 0
         setBoard && setBoardList(boardList => [...boardList, addedBoard.data])
     }
 

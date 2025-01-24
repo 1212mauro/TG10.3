@@ -26,7 +26,7 @@ function ThreadList({ boardID }){
     console.log(response1.data)
     console.log(response2.data)
     setThreadList([...response1.data, ...response2.data])
-    if (user.role === 'ADMIN'){
+    if (user.role === 'ADMIN' || user.role === 'SUPERADMIN'){
       let res = await client.get(`/main/allThreadsForBoard/${boardID}`, config)
       setThreadList(res.data)
     }
@@ -44,7 +44,7 @@ function ThreadList({ boardID }){
     newThread = response.data
     newThread.comments = []
     console.log(newThread)
-    let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0 || user.role === 'ADMIN'
+    let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0 || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')
     setThread && setThreadList(p => [...p, response.data])
 
     console.log(threadList)

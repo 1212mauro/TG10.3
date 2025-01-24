@@ -10,7 +10,7 @@ function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
     const storedUser = sessionStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : undefined;
   });
-  const loadBackToBoard = ((openBoardID && user.role === 'ADMIN') || location.pathname === '/admin')
+  const loadBackToBoard = ((openBoardID && (user.role === 'ADMIN' || user.role === 'SUPERADMIN')) || location.pathname === '/admin')
 
   function handleBackToMain(){
     setOpenBoardID(null)
@@ -31,7 +31,7 @@ function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
             <button onClick={onLogout} className="absolute top-0 left-0 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg">
               Logout
             </button>
-            {location.pathname !== "/admin" && user.role === 'ADMIN' && (
+            {location.pathname !== "/admin" && (user.role === 'ADMIN' || user.role === 'SUPERADMIN') && (
               <button
                 onClick={() => navigate("/admin")}
                 className="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"

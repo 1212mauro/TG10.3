@@ -61,7 +61,7 @@ function MainPage() {
             };
             let res = await client.get(`/main/getBoardsForUser/${user.userId}`, config)
             let boards = res.data
-            boards.length == 1 && user.role !== 'ADMIN' && setOpenBoardID(boards[0].boardID)
+            boards.length == 1 && user.role !== 'ADMIN' && user.role !== 'SUPERADMIN' && setOpenBoardID(boards[0].boardID)
         }
         
         fetch()

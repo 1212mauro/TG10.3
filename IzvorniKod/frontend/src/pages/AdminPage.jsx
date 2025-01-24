@@ -19,7 +19,7 @@ function AdminPage(){
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
-        if (!token || !user || user.role !== 'ADMIN') {
+        if (!token || !user || (user.role !== 'ADMIN' && user.role !== 'SUPERADMIN')) {
             navigate("/")
         }
     }, [navigate, user]);
