@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "users")
 public class User implements UserDetails{
 
-    public static enum Role {ADMIN, TENANT, REPRESENTATIVE;}
+    public static enum Role {SUPERADMIN, ADMIN, TENANT, REPRESENTATIVE;}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -152,6 +152,16 @@ public class MainController {
         return messageRepo.save(messageToVote);
     }
 
+    @PutMapping("/updateBoard")
+    public Board updateBoard(@RequestBody Board updatedBoard) {
+        return boardRepo.save(updatedBoard);
+    }
+
+    @PutMapping("/updateUser")
+    public User updateBoard(@RequestBody User updatedUser) {
+        return userRepo.save(updatedUser);
+    }
+
     @DeleteMapping("deleteVote/{messageID}/{voteID}")
     public String deleteVote(@PathVariable int voteID, @PathVariable int messageID){
 

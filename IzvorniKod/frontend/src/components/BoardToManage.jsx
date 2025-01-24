@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
+import Modal from './Modal'
+import BoardManageForm from './BoardManageForm'
 
-function BoardToManage({ board }) {
+function BoardToManage({ board, updateBoard }) {
 
     const [isBeingManaged, setIsBeingManaged] = useState(false)
+
+    function handleBoardUpdate(board){
+        updateBoard(board)
+        setIsBeingManaged(false)
+    }
 
     return (
         <div
@@ -16,6 +23,12 @@ function BoardToManage({ board }) {
             >
                 Manage Board
             </button>
+
+            {isBeingManaged && 
+                <Modal title={`edit board for address ${board.address}`} onClose={() => setIsBeingManaged(false)}>
+                    <BoardManageForm board={board} updateBoard={(board) => handleBoardUpdate(board)}/>
+                </Modal>
+            }
         </div>
     )
 }

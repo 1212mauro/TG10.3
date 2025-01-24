@@ -4,7 +4,6 @@ import client from '../lib/AxiosConfig'
 function UserSelector({ boardID, users, setUsers, HandleSubmit }) {
 
     const [userList, setUserList] = useState([])
-    const [checked, setChecked] = useState([])
 
     useEffect(() => {
         fetchData()
@@ -21,12 +20,11 @@ function UserSelector({ boardID, users, setUsers, HandleSubmit }) {
             await client.get(`/main/getUsers`, config)
         console.log(response.data)
         setUserList(response.data)
-        setUsers(response.data.filter(user => user.role === "ADMIN"))
+        setUsers(response.data.filter(user => (user.role === 'ADMIN' || user.role === 'SUPERADMIN')))
     }
 
         function handleChange(e) {
         if (e.target.checked) {
-            console.log(e.target.checked, e.target, userList)
             setUsers(c => [...c, JSON.parse(e.target.value)]);
         } else {
             setUsers(users.filter((item) => item.userId !== JSON.parse(e.target.value).userId));

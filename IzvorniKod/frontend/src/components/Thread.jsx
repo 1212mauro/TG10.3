@@ -31,7 +31,7 @@ function Thread({ thread }){
         <button onClick={() => setIsModalOpen(true)} className="text-blue-500 text-sm">
           Read More
         </button>
-        {user && (thread.initiator.userId == user.userId || user.role === 'ADMIN') && !thread.public && <button onClick={() => setIsAddingUser(true)} className="text-blue-500 text-sm ml-6">
+        {user && (thread.initiator.userId == user.userId || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')) && !thread.public && <button onClick={() => setIsAddingUser(true)} className="text-blue-500 text-sm ml-6">
           Add user to thread
         </button>}
         <p className="text-gray-500 text-sm absolute bottom-2 right-4">
