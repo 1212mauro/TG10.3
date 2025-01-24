@@ -9,6 +9,7 @@ export const BoardContext = createContext()
 function ThreadList({ boardID }){
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [threadList, setThreadList] = useState([]); 
+  const [allowed, setAllowed] = useState([])
 
   const user=useContext(UserContext)
 
@@ -22,14 +23,11 @@ function ThreadList({ boardID }){
         headers: { Authorization: `Bearer ${token}` }
     };
     const response1 = await client.get(`/main/${boardID}/${user.userId}`, config)
-    const response2 = await client.get(`/main/public/${boardID}`, config)
+    const response2 = await client.get(`/main/allThreadsForBoard/${boardID}`, config)
     console.log(response1.data)
     console.log(response2.data)
-    setThreadList([...response1.data, ...response2.data])
-    if (user.role === 'ADMIN' || user.role === 'SUPERADMIN'){
-      let res = await client.get(`/main/allThreadsForBoard/${boardID}`, config)
-      setThreadList(res.data)
-    }
+    setThreadList(response2.data)
+    setAllowed(response1.data)
   }
 
   async function HandleSaveThread(newThread){
@@ -45,11 +43,17 @@ function ThreadList({ boardID }){
     newThread.comments = []
     console.log(newThread)
     let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0 || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')
-    setThread && setThreadList(p => [...p, response.data])
+    setThreadList(p => [...p, response.data])
+    setThread && setAllowed(a => [...a, response.data])
+
 
     console.log(threadList)
   };
 
+  function isDisabled(thread){
+    console.log(allowed)
+    return (user.role === 'REPRESENTATIVE' || user.role === 'TENANT') && allowed.filter(allowedThread => allowedThread.threadID == thread.threadID).length == 0 && !thread.public
+  }
 
   return (
     <BoardContext.Provider value={boardID}>
@@ -59,7 +63,7 @@ function ThreadList({ boardID }){
           <div className="flex flex-col gap-4 border-gray-300 rounded-lg p-6">
             {threadList.map(thread => (
               <div key={thread.threadID} className="flex flex-col">
-                  <Thread thread={thread}/>
+                  <Thread disabled={isDisabled(thread)} thread={thread}/>
               </div>
             ))}
 
