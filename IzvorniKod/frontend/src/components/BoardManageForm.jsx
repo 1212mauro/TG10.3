@@ -24,7 +24,6 @@ function BoardManageForm({ board, updateBoard }) {
         let updatedBoard = board
         updatedBoard.address = address
         updatedBoard.users = selectedUsers
-        console.log(updatedBoard)
         updateBoard(updatedBoard)
     }
 

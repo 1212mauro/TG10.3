@@ -67,18 +67,6 @@ function MainPage() {
         fetch()
     }, [user])
 
-    async function test(){
-        let testData={
-            MeetingTitle : "test",
-            ScheduledDate : new Date("01-02-2025 12:13:14"),
-            MeetingSummary : "testiranje",
-            ThreadTitle : "threadTitle1",
-            ThreadDescription : "testiranje"
-        }
-        let res = await axios.post("https://apartmeet-backend.onrender.com/meetings/thread", testData)
-        console.log(res)
-    }
-
     return (
     <UserContext.Provider value={user}>
         {user && 
@@ -92,9 +80,8 @@ function MainPage() {
                     sessionStorage.removeItem("user");
                     navigate("/");
                 }}/>
-                {openBoardID ? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
-            </div>}
-        <button onClick={test}>COOL BUTTON</button>
+            {openBoardID ? <ThreadList boardID={openBoardID}/> : <BoardList setOpenBoard={setOpenBoardID} />}
+        </div>}
     </UserContext.Provider>
   )
 };

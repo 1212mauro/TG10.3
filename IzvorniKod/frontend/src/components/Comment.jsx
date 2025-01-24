@@ -2,14 +2,12 @@ import React, { useContext } from "react";
 import { UserContext } from "../pages/MainPage";
 import VotingSection from "./VotingSection";
 
-function Comment({ comment, deleteComment }){
+function Comment({ comment, deleteComment, sizeOfThread, handleCreateMeeting }){
 
   const user = useContext(UserContext)
 
   const canDelete = comment.messageAuthor.userId == user.userId || user.role !== 'TENANT'
-
-  console.log(comment)
-
+  
   return (
     <>
       <div className="px-4 py-2 bg-gray-100 rounded-lg mb-2">
@@ -23,7 +21,7 @@ function Comment({ comment, deleteComment }){
           <span>{comment.messageAuthor.username}</span>
           <span>{new Date(comment.timeSent).toLocaleString()}</span>
         </div>
-        {comment.hasVoting && <VotingSection message={comment} />}
+        {comment.hasVoting && <VotingSection message={comment} sizeOfThread={sizeOfThread} handleCreateMeeting={handleCreateMeeting}/>}
       </div>
     </>
   );

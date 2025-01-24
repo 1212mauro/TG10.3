@@ -5,7 +5,7 @@ import client from "../lib/AxiosConfig";
 
 import { UserContext } from "../pages/MainPage";
 
-function VotingSection({ message }){
+function VotingSection({ message, sizeOfThread, handleCreateMeeting }){
   const [votes, setVotes] = useState(message.votes)
   const [isVoted, setIsVoted] = useState();
   const [upVotes, setUpVotes] = useState(message.votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
@@ -17,7 +17,11 @@ function VotingSection({ message }){
   }, [])
 
   useEffect(() => {
-    setUpVotes(votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0));
+    let v = votes.reduce((total,x) => total+(x.voteType==="UPVOTE"), 0);
+    setUpVotes(v)
+    if( v > 0.25*sizeOfThread){
+      handleCreateMeeting()
+    }
   }, [votes])
 
   async function handleVote(vote){
@@ -31,24 +35,17 @@ function VotingSection({ message }){
         headers: { Authorization: `Bearer ${token}` }
     };
     let res = await client.put(`/main/vote/${message.messageId}`, JSON.stringify(UserVoted), config)
-    console.log(res.data.votes)
     setVotes(res.data.votes)
   };
 
   async function handleUndoVote(){
-
-    // console.log(thread.votes.filter((vote) => vote.voter.userId == user.userId))
     let voteToDelete = votes.filter((vote) => vote.voter.userId == user.userId)[0]
-    // console.log(voteToDelete.voteID + "VOTE ID")
     const token = localStorage.getItem('authToken');
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
     let res = await client.delete(`/main/deleteVote/${message.messageId}/${voteToDelete.voteID}`, config)
-    console.log(res)
 
-    console.log(votes)
-    console.log(votes.filter(vote => vote.voteID != voteToDelete.voteID))
     setVotes(votes.filter(vote => vote.voteID != voteToDelete.voteID))
     setIsVoted(false);
   };

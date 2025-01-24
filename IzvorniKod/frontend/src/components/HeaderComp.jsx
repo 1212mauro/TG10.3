@@ -23,7 +23,7 @@ function HeaderComp({ username, openBoardID, setOpenBoardID, onLogout }) {
       <h1 className="text-xl font-bold mb-4">StanBlog</h1>
         {username ? (
           <>
-            <h1 className="text-xl font-bold">Welcome, {username}</h1>
+            <h1 className="text-xl font-bold">Welcome, {username.split("@")[0]}</h1>
             {loadBackToBoard &&
             <button onClick={handleBackToMain} className="absolute top-0 right-0 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg">
               Back to board select
