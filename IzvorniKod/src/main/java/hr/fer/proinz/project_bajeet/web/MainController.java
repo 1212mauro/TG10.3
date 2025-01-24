@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import hr.fer.proinz.project_bajeet.data.BoardRepository;
+import hr.fer.proinz.project_bajeet.data.MeetingRepository;
 import hr.fer.proinz.project_bajeet.data.MessageRepository;
 import hr.fer.proinz.project_bajeet.data.ThreadRepository;
 import hr.fer.proinz.project_bajeet.data.UserRepository;
 import hr.fer.proinz.project_bajeet.data.VoteRepository;
 import hr.fer.proinz.project_bajeet.dataTypes.Board;
+import hr.fer.proinz.project_bajeet.dataTypes.Meeting;
+import hr.fer.proinz.project_bajeet.dataTypes.MeetingPoint;
 import hr.fer.proinz.project_bajeet.dataTypes.Message;
 import hr.fer.proinz.project_bajeet.dataTypes.Thread;
 import hr.fer.proinz.project_bajeet.dataTypes.User;
@@ -37,13 +40,15 @@ public class MainController {
     private final VoteRepository voteRepo;
     private final UserRepository userRepo;
     private final MessageRepository messageRepo;
+    private final MeetingRepository meetRepo;
 
-    public MainController( BoardRepository boardRepo, ThreadRepository threadRepo, VoteRepository voteRepo, UserRepository userRepo, MessageRepository messageRepo){ 
+    public MainController( BoardRepository boardRepo, ThreadRepository threadRepo, VoteRepository voteRepo, UserRepository userRepo, MessageRepository messageRepo, MeetingRepository meetRepo){ 
         this.threadRepo = threadRepo; 
         this.boardRepo = boardRepo;
         this.voteRepo = voteRepo;
         this.userRepo = userRepo;
         this.messageRepo = messageRepo;
+        this.meetRepo = meetRepo;
     }
 
     @GetMapping("/getBoards")
@@ -129,17 +134,38 @@ public class MainController {
 
     @PostMapping("addComment/{threadID}")
     public Message addComment(@PathVariable int threadID, @RequestBody Message newMessage) {
-        
-        Message message = messageRepo.save(newMessage);
 
         Thread t = threadRepo.findByThreadID(threadID);
         List<Message> comments = t.getComments();
-        comments.add(message);
+        comments.add(newMessage);
         t.setComments(comments);
         t = threadRepo.save(t);
 
+        Message message = messageRepo.save(newMessage);
+
         return message;
     }
+
+    @PostMapping("/addMeeting/{threadID}")
+    public Meeting addMeeting(@PathVariable int threadID, @RequestBody Meeting newMeeting) {
+
+        Thread t = threadRepo.findByThreadID(threadID);
+        Meeting m = t.getMeeting();
+        if (m==null){
+            t.setMeeting(newMeeting);
+        } else {
+            List<MeetingPoint> p1 = m.getPoints();
+            List<MeetingPoint> p2 = newMeeting.getPoints();
+            p1.addAll(p2);
+            m.setPoints(p1);
+            t.setMeeting(m);
+        }
+        threadRepo.save(t);
+        Meeting updatedMeeting = threadRepo.findByThreadID(threadID).getMeeting();
+        log.info(updatedMeeting + " new meeting");
+        return updatedMeeting;
+    }
+    
 
     @PutMapping("/vote/{messageID}")
     public Message addVote(@PathVariable int messageID ,@RequestBody Vote vote) {

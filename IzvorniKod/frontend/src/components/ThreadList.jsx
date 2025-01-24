@@ -34,14 +34,12 @@ function ThreadList({ boardID }){
       headers: { Authorization: `Bearer ${token}` }
     };
     let res = await client.delete(`/main/deleteThreadFromBoard/${boardID}/${thread.threadID}`, config)
-    console.log(res)
     setThreadList(pastThreads => pastThreads.filter(pastThread => pastThread.threadID != thread.threadID))
   }
 
   async function handleSaveThread(newThread){
     newThread.boardID = boardID
     newThread.initiator = user
-    console.log(newThread)
     const token = localStorage.getItem('authToken');
     const config = {
         headers: { Authorization: `Bearer ${token}` }
@@ -49,15 +47,12 @@ function ThreadList({ boardID }){
     let response = await client.post(`/main/addThread/${boardID}`, JSON.stringify(newThread), config)
     newThread = response.data
     newThread.comments = []
-    console.log(newThread)
     let setThread = response.data.public || response.data.participants.filter(p => p.userId == user.userId).length > 0 || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')
     setThreadList(p => [...p, response.data])
     setThread && setAllowed(a => [...a, response.data])
-    console.log(threadList)
   };
 
   function isDisabled(thread){
-    console.log(allowed)
     return (user.role === 'REPRESENTATIVE' || user.role === 'TENANT') && allowed.filter(allowedThread => allowedThread.threadID == thread.threadID).length == 0 && !thread.public
   }
 

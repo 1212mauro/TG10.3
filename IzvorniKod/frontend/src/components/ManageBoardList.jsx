@@ -15,7 +15,6 @@ function ManageBoardList() {
       try {
         const res = await client.get(`/main/getBoards`, config);
         setBoardList(res.data);
-        console.log("Fetched boards:", res.data);
       } catch (error) {
         console.error("Error fetching boards:", error);
       }

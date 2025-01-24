@@ -14,11 +14,9 @@ function UserSelector({ boardID, users, setUsers, HandleSubmit }) {
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        console.log(boardID)
         const response = boardID ? 
             await client.get(`/main/getUsersOnBoard/${boardID}`, config) : 
             await client.get(`/main/getUsers`, config)
-        console.log(response.data)
         setUserList(response.data)
         setUsers(response.data.filter(user => (user.role === 'ADMIN' || user.role === 'SUPERADMIN')))
     }

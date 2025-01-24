@@ -27,6 +27,9 @@ public class Thread {
 
     private User initiator;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Meeting meeting;
+
     @ManyToMany
     @JoinTable(
     name = "caninteractwith",

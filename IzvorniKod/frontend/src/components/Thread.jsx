@@ -11,9 +11,9 @@ function Thread({ thread, disabled, handleDelete }){
           return storedUser ? JSON.parse(storedUser) : undefined;
   });
 
-  useEffect(() => {
-    console.log(isModalOpen, isAddingUser, user)
-  }) 
+  async function handleCreateMeeting(thread){
+
+  }
 
   return (
     <div className="p-4 pb-2 bg-white shadow-md rounded-lg mb-4 border border-gray-200 relative">
@@ -44,7 +44,7 @@ function Thread({ thread, disabled, handleDelete }){
           Initiator: {thread.initiator.username}
         </p>
       </div>
-
+      
       {isAddingUser && (
         <AddUserToThreadForm thread={thread} onClose={() => setIsAddingUser(false)} />
       )}
@@ -52,6 +52,7 @@ function Thread({ thread, disabled, handleDelete }){
       {isModalOpen && (
         <ThreadDetails thread={thread} onClose={() => setIsModalOpen(false)} />
       )}
+      
     </div>
   );
 };
