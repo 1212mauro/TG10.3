@@ -69,7 +69,7 @@ function ThreadDetails({ thread, onClose, handleAddComment }){
           </button>
         )}
         <CommentList label={"questions"} comments={comments.filter(comment => comment.hasVoting)} deleteComment={HandleDeleteComment}/>
-        {(user.role === 'ADMIN' || user.role === 'SUPERADMIN') && (
+        {(user.role === 'ADMIN' || user.role === 'SUPERADMIN' || user.userId == thread.initiator.userId) && (
           isAddingQuestion ? (
           <AddComment HandleSaveComment={(content) => HandleSaveComment(content, true)} />
         ) : (

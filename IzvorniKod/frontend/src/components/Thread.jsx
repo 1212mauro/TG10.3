@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import ThreadDetails from "./ThreadDetails";
-import { UserContext } from "../pages/AdminPage";
-import Modal from "./Modal";
 import AddUserToThreadForm from "./AddUserToThreadForm";
 
-function Thread({ thread }){
+function Thread({ thread, disabled }){
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isAddingUser, setIsAddingUser] = useState(false)
   const [user, setUser] = useState(() => {
@@ -28,7 +26,7 @@ function Thread({ thread }){
       </h2>
 
       <div className="reltive flex flex-row w-full">
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-500 text-sm">
+        <button disabled={disabled} onClick={() => setIsModalOpen(true)} className="text-blue-500 text-sm">
           Read More
         </button>
         {user && (thread.initiator.userId == user.userId || (user.role === 'ADMIN' || user.role === 'SUPERADMIN')) && !thread.public && <button onClick={() => setIsAddingUser(true)} className="text-blue-500 text-sm ml-6">
@@ -41,7 +39,6 @@ function Thread({ thread }){
       {isAddingUser && (
         <AddUserToThreadForm thread={thread} onClose={() => setIsAddingUser(false)} />
       )}
-
 
       {isModalOpen && (
         <ThreadDetails thread={thread} onClose={() => setIsModalOpen(false)} />
