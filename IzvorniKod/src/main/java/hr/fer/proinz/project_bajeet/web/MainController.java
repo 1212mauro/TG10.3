@@ -192,6 +192,24 @@ public class MainController {
         return "successfully deleted comment with id: " + commentID;
     }
 
+    @DeleteMapping("/deleteThreadFromBoard/{boardID}/{threadID}")
+    public String deleteThread(@PathVariable int boardID, @PathVariable int threadID){
+        
+        Board b = boardRepo.findByBoardID(boardID);
+        List<Thread> threads = b.getThreads();
+        log.info(threads + " threads after");
+        threads.removeIf(t -> t.getThreadID() == threadID);
+        b.setThreads(threads);
+
+        boardRepo.save(b);
+        
+        log.info(threads + " threads after");
+
+        threadRepo.deleteById(threadID);
+        
+        return "Successfully deleted thread with id " + threadID;
+    }
+
     @GetMapping("/userInfo")
     public User userInfo(@AuthenticationPrincipal User user) {
         return user;
