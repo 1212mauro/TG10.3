@@ -46,6 +46,7 @@ function ThreadList({ boardID }){
     setThreadList(p => [...p, response.data])
     setThread && setAllowed(a => [...a, response.data])
 
+
     console.log(threadList)
   };
 
